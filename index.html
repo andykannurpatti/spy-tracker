@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="SPY Tracker">
+<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1c1c1a" media="(prefers-color-scheme: dark)">
+<title>SPY Bottom Tracker</title>
+<style>
+:root{--bg:#fff;--bg2:#f7f7f5;--bg3:#f0efec;--bgs:#eaf3de;--bgd:#fcebeb;--bgw:#faeeda;--bgi:#e6f1fb;--txt:#1a1a1a;--txt2:#5f5e5a;--txt3:#888780;--txts:#3b6d11;--txtd:#a32d2d;--txtw:#854f0b;--txti:#185fa5;--bdr:rgba(26,26,26,0.13);--bdr2:rgba(26,26,26,0.28);--rmd:8px;--rlg:12px;}
+@media(prefers-color-scheme:dark){:root{--bg:#1c1c1a;--bg2:#242422;--bg3:#2c2c2a;--bgs:#173404;--bgd:#501313;--bgw:#412402;--bgi:#042c53;--txt:#f0efec;--txt2:#b4b2a9;--txt3:#888780;--txts:#c0dd97;--txtd:#f09595;--txtw:#fac775;--txti:#85b7eb;--bdr:rgba(240,239,236,0.13);--bdr2:rgba(240,239,236,0.28);}}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,'Segoe UI',sans-serif;background:var(--bg);color:var(--txt);min-height:100vh;-webkit-text-size-adjust:100%;}
+.page{max-width:860px;margin:0 auto;padding:20px 16px 60px;}
+.hdr{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px;flex-wrap:wrap;gap:10px;}
+.hdr h1{font-size:20px;font-weight:500;}
+.hdr p{font-size:12px;color:var(--txt3);margin-top:3px;}
+.hdr-r{display:flex;gap:7px;align-items:center;flex-wrap:wrap;}
+button{font-family:inherit;cursor:pointer;-webkit-appearance:none;}
+button:active{opacity:0.7;}
+button:disabled{opacity:0.4;cursor:not-allowed;}
+.btn{font-size:13px;padding:8px 16px;border-radius:var(--rmd);border:0.5px solid var(--bdr2);background:var(--bg);color:var(--txt);min-height:36px;}
+.btn-prim{background:var(--txt);color:var(--bg);border-color:var(--txt);font-weight:500;}
+.btn-sm{font-size:11px;padding:5px 11px;min-height:28px;}
+.btn-danger{color:var(--txtd);border-color:var(--txtd);}
+.bdg{display:inline-block;font-size:10px;font-weight:500;padding:3px 10px;border-radius:20px;letter-spacing:.04em;text-transform:uppercase;}
+.b-bull{background:var(--bgs);color:var(--txts);}
+.b-bear{background:var(--bgd);color:var(--txtd);}
+.b-neut{background:var(--bgw);color:var(--txtw);}
+.b-open{background:var(--bgs);color:var(--txts);}
+.b-pre,.b-post{background:var(--bgw);color:var(--txtw);}
+.b-closed{background:var(--bg2);color:var(--txt3);}
+.err-box{font-size:13px;color:var(--txtd);background:var(--bgd);border-radius:var(--rmd);padding:11px 14px;margin-bottom:14px;line-height:1.5;}
+.info-box{font-size:12px;color:var(--txti);background:var(--bgi);border-radius:var(--rmd);padding:9px 13px;margin-bottom:12px;}
+.vbox{background:var(--bg2);border-radius:var(--rmd);padding:13px 15px;margin-bottom:16px;}
+.vtop{display:flex;align-items:center;gap:9px;margin-bottom:7px;flex-wrap:wrap;}
+.vsub{font-size:13px;color:var(--txt2);line-height:1.65;}
+.mets{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin-bottom:16px;}
+@media(max-width:400px){.mets{grid-template-columns:repeat(2,minmax(0,1fr));}}
+.met{background:var(--bg2);border-radius:var(--rmd);padding:11px 12px;}
+.ml{font-size:11px;color:var(--txt3);margin-bottom:4px;}
+.mv{font-size:17px;font-weight:500;font-family:monospace;color:var(--txt);}
+.ms{font-size:11px;margin-top:3px;}
+.bull{color:var(--txts);} .bear{color:var(--txtd);} .neut{color:var(--txtw);}
+.signal-row{display:flex;align-items:center;justify-content:space-between;padding:7px 0;border-bottom:0.5px solid var(--bdr);font-size:13px;}
+.signal-row:last-child{border-bottom:none;}
+.sr-label{color:var(--txt2);}
+.sr-score{display:flex;align-items:center;gap:10px;}
+.score-bar{display:flex;gap:3px;align-items:center;}
+.score-dot{width:8px;height:8px;border-radius:50%;}
+.dot-bull{background:var(--txts);}
+.dot-bear{background:var(--txtd);}
+.dot-neut{background:var(--txt3);}
+.tabs{display:flex;gap:4px;margin-bottom:12px;flex-wrap:wrap;border-bottom:0.5px solid var(--bdr);padding-bottom:10px;}
+.tab{font-size:12px;padding:6px 13px;border-radius:var(--rmd);border:0.5px solid var(--bdr);background:none;color:var(--txt2);white-space:nowrap;min-height:32px;}
+.tab.on{border-color:var(--bdr2);color:var(--txt);background:var(--bg2);font-weight:500;}
+.pnl{display:none;} .pnl.on{display:block;}
+.card{background:var(--bg);border:0.5px solid var(--bdr);border-radius:var(--rlg);padding:14px 16px;}
+.row{display:flex;justify-content:space-between;align-items:baseline;padding:8px 0;border-bottom:0.5px solid var(--bdr);}
+.row:last-child{border-bottom:none;}
+.rl{font-size:13px;color:var(--txt2);}
+.rv{font-size:13px;font-weight:500;font-family:monospace;}
+.slbl{font-size:11px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:var(--txt3);margin:13px 0 8px;}
+.slbl.fst{margin-top:0;}
+.div{border:none;border-top:0.5px solid var(--bdr);margin:12px 0;}
+.rsi-track{height:8px;border-radius:4px;display:flex;overflow:hidden;margin:8px 0 4px;position:relative;}
+.rsi-marker{position:absolute;top:0;width:3px;height:100%;background:var(--txt);border-radius:2px;transform:translateX(-50%);}
+.rsi-lbls{display:flex;justify-content:space-between;font-size:10px;color:var(--txt3);margin-bottom:12px;}
+.htbl-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+.htbl{width:100%;font-size:12px;border-collapse:collapse;table-layout:fixed;min-width:360px;}
+.htbl th{text-align:left;font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:.05em;color:var(--txt3);padding:0 6px 8px 0;border-bottom:0.5px solid var(--bdr);}
+.htbl td{padding:8px 6px 8px 0;border-bottom:0.5px solid var(--bdr);color:var(--txt2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;vertical-align:middle;}
+.htbl tr:last-child td{border-bottom:none;}
+.htbl tr.latest td{font-weight:500;color:var(--txt);}
+.watch-item{font-size:13px;color:var(--txt2);padding:5px 0;border-bottom:0.5px solid var(--bdr);line-height:1.55;}
+.watch-item::before{content:'→  ';color:var(--txt3);}
+.watch-item:last-child{border-bottom:none;}
+.sbox{text-align:center;padding:40px 16px;}
+.sbox h3{font-size:15px;font-weight:500;margin-bottom:8px;}
+.sbox p{font-size:13px;color:var(--txt2);line-height:1.7;max-width:300px;margin:0 auto 16px;}
+.spin{display:inline-block;width:15px;height:15px;border:2px solid var(--bdr2);border-top-color:var(--txti);border-radius:50%;animation:sp .8s linear infinite;vertical-align:middle;margin-right:6px;}
+@keyframes sp{to{transform:rotate(360deg);}}
+.set-row{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:0.5px solid var(--bdr);flex-wrap:wrap;}
+.set-row:last-child{border-bottom:none;}
+.set-lbl{font-size:13px;color:var(--txt2);flex:1;min-width:100px;}
+.footer{margin-top:22px;padding-top:13px;border-top:0.5px solid var(--bdr);font-size:11px;color:var(--txt3);line-height:1.6;}
+</style>
+</head>
+<body>
+<div class="page">
+
+<div class="hdr">
+  <div>
+    <h1>SPY bottom tracker</h1>
+    <p id="sub-ts">Loading...</p>
+  </div>
+  <div class="hdr-r">
+    <span class="bdg" id="sess-bdg">—</span>
+    <button class="btn" onclick="toggleSettings()" style="font-size:16px;padding:6px 12px;">&#9881;</button>
+    <button class="btn btn-prim" id="upd-btn" onclick="doRefresh()">&#8635; Refresh</button>
+  </div>
+</div>
+
+<div id="err-bar" class="err-box" style="display:none;"></div>
+<div id="info-bar" class="info-box" style="display:none;"></div>
+
+<div id="content">
+  <div class="sbox">
+    <h3>Loading market data...</h3>
+    <p><span class="spin"></span>Fetching latest snapshot</p>
+  </div>
+</div>
+
+<div id="settings-panel" style="display:none;margin-top:18px;">
+  <div class="card">
+    <div class="slbl fst">Settings</div>
+    <div class="set-row">
+      <div class="set-lbl">Data updated</div>
+      <div style="font-size:12px;color:var(--txt3);" id="data-updated">—</div>
+    </div>
+    <div class="set-row">
+      <div class="set-lbl">Data source</div>
+      <div style="font-size:12px;color:var(--txt3);" id="data-source">—</div>
+    </div>
+    <div class="set-row">
+      <div class="set-lbl">Snapshots saved locally</div>
+      <div style="font-size:12px;font-family:monospace;color:var(--txt3);" id="snap-count">—</div>
+    </div>
+    <div class="set-row">
+      <div class="set-lbl">Clear local history</div>
+      <button class="btn btn-sm btn-danger" onclick="clearAll()">Clear</button>
+    </div>
+    <div class="set-row">
+      <div class="set-lbl"></div>
+      <button class="btn btn-sm" onclick="toggleSettings()">Done</button>
+    </div>
+  </div>
+</div>
+
+<div class="footer">Educational market analysis only — not investment advice. Data: Yahoo Finance + FRED (free APIs). Updated automatically twice daily on weekdays via GitHub Actions. Consult a qualified financial advisor before making portfolio decisions.</div>
+
+</div>
+
+<script>
+// ── CONFIGURE: set this to your GitHub raw data URL ──────────────────────────
+var DATA_URL = 'https://raw.githubusercontent.com/YOUR_GITHUB_USERNAME/spy-tracker/main/data.json';
+// ─────────────────────────────────────────────────────────────────────────────
+
+// Storage with in-memory fallback for iOS
+var MEM = { snap: null, hist: [] };
+var USE_LS = false;
+try { localStorage.setItem('_t','1'); localStorage.removeItem('_t'); USE_LS = true; } catch(e) {}
+var SK = 'spy_v7_snap', HK = 'spy_v7_hist';
+
+function store(k, v) {
+  var s = JSON.stringify(v);
+  if (USE_LS) { try { localStorage.setItem(k, s); } catch(e) {} }
+  if (k === SK) MEM.snap = v;
+  if (k === HK) MEM.hist = v;
+}
+function retrieve(k) {
+  if (USE_LS) { try { var r = localStorage.getItem(k); if (r) return JSON.parse(r); } catch(e) {} }
+  if (k === SK) return MEM.snap;
+  if (k === HK) return MEM.hist || [];
+  return null;
+}
+function loadSnap() { return retrieve(SK); }
+function loadHist() { return retrieve(HK) || []; }
+function saveSnap(d) {
+  store(SK, d);
+  var h = loadHist();
+  // Only add to history if it's a different snapshot (different timestamp)
+  var last = h[0];
+  if (!last || last._at !== d._at) {
+    h.unshift(d);
+    if (h.length > 60) h = h.slice(0, 60);
+    store(HK, h);
+  }
+}
+
+// Signal color helper
+function sigCls(s) {
+  var bull = ['Bullish','Above','Oversold','Near oversold','Dovish','Tight','Steepening','Low','Normal','Stable'];
+  var bear = ['Bearish','Below','Overbought','Near overbought','Hawkish','Very Wide','Extreme','Rising','Elevated','High','Inverted'];
+  if (bull.indexOf(s) >= 0) return 'bull';
+  if (bear.indexOf(s) >= 0) return 'bear';
+  return 'neut';
+}
+function bdgCls(s) { return s === 'Bullish' ? 'b-bull' : s === 'Bearish' ? 'b-bear' : 'b-neut'; }
+
+function sessCls(s) {
+  if (s === 'Market open') return 'b-open';
+  if (s === 'Pre-market' || s === 'Post-market') return 'b-pre';
+  return 'b-closed';
+}
+
+function ft(iso) {
+  try { return new Date(iso).toLocaleString('en-US', {month:'short',day:'numeric',year:'numeric',hour:'numeric',minute:'2-digit',hour12:true}); }
+  catch(e) { return iso || '—'; }
+}
+
+// Score dot helper — shows bull/bear/neut indicator
+function dotHtml(signal) {
+  var cls = sigCls(signal);
+  return '<span class="score-dot dot-' + cls + '" title="' + signal + '"></span>';
+}
+
+function render(d, h) {
+  var dp = d.display || {};
+  var sig = d.signals || {};
+  var r = d._raw || {};
+  var rsiPct = Math.min(Math.max(r.rsi || 50, 1), 99);
+  var chgC = r.changePct < 0 ? 'bear' : 'bull';
+  var vixC = ['High','Extreme'].indexOf(sig.vixSig) >= 0 ? 'bear' : sig.vixSig === 'Elevated' ? 'neut' : 'bull';
+  var sess = d._session || '—';
+
+  document.getElementById('sub-ts').textContent = 'Updated: ' + ft(d._at) + (d._source ? ' · ' + d._source : '');
+  var sb = document.getElementById('sess-bdg');
+  sb.textContent = sess; sb.className = 'bdg ' + sessCls(sess);
+
+  // History table
+  var hRows = h.length > 0
+    ? h.slice(0, 60).map(function(x, i) {
+        var xr = x._raw || {}; var xs = x.signals || {}; var xd = x.display || {};
+        var xchgC = xr.changePct < 0 ? 'bear' : 'bull';
+        var xvixC = ['High','Extreme'].indexOf(xs.vixSig) >= 0 ? 'bear' : xs.vixSig === 'Elevated' ? 'neut' : 'bull';
+        return '<tr class="' + (i === 0 ? 'latest' : '') + '">' +
+          '<td style="color:var(--txt3);font-size:11px;">' + ft(x._at) + '</td>' +
+          '<td><span class="bdg ' + bdgCls(xs.overallSig) + '" style="font-size:9px;padding:2px 6px;">' + (xs.overallSig || '—') + '</span></td>' +
+          '<td>' + (xd.price || '—') + '</td>' +
+          '<td class="' + xchgC + '">' + (xd.changePct || '—') + '</td>' +
+          '<td class="' + xvixC + '">' + (xd.vix || '—') + '</td>' +
+          '<td style="font-size:10px;color:var(--txt3);">' + (x._session || '—') + '</td>' +
+        '</tr>';
+      }).join('')
+    : '<tr><td colspan="6" style="text-align:center;color:var(--txt3);padding:14px 0;font-size:12px;">No history yet</td></tr>';
+
+  // Signal scorecard
+  var scoreItems = [
+    { label: '50-day MA',         signal: sig.ma50s,    value: dp.ma50,    weight: 2 },
+    { label: '200-day MA',        signal: sig.ma200s,   value: dp.ma200,   weight: 2 },
+    { label: 'RSI (14)',          signal: sig.rsiSig,   value: dp.rsi,     weight: 1 },
+    { label: 'VIX',               signal: sig.vixSig,   value: dp.vix,     weight: 1 },
+    { label: 'Credit spreads',    signal: sig.spreadSig,value: dp.hy,      weight: 1 },
+    { label: 'Yield curve',       signal: sig.ycSig,    value: dp.ycSpread,weight: 1 }
+  ];
+  var bull = 0, bear = 0;
+  scoreItems.forEach(function(s) {
+    if (sigCls(s.signal) === 'bull') bull += s.weight;
+    else if (sigCls(s.signal) === 'bear') bear += s.weight;
+  });
+  var scoreRows = scoreItems.map(function(s) {
+    return '<div class="signal-row">' +
+      '<span class="sr-label">' + s.label + (s.weight === 2 ? ' <span style="font-size:10px;color:var(--txt3);">×2</span>' : '') + '</span>' +
+      '<span class="sr-score">' +
+        '<span class="rv ' + sigCls(s.signal) + '" style="font-size:12px;">' + s.signal + '</span>' +
+        '<span style="font-size:12px;color:var(--txt3);font-family:monospace;">' + s.value + '</span>' +
+      '</span>' +
+    '</div>';
+  }).join('');
+
+  document.getElementById('content').innerHTML =
+    '<div class="vbox">' +
+      '<div class="vtop">' +
+        '<span class="bdg ' + bdgCls(sig.overallSig) + '">' + sig.overallSig + '</span>' +
+        '<span style="font-size:12px;color:var(--txt3);">Bull: ' + bull + ' · Bear: ' + bear + '</span>' +
+        '<span style="font-size:12px;color:var(--txt3);">' + sess + '</span>' +
+      '</div>' +
+      '<div class="vsub">' + d.comment + '</div>' +
+    '</div>' +
+    '<div class="mets">' +
+      '<div class="met"><div class="ml">SPY price</div><div class="mv">' + dp.price + '</div><div class="ms ' + chgC + '">' + dp.changePct + '</div></div>' +
+      '<div class="met"><div class="ml">Drawdown from ATH</div><div class="mv bear">' + dp.drawdown + '</div><div class="ms" style="color:var(--txt3);">ATH ' + dp.ath + '</div></div>' +
+      '<div class="met"><div class="ml">VIX</div><div class="mv ' + vixC + '">' + dp.vix + '</div><div class="ms ' + sigCls(sig.vixSig) + '">' + sig.vixSig + '</div></div>' +
+    '</div>' +
+    '<div class="tabs">' +
+      '<button class="tab on" onclick="stab(\'score\',this)">Signals</button>' +
+      '<button class="tab" onclick="stab(\'tech\',this)">Technical</button>' +
+      '<button class="tab" onclick="stab(\'mac\',this)">Macro</button>' +
+      '<button class="tab" onclick="stab(\'hst\',this)">History (' + h.length + ')</button>' +
+    '</div>' +
+
+    // Signals scorecard
+    '<div id="pnl-score" class="pnl on card">' +
+      '<div class="slbl fst">Signal scorecard — how the verdict is calculated</div>' +
+      scoreRows +
+      '<div style="margin-top:12px;padding-top:12px;border-top:0.5px solid var(--bdr);display:flex;justify-content:space-between;align-items:center;">' +
+        '<span style="font-size:12px;color:var(--txt2);">Weighted score: <span class="bull">Bull ' + bull + '</span> vs <span class="bear">Bear ' + bear + '</span></span>' +
+        '<span class="bdg ' + bdgCls(sig.overallSig) + '">' + sig.overallSig + '</span>' +
+      '</div>' +
+      '<div style="font-size:11px;color:var(--txt3);margin-top:10px;line-height:1.6;">MA signals weighted ×2 (primary trend). All other signals weighted ×1. Any imbalance = signal direction.</div>' +
+    '</div>' +
+
+    // Technical tab
+    '<div id="pnl-tech" class="pnl card">' +
+      '<div class="slbl fst">RSI (14) — ' + dp.rsi + ' <span class="' + sigCls(sig.rsiSig) + '" style="font-size:12px;font-weight:400;letter-spacing:0;text-transform:none;margin-left:5px;">' + sig.rsiSig + '</span></div>' +
+      '<div class="rsi-track">' +
+        '<div style="width:30%;background:var(--bgi);"></div>' +
+        '<div style="width:12%;background:var(--bgs);"></div>' +
+        '<div style="width:36%;background:var(--bg3);border:0.5px solid var(--bdr);"></div>' +
+        '<div style="width:12%;background:var(--bgw);"></div>' +
+        '<div style="width:10%;background:var(--bgd);"></div>' +
+        '<div class="rsi-marker" style="left:' + rsiPct + '%;"></div>' +
+      '</div>' +
+      '<div class="rsi-lbls"><span>0</span><span>30</span><span>42</span><span>58</span><span>70</span><span>100</span></div>' +
+      '<div class="slbl">Moving averages</div>' +
+      '<div class="row"><span class="rl">50-day MA (' + dp.ma50 + ')</span><span class="rv ' + sigCls(sig.ma50s) + '">' + sig.ma50s + '</span></div>' +
+      '<div class="row"><span class="rl">200-day MA (' + dp.ma200 + ')</span><span class="rv ' + sigCls(sig.ma200s) + '">' + sig.ma200s + '</span></div>' +
+      '<div class="row"><span class="rl">MACD</span><span class="rv ' + sigCls(sig.macdSig) + '">' + dp.macd + ' — ' + sig.macdSig + '</span></div>' +
+      '<div class="row" style="border-bottom:none;"><span class="rl">ATH / Drawdown</span><span class="rv bear">' + dp.drawdown + ' from ' + dp.ath + '</span></div>' +
+    '</div>' +
+
+    // Macro tab
+    '<div id="pnl-mac" class="pnl card">' +
+      '<div class="slbl fst">Fed and rates</div>' +
+      '<div class="row"><span class="rl">Fed funds rate</span><span class="rv">' + dp.fedRate + '</span></div>' +
+      '<div class="row"><span class="rl">US 10Y yield</span><span class="rv">' + dp.us10y + '</span></div>' +
+      '<div class="row"><span class="rl">US 2Y yield</span><span class="rv">' + dp.us2y + '</span></div>' +
+      '<div class="row"><span class="rl">Yield curve (10Y−2Y)</span><span class="rv ' + sigCls(sig.ycSig) + '">' + dp.ycSpread + ' — ' + sig.ycSig + '</span></div>' +
+      '<div class="slbl">Commodities and risk</div>' +
+      '<div class="row"><span class="rl">WTI crude oil</span><span class="rv ' + sigCls(sig.oilSig) + '">' + dp.oil + ' — ' + sig.oilSig + '</span></div>' +
+      '<div class="row"><span class="rl">VIX</span><span class="rv ' + vixC + '">' + dp.vix + ' — ' + sig.vixSig + '</span></div>' +
+      '<div class="row"><span class="rl">HY credit spread</span><span class="rv">' + dp.hy + '</span></div>' +
+      '<div class="row" style="border-bottom:none;"><span class="rl">Spread environment</span><span class="rv ' + sigCls(sig.spreadSig) + '">' + sig.spreadSig + '</span></div>' +
+    '</div>' +
+
+    // History tab
+    '<div id="pnl-hst" class="pnl card">' +
+      '<div class="htbl-wrap">' +
+        '<table class="htbl"><thead><tr>' +
+          '<th style="width:26%;">Updated</th><th style="width:14%;">Signal</th>' +
+          '<th style="width:13%;">SPY</th><th style="width:11%;">Chg</th>' +
+          '<th style="width:10%;">VIX</th><th style="width:26%;">Session</th>' +
+        '</tr></thead><tbody>' + hRows + '</tbody></table>' +
+      '</div>' +
+      (h.length > 0 ? '<div style="text-align:right;margin-top:11px;"><button class="btn btn-sm btn-danger" onclick="clearAll()">Clear history</button></div>' : '') +
+    '</div>';
+}
+
+function stab(id, el) {
+  document.querySelectorAll('.tab').forEach(function(t) { t.classList.remove('on'); });
+  el.classList.add('on');
+  document.querySelectorAll('.pnl').forEach(function(p) { p.classList.remove('on'); });
+  document.getElementById('pnl-' + id).classList.add('on');
+}
+
+function toggleSettings() {
+  var p = document.getElementById('settings-panel');
+  var show = p.style.display === 'none';
+  p.style.display = show ? 'block' : 'none';
+  if (show) {
+    var snap = loadSnap();
+    document.getElementById('data-updated').textContent = snap ? ft(snap._at) : '—';
+    document.getElementById('data-source').textContent = snap ? (snap._source || '—') : '—';
+    document.getElementById('snap-count').textContent = loadHist().length + ' of 60';
+  }
+}
+
+function clearAll() {
+  if (!confirm('Clear all locally saved snapshots?')) return;
+  if (USE_LS) { try { localStorage.removeItem(SK); localStorage.removeItem(HK); } catch(e) {} }
+  MEM.snap = null; MEM.hist = [];
+  document.getElementById('settings-panel').style.display = 'none';
+  boot();
+}
+
+async function doRefresh() {
+  var btn = document.getElementById('upd-btn');
+  var errBar = document.getElementById('err-bar');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spin"></span>Loading...';
+  errBar.style.display = 'none';
+  document.getElementById('sub-ts').textContent = 'Fetching latest data...';
+
+  try {
+    var resp = await fetch(DATA_URL + '?t=' + Date.now()); // cache-bust
+    if (!resp.ok) throw new Error('HTTP ' + resp.status + ' — check DATA_URL in index.html');
+    var d = await resp.json();
+    saveSnap(d);
+    render(d, loadHist());
+  } catch(e) {
+    errBar.textContent = e.message;
+    errBar.style.display = 'block';
+    var snap = loadSnap();
+    if (snap) render(snap, loadHist());
+    else document.getElementById('sub-ts').textContent = 'Error loading data';
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '\u21BB Refresh';
+  }
+}
+
+function boot() {
+  // Show cached snapshot immediately while fetching
+  var snap = loadSnap();
+  var hist = loadHist();
+  if (snap) {
+    render(snap, hist);
+  } else {
+    document.getElementById('content').innerHTML =
+      '<div class="sbox"><h3>Loading...</h3><p><span class="spin"></span>Fetching latest market snapshot</p></div>';
+  }
+  if (!USE_LS) {
+    document.getElementById('info-bar').textContent = 'Running in memory-only mode — history will not persist between sessions on this device. Use Safari → Add to Home Screen for persistence.';
+    document.getElementById('info-bar').style.display = 'block';
+  }
+  doRefresh();
+}
+
+window.stab = stab;
+window.toggleSettings = toggleSettings;
+window.clearAll = clearAll;
+window.doRefresh = doRefresh;
+
+boot();
+</script>
+</body>
+</html>

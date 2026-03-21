@@ -1,0 +1,51 @@
+{
+  "_at": "2026-03-21T12:45:00.000Z",
+  "_session": "Pre-market",
+  "_source": "placeholder — run workflow to update",
+  "signals": {
+    "ma50s": "Below",
+    "ma200s": "Below",
+    "rsiSig": "Near oversold",
+    "vixSig": "Elevated",
+    "spreadSig": "Normal",
+    "ycSig": "Steepening",
+    "macdSig": "Bearish",
+    "oilSig": "Elevated",
+    "overallSig": "Bearish"
+  },
+  "comment": "SPY ($652.43) is below both the 50-day MA ($668) and 200-day MA ($680), confirming a downtrend. RSI at 36.1 is approaching oversold levels — momentum is weakening; watch for stabilization in VIX and credit spreads as confirmation.",
+  "display": {
+    "price": "$652.43",
+    "changePct": "-0.76%",
+    "ath": "$697.84",
+    "drawdown": "-6.5%",
+    "rsi": "36.1",
+    "ma50": "$668.00",
+    "ma200": "$680.00",
+    "macd": "-6.24",
+    "vix": "25.3",
+    "us10y": "4.27%",
+    "us2y": "3.78%",
+    "ycSpread": "+0.49%",
+    "oil": "$99.00",
+    "hy": "328 bps",
+    "ig": "100 bps",
+    "fedRate": "3.50-3.75%"
+  },
+  "_raw": {
+    "price": 652.43,
+    "changePct": -0.76,
+    "rsi": 36.1,
+    "ma50": 668.0,
+    "ma200": 680.0,
+    "macd": -6.24,
+    "vix": 25.3,
+    "us10y": 4.27,
+    "us2y": 3.78,
+    "oil": 99.0,
+    "hy": 328,
+    "ig": 100,
+    "ycSpread": 0.49,
+    "drawdown": -6.5
+  }
+}
