@@ -1,0 +1,35 @@
+name: Update SPY market data
+
+on:
+  schedule:
+    - cron: '45 12 * * 1-5'  # 8:45 AM ET (EDT, Mar-Nov) / 7:45 AM ET (EST, Nov-Mar)
+    - cron: '15 20 * * 1-5'  # 4:15 PM ET (EDT) / 3:15 PM ET (EST)
+  workflow_dispatch:           # Allow manual trigger from GitHub Actions tab
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write          # Needed to commit data.json back to repo
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Fetch market data
+        env:
+          FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
+        run: node fetch.js
+
+      - name: Commit and push data.json
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data.json
+          git diff --staged --quiet && echo "No changes to commit" || git commit -m "market data $(date -u '+%Y-%m-%d %H:%M UTC')"
+          git push
