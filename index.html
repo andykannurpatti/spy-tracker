@@ -212,7 +212,17 @@ function render(d, h) {
   var dp = d.display || {};
   var sig = d.signals || {};
   var r = d._raw || {};
-  var rsiPct = Math.min(Math.max(r.rsi || 50, 1), 99);
+  // Map RSI value to track position — accounts for non-uniform segment widths:
+  // 0-30 RSI = 0-30% track, 30-42 = 30-42%, 42-58 = 42-78%, 58-70 = 78-90%, 70-100 = 90-100%
+  function rsiToPos(v) {
+    var r = Math.min(Math.max(v != null ? v : 50, 0), 100);
+    if (r <= 30)  return (r / 30) * 30;
+    if (r <= 42)  return 30 + ((r - 30) / 12) * 12;
+    if (r <= 58)  return 42 + ((r - 42) / 16) * 36;
+    if (r <= 70)  return 78 + ((r - 58) / 12) * 12;
+    return 90 + ((r - 70) / 30) * 10;
+  }
+  var rsiPct = rsiToPos(r.rsi);
   var chgC = r.changePct < 0 ? 'bear' : 'bull';
   var vixC = ['High','Extreme'].indexOf(sig.vixSig) >= 0 ? 'bear' : sig.vixSig === 'Elevated' ? 'neut' : 'bull';
   var sess = d._session || '—';
