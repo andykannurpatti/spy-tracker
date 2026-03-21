@@ -1,16 +1,19 @@
 name: Update SPY market data
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 on:
   schedule:
-    - cron: '45 12 * * 1-5'  # 8:45 AM ET (EDT, Mar-Nov) / 7:45 AM ET (EST, Nov-Mar)
-    - cron: '15 20 * * 1-5'  # 4:15 PM ET (EDT) / 3:15 PM ET (EST)
-  workflow_dispatch:           # Allow manual trigger from GitHub Actions tab
+    - cron: '45 12 * * 1-5'
+    - cron: '15 20 * * 1-5'
+  workflow_dispatch:
 
 jobs:
   update:
     runs-on: ubuntu-latest
     permissions:
-      contents: write          # Needed to commit data.json back to repo
+      contents: write
 
     steps:
       - name: Checkout repo
