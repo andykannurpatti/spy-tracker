@@ -1,5 +1,5 @@
 {
-  "_at": "2026-03-23T20:26:33.024Z",
+  "_at": "2026-03-23T20:56:08.169Z",
   "_session": "Post-market",
   "_source": "Yahoo Finance + FRED",
   "signals": {
@@ -13,13 +13,13 @@
     "oilSig": "Elevated",
     "overallSig": "Bearish"
   },
-  "comment": "SPY ($655) is below both the 50-day MA ($683) and 200-day MA ($661), confirming a downtrend. RSI at 36.4 is approaching oversold levels — momentum is weakening; watch for stabilization in VIX and credit spreads as confirmation.",
+  "comment": "SPY ($655) is below both the 50-day MA ($683) and 200-day MA ($661), confirming a downtrend. RSI at 36.3 is approaching oversold levels — momentum is weakening; watch for stabilization in VIX and credit spreads as confirmation.",
   "display": {
-    "price": "$655.41",
-    "changePct": "+1.06%",
+    "price": "$655.38",
+    "changePct": "+1.05%",
     "ath": "$697.84",
     "drawdown": "-6.1%",
-    "rsi": "36.4",
+    "rsi": "36.3",
     "ma50": "$683.21",
     "ma200": "$660.66",
     "macd": "-7.91",
@@ -27,25 +27,25 @@
     "us10y": "4.33%",
     "us2y": "3.88%",
     "ycSpread": "+0.45%",
-    "oil": "$88.76",
+    "oil": "$88.86",
     "hy": "324 bps",
     "ig": "88 bps",
     "fedRate": "3.50-3.75%"
   },
   "_raw": {
-    "price": 655.4149780273438,
-    "changePct": 1.055394271370186,
-    "rsi": 36.35767931563339,
-    "ma50": 683.208896484375,
-    "ma200": 660.6616741943359,
-    "macd": -7.909111916683742,
-    "vix": 26.139999389648438,
+    "price": 655.3800048828125,
+    "changePct": 1.0500019244937806,
+    "rsi": 36.32657617959237,
+    "ma50": 683.2081970214844,
+    "ma200": 660.6614993286133,
+    "macd": -7.911901797159203,
+    "vix": 26.149999618530273,
     "us10y": 4.334000110626221,
     "us2y": 3.88,
-    "oil": 88.76000213623047,
+    "oil": 88.86000061035156,
     "hy": 324,
     "ig": 88,
     "ycSpread": 0.4540001106262208,
-    "drawdown": -6.079476953550424
+    "drawdown": -6.084488581506868
   }
 }
