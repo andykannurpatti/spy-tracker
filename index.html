@@ -88,6 +88,7 @@ button:disabled{opacity:0.4;cursor:not-allowed;}
 .set-lbl{font-size:13px;color:var(--txt2);flex:1;min-width:100px;}
 .footer{margin-top:22px;padding-top:13px;border-top:0.5px solid var(--bdr);font-size:11px;color:var(--txt3);line-height:1.6;}
 </style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 </head>
 <body>
 <div class="page">
@@ -288,6 +289,7 @@ function render(d, h) {
     '</div>' +
     '<div class="tabs">' +
       '<button class="tab on" onclick="stab(\'score\',this)">Signals</button>' +
+      '<button class="tab" onclick="stab(\'chart\',this)">Chart</button>' +
       '<button class="tab" onclick="stab(\'tech\',this)">Technical</button>' +
       '<button class="tab" onclick="stab(\'mac\',this)">Macro</button>' +
       '<button class="tab" onclick="stab(\'hst\',this)">History (' + h.length + ')</button>' +
@@ -302,6 +304,17 @@ function render(d, h) {
         '<span class="bdg ' + bdgCls(sig.overallSig) + '">' + sig.overallSig + '</span>' +
       '</div>' +
       '<div style="font-size:11px;color:var(--txt3);margin-top:10px;line-height:1.6;">MA signals weighted ×2 (primary trend). All other signals weighted ×1. Any imbalance = signal direction.</div>' +
+    '</div>' +
+
+    // Chart panel
+    '<div id="pnl-chart" class="pnl card">' +
+      '<div class="slbl fst">SPY — 60-day price vs moving averages</div>' +
+      '<div style="position:relative;height:280px;margin-top:8px;"><canvas id="spy-chart"></canvas></div>' +
+      '<div style="display:flex;gap:16px;margin-top:10px;flex-wrap:wrap;">' +
+        '<span style="display:flex;align-items:center;gap:5px;font-size:12px;color:var(--txt2);"><span style="width:20px;height:3px;background:#185FA5;display:inline-block;border-radius:2px;"></span>SPY</span>' +
+        '<span style="display:flex;align-items:center;gap:5px;font-size:12px;color:var(--txt2);"><span style="width:20px;height:0;border-top:2px dashed #EF9F27;display:inline-block;"></span>50-day MA</span>' +
+        '<span style="display:flex;align-items:center;gap:5px;font-size:12px;color:var(--txt2);"><span style="width:20px;height:0;border-top:2px dashed #E24B4A;display:inline-block;"></span>200-day MA</span>' +
+      '</div>' +
     '</div>' +
 
     // Technical tab
@@ -350,11 +363,102 @@ function render(d, h) {
     '</div>';
 }
 
+var spyChartInstance = null;
+
+function renderChart(chartData) {
+  var canvas = document.getElementById('spy-chart');
+  if (!canvas || !chartData) return;
+  if (spyChartInstance) { spyChartInstance.destroy(); spyChartInstance = null; }
+  var isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  var gridColor  = isDark ? 'rgba(240,239,236,0.08)' : 'rgba(26,26,26,0.07)';
+  var labelColor = isDark ? '#888780' : '#888780';
+  spyChartInstance = new Chart(canvas, {
+    type: 'line',
+    data: {
+      labels: chartData.labels,
+      datasets: [
+        {
+          label: 'SPY',
+          data: chartData.closes,
+          borderColor: '#185FA5',
+          backgroundColor: isDark ? 'rgba(24,95,165,0.10)' : 'rgba(24,95,165,0.07)',
+          borderWidth: 2,
+          pointRadius: 0,
+          tension: 0.2,
+          fill: true,
+          order: 1
+        },
+        {
+          label: '50-day MA',
+          data: chartData.ma50,
+          borderColor: '#EF9F27',
+          borderWidth: 1.5,
+          borderDash: [5, 3],
+          pointRadius: 0,
+          tension: 0.2,
+          fill: false,
+          order: 2
+        },
+        {
+          label: '200-day MA',
+          data: chartData.ma200,
+          borderColor: '#E24B4A',
+          borderWidth: 1.5,
+          borderDash: [5, 3],
+          pointRadius: 0,
+          tension: 0.2,
+          fill: false,
+          order: 3
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            label: function(ctx) {
+              return ctx.dataset.label + ': $' + (ctx.parsed.y != null ? ctx.parsed.y.toFixed(2) : '—');
+            }
+          }
+        }
+      },
+      scales: {
+        x: {
+          grid: { color: gridColor },
+          ticks: {
+            color: labelColor,
+            maxTicksLimit: 8,
+            maxRotation: 0,
+            font: { size: 10 }
+          }
+        },
+        y: {
+          position: 'right',
+          grid: { color: gridColor },
+          ticks: {
+            color: labelColor,
+            font: { size: 10 },
+            callback: function(v) { return '$' + v.toFixed(0); }
+          }
+        }
+      }
+    }
+  });
+}
+
 function stab(id, el) {
   document.querySelectorAll('.tab').forEach(function(t) { t.classList.remove('on'); });
   el.classList.add('on');
   document.querySelectorAll('.pnl').forEach(function(p) { p.classList.remove('on'); });
   document.getElementById('pnl-' + id).classList.add('on');
+  if (id === 'chart') {
+    var snap = loadSnap();
+    setTimeout(function() { renderChart(snap && snap.chart); }, 50);
+  }
 }
 
 function toggleSettings() {

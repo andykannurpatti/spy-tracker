@@ -1,0 +1,47 @@
+name: Update SPY market data
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+on:
+  schedule:
+    # Hourly during market hours ET (EDT = UTC-4, Nov-Mar EST = UTC-5)
+    # Runs every hour at :30 from 9:30 AM to 4:30 PM ET (covers full session + slight buffer)
+    - cron: '30 13 * * 1-5'   #  9:30 AM ET
+    - cron: '30 14 * * 1-5'   # 10:30 AM ET
+    - cron: '30 15 * * 1-5'   # 11:30 AM ET
+    - cron: '30 16 * * 1-5'   # 12:30 PM ET
+    - cron: '30 17 * * 1-5'   #  1:30 PM ET
+    - cron: '30 18 * * 1-5'   #  2:30 PM ET
+    - cron: '30 19 * * 1-5'   #  3:30 PM ET
+    - cron: '15 20 * * 1-5'   #  4:15 PM ET (closing snapshot)
+    - cron: '45 12 * * 1-5'   #  8:45 AM ET (pre-market)
+  workflow_dispatch:
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4.2.2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4.4.0
+        with:
+          node-version: '24'
+
+      - name: Fetch market data
+        env:
+          FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
+        run: node fetch.js
+
+      - name: Commit and push data.json
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data.json
+          git diff --staged --quiet && echo "No changes to commit" || git commit -m "market data $(date -u '+%Y-%m-%d %H:%M UTC')"
+          git push

@@ -253,12 +253,37 @@ async function main() {
   const signals = { ma50s, ma200s, rsiSig, vixSig, spreadSig, ycSig, macdSig, oilSig, overallSig: overall };
   const comment = generateComment(signals, raw);
 
+  // Build 60-day chart data: closes + rolling MA50 + MA200 per day
+  const chartDays = 60;
+  const chartCloses = closes.slice(-chartDays);
+  const chartLabels = spy.timestamps.slice(-chartDays).map(function(ts) {
+    var d = new Date(ts * 1000);
+    return (d.getUTCMonth()+1) + '/' + d.getUTCDate();
+  });
+  const chartMA50 = chartCloses.map(function(_, i) {
+    var idx = closes.length - chartDays + i;
+    if (idx < 49) return null;
+    return parseFloat(calcSMA(closes.slice(0, idx+1), 50).toFixed(2));
+  });
+  const chartMA200 = chartCloses.map(function(_, i) {
+    var idx = closes.length - chartDays + i;
+    if (idx < 199) return null;
+    return parseFloat(calcSMA(closes.slice(0, idx+1), 200).toFixed(2));
+  });
+  const chartData = {
+    labels: chartLabels,
+    closes: chartCloses.map(function(v){ return parseFloat(v.toFixed(2)); }),
+    ma50:   chartMA50,
+    ma200:  chartMA200
+  };
+
   const output = {
     _at: new Date().toISOString(),
     _session: getSession(),
     _source: fredKey ? 'Yahoo Finance + FRED' : 'Yahoo Finance (FRED fallback)',
     signals,
     comment,
+    chart: chartData,
     display: {
       price:    '$' + price.toFixed(2),
       changePct:(changePct >= 0 ? '+' : '') + changePct.toFixed(2) + '%',
