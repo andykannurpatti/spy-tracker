@@ -5,8 +5,17 @@ env:
 
 on:
   schedule:
-    - cron: '45 12 * * 1-5'
-    - cron: '15 20 * * 1-5'
+    # Hourly during market hours ET (EDT = UTC-4, Nov-Mar EST = UTC-5)
+    # Runs every hour at :30 from 9:30 AM to 4:30 PM ET (covers full session + slight buffer)
+    - cron: '30 13 * * 1-5'   #  9:30 AM ET
+    - cron: '30 14 * * 1-5'   # 10:30 AM ET
+    - cron: '30 15 * * 1-5'   # 11:30 AM ET
+    - cron: '30 16 * * 1-5'   # 12:30 PM ET
+    - cron: '30 17 * * 1-5'   #  1:30 PM ET
+    - cron: '30 18 * * 1-5'   #  2:30 PM ET
+    - cron: '30 19 * * 1-5'   #  3:30 PM ET
+    - cron: '15 20 * * 1-5'   #  4:15 PM ET (closing snapshot)
+    - cron: '45 12 * * 1-5'   #  8:45 AM ET (pre-market)
   workflow_dispatch:
 
 jobs:
