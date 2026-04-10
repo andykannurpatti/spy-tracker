@@ -1,5 +1,5 @@
 {
-  "_at": "2026-04-10T20:00:34.692Z",
+  "_at": "2026-04-10T20:57:07.042Z",
   "_session": "Post-market",
   "_source": "Yahoo Finance + FRED",
   "signals": {
@@ -13,7 +13,7 @@
     "oilSig": "Elevated",
     "overallSig": "Bullish"
   },
-  "comment": "SPY ($680) is above both the 50-day MA ($674) and 200-day MA ($664), confirming an uptrend. Credit spreads at 290 bps are normal; watch for widening above 400 bps as an early warning of deepening stress.",
+  "comment": "SPY ($679) is above both the 50-day MA ($674) and 200-day MA ($664), confirming an uptrend. Credit spreads at 290 bps are normal; watch for widening above 400 bps as an early warning of deepening stress.",
   "chart": {
     "labels": [
       "1/14",
@@ -137,7 +137,7 @@
       659.22,
       676.01,
       679.91,
-      679.53
+      679.46
     ],
     "ma50": [
       680.61,
@@ -265,37 +265,37 @@
     ]
   },
   "display": {
-    "price": "$679.53",
-    "changePct": "-0.06%",
+    "price": "$679.46",
+    "changePct": "-0.07%",
     "ath": "$697.84",
     "drawdown": "-2.6%",
     "rsi": "60.0",
     "ma50": "$674.29",
     "ma200": "$664.36",
     "macd": "-0.71",
-    "vix": "19.5",
+    "vix": "19.2",
     "us10y": "4.32%",
     "us2y": "3.79%",
     "ycSpread": "+0.53%",
-    "oil": "$96.25",
+    "oil": "$95.65",
     "hy": "290 bps",
     "ig": "83 bps",
     "fedRate": "3.50-3.75%"
   },
   "_raw": {
-    "price": 679.5250244140625,
-    "changePct": -0.056617603164194195,
-    "rsi": 60.0116202257637,
-    "ma50": 674.2894995117188,
-    "ma200": 664.3626739501954,
-    "macd": -0.7050542397748814,
-    "vix": 19.549999237060547,
+    "price": 679.4600219726562,
+    "changePct": -0.06617805145496108,
+    "rsi": 59.96147952064717,
+    "ma50": 674.2881994628906,
+    "ma200": 664.3623489379883,
+    "macd": -0.7102396197161625,
+    "vix": 19.229999542236328,
     "us10y": 4.316999912261963,
     "us2y": 3.79,
-    "oil": 96.25,
+    "oil": 95.6500015258789,
     "hy": 290,
     "ig": 83,
     "ycSpread": 0.5269999122619629,
-    "drawdown": -2.624523613713391
+    "drawdown": -2.633838419601023
   }
 }
