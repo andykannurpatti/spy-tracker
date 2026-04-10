@@ -1,6 +1,6 @@
 {
-  "_at": "2026-04-10T19:27:24.213Z",
-  "_session": "Market open",
+  "_at": "2026-04-10T20:00:34.692Z",
+  "_session": "Post-market",
   "_source": "Yahoo Finance + FRED",
   "signals": {
     "ma50s": "Above",
@@ -13,7 +13,7 @@
     "oilSig": "Elevated",
     "overallSig": "Bullish"
   },
-  "comment": "SPY ($679) is above both the 50-day MA ($674) and 200-day MA ($664), confirming an uptrend. Credit spreads at 290 bps are normal; watch for widening above 400 bps as an early warning of deepening stress.",
+  "comment": "SPY ($680) is above both the 50-day MA ($674) and 200-day MA ($664), confirming an uptrend. Credit spreads at 290 bps are normal; watch for widening above 400 bps as an early warning of deepening stress.",
   "chart": {
     "labels": [
       "1/14",
@@ -137,7 +137,7 @@
       659.22,
       676.01,
       679.91,
-      679.49
+      679.53
     ],
     "ma50": [
       680.61,
@@ -210,7 +210,7 @@
       null,
       null,
       null,
-      638.68,
+      null,
       639.53,
       640.33,
       641.1,
@@ -265,7 +265,7 @@
     ]
   },
   "display": {
-    "price": "$679.49",
+    "price": "$679.53",
     "changePct": "-0.06%",
     "ath": "$697.84",
     "drawdown": "-2.6%",
@@ -277,25 +277,25 @@
     "us10y": "4.32%",
     "us2y": "3.79%",
     "ycSpread": "+0.53%",
-    "oil": "$95.97",
+    "oil": "$96.25",
     "hy": "290 bps",
     "ig": "83 bps",
     "fedRate": "3.50-3.75%"
   },
   "_raw": {
-    "price": 679.489990234375,
-    "changePct": -0.06177037059978124,
-    "rsi": 59.98458573037614,
-    "ma50": 674.288798828125,
-    "ma200": 664.3624987792969,
-    "macd": -0.7078489999568092,
-    "vix": 19.540000915527344,
+    "price": 679.5250244140625,
+    "changePct": -0.056617603164194195,
+    "rsi": 60.0116202257637,
+    "ma50": 674.2894995117188,
+    "ma200": 664.3626739501954,
+    "macd": -0.7050542397748814,
+    "vix": 19.549999237060547,
     "us10y": 4.316999912261963,
     "us2y": 3.79,
-    "oil": 95.97000122070312,
+    "oil": 96.25,
     "hy": 290,
     "ig": 83,
     "ycSpread": 0.5269999122619629,
-    "drawdown": -2.6295439879664437
+    "drawdown": -2.624523613713391
   }
 }
