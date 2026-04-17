@@ -1,5 +1,5 @@
 {
-  "_at": "2026-04-17T14:40:03.202Z",
+  "_at": "2026-04-17T15:35:41.033Z",
   "_session": "Market open",
   "_source": "Yahoo Finance + FRED",
   "signals": {
@@ -13,7 +13,7 @@
     "oilSig": "Stable",
     "overallSig": "Bullish"
   },
-  "comment": "SPY ($710) is above both the 50-day MA ($675) and 200-day MA ($666), confirming an uptrend. RSI at 73.2 is overbought — upside momentum may be stretched; watch for a pullback toward moving average support.",
+  "comment": "SPY ($711) is above both the 50-day MA ($675) and 200-day MA ($666), confirming an uptrend. RSI at 73.5 is overbought — upside momentum may be stretched; watch for a pullback toward moving average support.",
   "chart": {
     "labels": [
       "1/22",
@@ -137,7 +137,7 @@
       694.46,
       699.94,
       701.66,
-      710.31
+      711.19
     ],
     "ma50": [
       681.78,
@@ -199,7 +199,7 @@
       674.18,
       674.27,
       674.51,
-      674.99
+      675.01
     ],
     "ma200": [
       null,
@@ -265,37 +265,37 @@
     ]
   },
   "display": {
-    "price": "$710.31",
-    "changePct": "+1.23%",
+    "price": "$711.19",
+    "changePct": "+1.36%",
     "ath": "$697.84",
-    "drawdown": "1.8%",
-    "rsi": "73.2",
-    "ma50": "$674.99",
+    "drawdown": "1.9%",
+    "rsi": "73.5",
+    "ma50": "$675.01",
     "ma200": "$666.48",
-    "macd": "+8.77",
-    "vix": "17.7",
-    "us10y": "4.23%",
+    "macd": "+8.84",
+    "vix": "17.2",
+    "us10y": "4.24%",
     "us2y": "3.76%",
-    "ycSpread": "+0.47%",
-    "oil": "$81.02",
+    "ycSpread": "+0.48%",
+    "oil": "$81.25",
     "hy": "286 bps",
     "ig": "81 bps",
     "fedRate": "3.50-3.75%"
   },
   "_raw": {
-    "price": 710.3099975585938,
-    "changePct": 1.2327943370200949,
-    "rsi": 73.22375732036124,
-    "ma50": 674.9947998046875,
-    "ma200": 666.4776989746093,
-    "macd": 8.7658656157422,
-    "vix": 17.65999984741211,
-    "us10y": 4.234000205993652,
+    "price": 711.1900024414062,
+    "changePct": 1.3582119062835525,
+    "rsi": 73.51397397653369,
+    "ma50": 675.0123999023438,
+    "ma200": 666.4820989990235,
+    "macd": 8.836065435453747,
+    "vix": 17.170000076293945,
+    "us10y": 4.23799991607666,
     "us2y": 3.76,
-    "oil": 81.0199966430664,
+    "oil": 81.25,
     "hy": 286,
     "ig": 81,
-    "ycSpread": 0.47400020599365256,
-    "drawdown": 1.7869422157792212
+    "ycSpread": 0.47799991607666037,
+    "drawdown": 1.9130463202748793
   }
 }
