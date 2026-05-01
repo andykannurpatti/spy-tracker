@@ -1,6 +1,6 @@
 {
-  "_at": "2026-04-30T21:16:18.052Z",
-  "_session": "Post-market",
+  "_at": "2026-05-01T14:04:09.712Z",
+  "_session": "Market open",
   "_source": "Yahoo Finance + FRED",
   "signals": {
     "ma50s": "Above",
@@ -13,10 +13,9 @@
     "oilSig": "Rising",
     "overallSig": "Bullish"
   },
-  "comment": "SPY ($719) is above both the 50-day MA ($679) and 200-day MA ($670), confirming an uptrend. RSI at 70.5 is overbought — upside momentum may be stretched; watch for a pullback toward moving average support.",
+  "comment": "SPY ($725) is above both the 50-day MA ($680) and 200-day MA ($671), confirming an uptrend. RSI at 73.1 is overbought — upside momentum may be stretched; watch for a pullback toward moving average support.",
   "chart": {
     "labels": [
-      "2/4",
       "2/5",
       "2/6",
       "2/9",
@@ -75,10 +74,10 @@
       "4/27",
       "4/28",
       "4/29",
-      "4/30"
+      "4/30",
+      "5/1"
     ],
     "closes": [
-      686.19,
       677.62,
       690.62,
       693.95,
@@ -137,10 +136,10 @@
       715.17,
       711.69,
       711.58,
-      718.66
+      718.66,
+      724.53
     ],
     "ma50": [
-      685.72,
       686.09,
       686.53,
       686.91,
@@ -199,10 +198,10 @@
       677.67,
       678.27,
       678.85,
-      679.49
+      679.49,
+      680.29
     ],
     "ma200": [
-      null,
       null,
       null,
       null,
@@ -261,41 +260,42 @@
       669.1,
       669.54,
       669.98,
-      670.46
+      670.46,
+      670.96
     ]
   },
   "display": {
-    "price": "$718.66",
-    "changePct": "+0.99%",
+    "price": "$724.53",
+    "changePct": "+0.82%",
     "ath": "$697.84",
-    "drawdown": "3.0%",
-    "rsi": "70.5",
-    "ma50": "$679.49",
-    "ma200": "$670.46",
-    "macd": "+12.54",
-    "vix": "16.9",
-    "us10y": "4.39%",
+    "drawdown": "3.8%",
+    "rsi": "73.1",
+    "ma50": "$680.29",
+    "ma200": "$670.96",
+    "macd": "+13.05",
+    "vix": "16.6",
+    "us10y": "4.40%",
     "us2y": "3.92%",
-    "ycSpread": "+0.47%",
-    "oil": "$105.41",
-    "hy": "282 bps",
+    "ycSpread": "+0.48%",
+    "oil": "$101.59",
+    "hy": "283 bps",
     "ig": "81 bps",
     "fedRate": "3.50-3.75%"
   },
   "_raw": {
-    "price": 718.6599731445312,
-    "changePct": 0.994962742720414,
-    "rsi": 70.49586857282742,
-    "ma50": 679.4928002929687,
-    "ma200": 670.4580487060547,
-    "macd": 12.539307283168569,
-    "vix": 16.889999389648438,
-    "us10y": 4.390000343322754,
+    "price": 724.530029296875,
+    "changePct": 0.8168057734813081,
+    "rsi": 73.06042404716632,
+    "ma50": 680.2938012695313,
+    "ma200": 670.9595989990235,
+    "macd": 13.0489728591441,
+    "vix": 16.6299991607666,
+    "us10y": 4.404000282287598,
     "us2y": 3.92,
-    "oil": 105.41000366210938,
-    "hy": 282,
+    "oil": 101.58999633789062,
+    "hy": 283,
     "ig": 81,
-    "ycSpread": 0.470000343322754,
-    "drawdown": 2.983488069547635
+    "ycSpread": 0.4840002822875977,
+    "drawdown": 3.824663145832134
   }
 }
