@@ -1,5 +1,5 @@
 {
-  "_at": "2026-05-04T20:45:23.421Z",
+  "_at": "2026-05-04T21:31:47.136Z",
   "_session": "Post-market",
   "_source": "Yahoo Finance + FRED",
   "signals": {
@@ -13,7 +13,7 @@
     "oilSig": "Rising",
     "overallSig": "Bullish"
   },
-  "comment": "SPY ($718) is above both the 50-day MA ($681) and 200-day MA ($671), confirming an uptrend. Credit spreads at 330 bps are normal; watch for widening above 400 bps as an early warning of deepening stress.",
+  "comment": "SPY ($718) is above both the 50-day MA ($681) and 200-day MA ($671), confirming an uptrend. Credit spreads at 277 bps are normal; watch for widening above 400 bps as an early warning of deepening stress.",
   "chart": {
     "labels": [
       "2/6",
@@ -277,9 +277,9 @@
     "us10y": "4.45%",
     "us2y": "3.88%",
     "ycSpread": "+0.57%",
-    "oil": "$104.95",
-    "hy": "330 bps",
-    "ig": "100 bps",
+    "oil": "$105.14",
+    "hy": "277 bps",
+    "ig": "81 bps",
     "fedRate": "3.50-3.75%"
   },
   "_raw": {
@@ -292,9 +292,9 @@
     "vix": 18.290000915527344,
     "us10y": 4.446000099182129,
     "us2y": 3.88,
-    "oil": 104.94999694824219,
-    "hy": 330,
-    "ig": 100,
+    "oil": 105.13999938964844,
+    "hy": 277,
+    "ig": 81,
     "ycSpread": 0.566000099182129,
     "drawdown": 2.890348756967925
   }
