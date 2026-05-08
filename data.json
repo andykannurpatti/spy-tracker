@@ -1,5 +1,5 @@
 {
-  "_at": "2026-05-08T16:52:24.201Z",
+  "_at": "2026-05-08T17:50:50.234Z",
   "_session": "Market open",
   "_source": "Yahoo Finance + FRED",
   "signals": {
@@ -13,7 +13,7 @@
     "oilSig": "Elevated",
     "overallSig": "Bullish"
   },
-  "comment": "SPY ($737) is above both the 50-day MA ($684) and 200-day MA ($673), confirming an uptrend. RSI at 75.1 is overbought — upside momentum may be stretched; watch for a pullback toward moving average support.",
+  "comment": "SPY ($737) is above both the 50-day MA ($684) and 200-day MA ($673), confirming an uptrend. RSI at 75.2 is overbought — upside momentum may be stretched; watch for a pullback toward moving average support.",
   "chart": {
     "labels": [
       "2/12",
@@ -137,7 +137,7 @@
       723.77,
       733.83,
       731.58,
-      737.11
+      737.22
     ],
     "ma50": [
       687.35,
@@ -265,37 +265,37 @@
     ]
   },
   "display": {
-    "price": "$737.11",
-    "changePct": "+0.76%",
+    "price": "$737.22",
+    "changePct": "+0.77%",
     "ath": "$697.84",
     "drawdown": "5.6%",
-    "rsi": "75.1",
+    "rsi": "75.2",
     "ma50": "$684.27",
     "ma200": "$673.42",
-    "macd": "+14.27",
-    "vix": "17.2",
+    "macd": "+14.28",
+    "vix": "17.4",
     "us10y": "4.36%",
     "us2y": "3.87%",
     "ycSpread": "+0.49%",
-    "oil": "$96.06",
+    "oil": "$95.57",
     "hy": "279 bps",
     "ig": "79 bps",
     "fedRate": "3.50-3.75%"
   },
   "_raw": {
-    "price": 737.1099853515625,
-    "changePct": 0.755893836974449,
-    "rsi": 75.13625030001756,
-    "ma50": 684.2698022460937,
-    "ma200": 673.4243991088867,
-    "macd": 14.26994167586372,
-    "vix": 17.200000762939453,
-    "us10y": 4.363999843597412,
+    "price": 737.219970703125,
+    "changePct": 0.7709277839102895,
+    "rsi": 75.17711399357174,
+    "ma50": 684.272001953125,
+    "ma200": 673.4249490356445,
+    "macd": 14.278715436102289,
+    "vix": 17.40999984741211,
+    "us10y": 4.361999988555908,
     "us2y": 3.87,
-    "oil": 96.05999755859375,
+    "oil": 95.56999969482422,
     "hy": 279,
     "ig": 79,
-    "ycSpread": 0.493999843597412,
-    "drawdown": 5.627362339728658
+    "ycSpread": 0.4919999885559081,
+    "drawdown": 5.643123166216464
   }
 }
