@@ -1,6 +1,6 @@
 {
-  "_at": "2026-05-25T19:04:09.954Z",
-  "_session": "Market open",
+  "_at": "2026-05-25T20:10:28.005Z",
+  "_session": "Post-market",
   "_source": "Yahoo Finance + FRED",
   "signals": {
     "ma50s": "Above",
