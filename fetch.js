@@ -33,6 +33,7 @@ async function yahooChart(symbol, range = '1y') {
   const url = `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(symbol)}?interval=1d&range=${range}`;
   const data = await get(url);
   const result = data.chart.result[0];
+  if (!result) throw new Error(`Symbol not found on Yahoo Finance: ${symbol}`);
   const pairs = result.timestamp
     .map((ts, i) => ({ ts, close: result.indicators.quote[0].close[i] }))
     .filter(p => p.close !== null && p.close !== undefined && !isNaN(p.close));
@@ -269,27 +270,48 @@ async function main() {
   console.log(`  Oil: $${oil.toFixed(2)}`);
 
   // 5. Breadth — % of S&P 500 stocks above 200-day MA
-  console.log('Fetching market breadth (SPXA200R)...');
+  // Tries multiple ticker formats; Yahoo Finance coverage of this indicator varies
+  console.log('Fetching market breadth...');
   let breadthPct = null;
-  try {
-    const breadthData = await yahooChart('^SPXA200R', '5d');
-    breadthPct = breadthData.closes[breadthData.closes.length - 1];
+  const breadthTickers = ['^SPXA200R', 'SPXA200R', '^SP500.A200R'];
+  for (const ticker of breadthTickers) {
+    try {
+      const breadthData = await yahooChart(ticker, '5d');
+      const val = breadthData.closes[breadthData.closes.length - 1];
+      if (val > 0 && val <= 100) { breadthPct = val; break; }
+    } catch(e) { /* try next */ }
+  }
+  if (breadthPct !== null) {
     console.log(`  Breadth: ${breadthPct.toFixed(1)}% above 200d MA`);
-  } catch(e) {
-    console.warn(`  Breadth fetch failed: ${e.message} — using fallback`);
-    breadthPct = 55; // neutral fallback
+  } else {
+    // Estimate from SPY vs MA200: rough proxy — not perfect but better than a fixed fallback
+    const recentCloses = closes.slice(-252);
+    const above200 = recentCloses.filter((c, i) => {
+      const slice = closes.slice(0, closes.length - 252 + i + 1);
+      const ma = calcSMA(slice, 200);
+      return ma && c > ma;
+    }).length;
+    breadthPct = (above200 / recentCloses.length) * 100;
+    console.warn(`  Breadth tickers unavailable — estimated from SPY proxy: ${breadthPct.toFixed(1)}%`);
   }
 
-  // 6. Put/Call ratio
-  console.log('Fetching Put/Call ratio (CPC)...');
+  // 6. Put/Call ratio — CBOE total put/call ratio
+  console.log('Fetching Put/Call ratio...');
   let putCall = null;
-  try {
-    const pcData = await yahooChart('^CPC', '5d');
-    putCall = pcData.closes[pcData.closes.length - 1];
+  const pcTickers = ['^CPC', '^CPCE', '^CPCI', 'CPC'];
+  for (const ticker of pcTickers) {
+    try {
+      const pcData = await yahooChart(ticker, '5d');
+      const val = pcData.closes[pcData.closes.length - 1];
+      if (val > 0 && val < 5) { putCall = val; break; }
+    } catch(e) { /* try next */ }
+  }
+  if (putCall !== null) {
     console.log(`  Put/Call: ${putCall.toFixed(2)}`);
-  } catch(e) {
-    console.warn(`  Put/Call fetch failed: ${e.message} — using fallback`);
-    putCall = 0.9; // neutral fallback
+  } else {
+    // Derive VIX-based proxy: high VIX = more puts being bought
+    putCall = vix > 30 ? 1.2 : vix > 25 ? 1.05 : vix > 20 ? 0.95 : vix > 15 ? 0.85 : 0.75;
+    console.warn(`  Put/Call tickers unavailable — VIX-based proxy: ${putCall.toFixed(2)}`);
   }
 
   // 7. FRED data — 2Y yield, credit spreads, Fed rate
