@@ -99,15 +99,21 @@ function calcMACD(closes) {
 function rsiSignal(v)    { if(v<=30)return'Oversold';if(v<=42)return'Near oversold';if(v<=58)return'Neutral';if(v<=70)return'Near overbought';return'Overbought'; }
 function vixSignal(v)    { if(v<15)return'Low';if(v<20)return'Normal';if(v<30)return'Elevated';if(v<40)return'High';return'Extreme'; }
 function spreadSignal(v) { if(v<250)return'Tight';if(v<400)return'Normal';if(v<600)return'Wide';return'Very Wide'; }
-function maSignal(p, m)  { return p >= m ? 'Above' : 'Below'; }
+function maSignal(p, m)  {
+  if (!p || !m) return '—';
+  const pct = (p - m) / m * 100;
+  if (pct > 0.5)  return 'Above';
+  if (pct < -0.5) return 'Below';
+  return 'At'; // within 0.5% — treat as testing the level
+}
 function ycSignal(s)     { return s < -0.1 ? 'Inverted' : s < 0.2 ? 'Flat' : 'Steepening'; }
 function macdSignal(v)   { return v > 0 ? 'Bullish' : 'Bearish'; }
 function oilSignal(v)    { if(v>100)return'Rising';if(v>85)return'Elevated';return'Stable'; }
 
 function overallSignal(rsiS, ma50s, ma200s, vixS, spreadS, ycS) {
   let bull = 0, bear = 0;
-  if(ma50s==='Above')bull+=2;else if(ma50s==='Below')bear+=2;
-  if(ma200s==='Above')bull+=2;else if(ma200s==='Below')bear+=2;
+  if(ma50s==='Above')bull+=2;else if(ma50s==='Below')bear+=2; // 'At' = 0 points (neutral)
+  if(ma200s==='Above')bull+=2;else if(ma200s==='Below')bear+=2; // 'At' = 0 points (neutral)
   if(rsiS==='Oversold'||rsiS==='Near oversold')bull+=1;else if(rsiS==='Overbought'||rsiS==='Near overbought')bear+=1;
   if(vixS==='Low'||vixS==='Normal')bull+=1;else if(vixS==='Elevated')bear+=1;else if(vixS==='High'||vixS==='Extreme')bear+=2;
   if(spreadS==='Tight')bull+=1;else if(spreadS==='Wide')bear+=1;else if(spreadS==='Very Wide')bear+=2;
@@ -123,7 +129,10 @@ function generateComment(signals, raw) {
   const p = raw.price.toFixed(0), m50 = raw.ma50.toFixed(0), m200 = raw.ma200.toFixed(0);
   const ddPct = raw.drawdown; // negative or zero
   if (ddPct >= -1.0) {
-    parts.push(`SPY ($${p}) is at or near its all-time high — the trend is strongly intact and there is no meaningful drawdown to analyze.`);
+    parts.push(`SPY ($${p}) is at or near its all-time high — the trend is strongly intact with no meaningful drawdown to analyze.`);
+  } else if (signals.ma50s === 'At' || signals.ma200s === 'At') {
+    const which = signals.ma50s === 'At' ? `50-day MA ($${m50})` : `200-day MA ($${m200})`;
+    parts.push(`SPY ($${p}) is testing its ${which} — a key level to watch for confirmation of trend direction. Drawdown from ATH: ${Math.abs(ddPct).toFixed(1)}%.`);
   } else if (signals.ma200s === 'Above' && signals.ma50s === 'Above') {
     parts.push(`SPY ($${p}) is above both the 50-day MA ($${m50}) and 200-day MA ($${m200}), confirming an uptrend with a ${Math.abs(ddPct).toFixed(1)}% pullback from the ATH.`);
   } else if (signals.ma200s === 'Below' && signals.ma50s === 'Below') {
