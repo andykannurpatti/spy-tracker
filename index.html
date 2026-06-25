@@ -4,532 +4,590 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="SPY Tracker">
-<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#1c1c1a" media="(prefers-color-scheme: dark)">
-<title>SPY Tracker</title>
-<style>
-:root{--bg:#fff;--bg2:#f7f7f5;--bg3:#f0efec;--bgs:#eaf3de;--bgd:#fcebeb;--bgw:#faeeda;--bgi:#e6f1fb;--txt:#1a1a1a;--txt2:#5f5e5a;--txt3:#888780;--txts:#3b6d11;--txtd:#a32d2d;--txtw:#854f0b;--txti:#185fa5;--bdr:rgba(26,26,26,0.13);--bdr2:rgba(26,26,26,0.28);--rmd:8px;--rlg:12px;}
-@media(prefers-color-scheme:dark){:root{--bg:#1c1c1a;--bg2:#242422;--bg3:#2c2c2a;--bgs:#173404;--bgd:#501313;--bgw:#412402;--bgi:#042c53;--txt:#f0efec;--txt2:#b4b2a9;--txt3:#888780;--txts:#c0dd97;--txtd:#f09595;--txtw:#fac775;--txti:#85b7eb;--bdr:rgba(240,239,236,0.13);--bdr2:rgba(240,239,236,0.28);}}
-*{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:-apple-system,'Segoe UI',sans-serif;background:var(--bg);color:var(--txt);min-height:100vh;-webkit-text-size-adjust:100%;}
-.page{max-width:860px;margin:0 auto;padding:20px 16px 60px;}
-.hdr{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px;flex-wrap:wrap;gap:10px;}
-.hdr h1{font-size:20px;font-weight:500;}
-.hdr p{font-size:12px;color:var(--txt3);margin-top:3px;}
-.hdr-r{display:flex;gap:7px;align-items:center;flex-wrap:wrap;}
-button{font-family:inherit;cursor:pointer;-webkit-appearance:none;}
-button:active{opacity:0.7;}
-button:disabled{opacity:0.4;cursor:not-allowed;}
-.btn{font-size:13px;padding:8px 16px;border-radius:var(--rmd);border:0.5px solid var(--bdr2);background:var(--bg);color:var(--txt);min-height:36px;}
-.btn-prim{background:var(--txt);color:var(--bg);border-color:var(--txt);font-weight:500;}
-.btn-sm{font-size:11px;padding:5px 11px;min-height:28px;}
-.btn-danger{color:var(--txtd);border-color:var(--txtd);}
-.bdg{display:inline-block;font-size:10px;font-weight:500;padding:3px 10px;border-radius:20px;letter-spacing:.04em;text-transform:uppercase;}
-.b-bull{background:var(--bgs);color:var(--txts);}
-.b-bear{background:var(--bgd);color:var(--txtd);}
-.b-neut{background:var(--bgw);color:var(--txtw);}
-.b-open{background:var(--bgs);color:var(--txts);}
-.b-pre,.b-post{background:var(--bgw);color:var(--txtw);}
-.b-closed{background:var(--bg2);color:var(--txt3);}
-.err-box{font-size:13px;color:var(--txtd);background:var(--bgd);border-radius:var(--rmd);padding:11px 14px;margin-bottom:14px;line-height:1.5;}
-.info-box{font-size:12px;color:var(--txti);background:var(--bgi);border-radius:var(--rmd);padding:9px 13px;margin-bottom:12px;}
-.vbox{background:var(--bg2);border-radius:var(--rmd);padding:13px 15px;margin-bottom:16px;}
-.vtop{display:flex;align-items:center;gap:9px;margin-bottom:7px;flex-wrap:wrap;}
-.vsub{font-size:13px;color:var(--txt2);line-height:1.65;}
-.mets{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin-bottom:16px;}
-@media(max-width:400px){.mets{grid-template-columns:repeat(2,minmax(0,1fr));}}
-.met{background:var(--bg2);border-radius:var(--rmd);padding:11px 12px;}
-.ml{font-size:11px;color:var(--txt3);margin-bottom:4px;}
-.mv{font-size:17px;font-weight:500;font-family:monospace;color:var(--txt);}
-.ms{font-size:11px;margin-top:3px;}
-.bull{color:var(--txts);} .bear{color:var(--txtd);} .neut{color:var(--txtw);}
-.signal-row{display:flex;align-items:center;justify-content:space-between;padding:7px 0;border-bottom:0.5px solid var(--bdr);font-size:13px;}
-.signal-row:last-child{border-bottom:none;}
-.sr-label{color:var(--txt2);}
-.sr-score{display:flex;align-items:center;gap:10px;}
-.score-bar{display:flex;gap:3px;align-items:center;}
-.score-dot{width:8px;height:8px;border-radius:50%;}
-.dot-bull{background:var(--txts);}
-.dot-bear{background:var(--txtd);}
-.dot-neut{background:var(--txt3);}
-.tabs{display:flex;gap:4px;margin-bottom:12px;flex-wrap:wrap;border-bottom:0.5px solid var(--bdr);padding-bottom:10px;}
-.tab{font-size:12px;padding:6px 13px;border-radius:var(--rmd);border:0.5px solid var(--bdr);background:none;color:var(--txt2);white-space:nowrap;min-height:32px;}
-.tab.on{border-color:var(--bdr2);color:var(--txt);background:var(--bg2);font-weight:500;}
-.pnl{display:none;} .pnl.on{display:block;}
-.card{background:var(--bg);border:0.5px solid var(--bdr);border-radius:var(--rlg);padding:14px 16px;}
-.row{display:flex;justify-content:space-between;align-items:baseline;padding:8px 0;border-bottom:0.5px solid var(--bdr);}
-.row:last-child{border-bottom:none;}
-.rl{font-size:13px;color:var(--txt2);}
-.rv{font-size:13px;font-weight:500;font-family:monospace;}
-.slbl{font-size:11px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:var(--txt3);margin:13px 0 8px;}
-.slbl.fst{margin-top:0;}
-.div{border:none;border-top:0.5px solid var(--bdr);margin:12px 0;}
-.rsi-track{height:8px;border-radius:4px;display:flex;overflow:hidden;margin:8px 0 4px;position:relative;}
-.rsi-marker{position:absolute;top:0;width:3px;height:100%;background:var(--txt);border-radius:2px;transform:translateX(-50%);}
-.rsi-lbls{display:flex;justify-content:space-between;font-size:10px;color:var(--txt3);margin-bottom:12px;}
-.htbl-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;}
-.htbl{width:100%;font-size:12px;border-collapse:collapse;table-layout:fixed;min-width:360px;}
-.htbl th{text-align:left;font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:.05em;color:var(--txt3);padding:0 6px 8px 0;border-bottom:0.5px solid var(--bdr);}
-.htbl td{padding:8px 6px 8px 0;border-bottom:0.5px solid var(--bdr);color:var(--txt2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;vertical-align:middle;}
-.htbl tr:last-child td{border-bottom:none;}
-.htbl tr.latest td{font-weight:500;color:var(--txt);}
-.watch-item{font-size:13px;color:var(--txt2);padding:5px 0;border-bottom:0.5px solid var(--bdr);line-height:1.55;}
-.watch-item::before{content:'→  ';color:var(--txt3);}
-.watch-item:last-child{border-bottom:none;}
-.sbox{text-align:center;padding:40px 16px;}
-.sbox h3{font-size:15px;font-weight:500;margin-bottom:8px;}
-.sbox p{font-size:13px;color:var(--txt2);line-height:1.7;max-width:300px;margin:0 auto 16px;}
-.spin{display:inline-block;width:15px;height:15px;border:2px solid var(--bdr2);border-top-color:var(--txti);border-radius:50%;animation:sp .8s linear infinite;vertical-align:middle;margin-right:6px;}
-@keyframes sp{to{transform:rotate(360deg);}}
-.set-row{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:0.5px solid var(--bdr);flex-wrap:wrap;}
-.set-row:last-child{border-bottom:none;}
-.set-lbl{font-size:13px;color:var(--txt2);flex:1;min-width:100px;}
-.footer{margin-top:22px;padding-top:13px;border-top:0.5px solid var(--bdr);font-size:11px;color:var(--txt3);line-height:1.6;}
-</style>
+<meta name="theme-color" content="#2A5740">
+<meta name="description" content="SPY Tracker — S&P 500 market condition monitor by Mandala Sustainable Solutions">
+<title>SPY Tracker · Mandala</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+/* ── Mandala brand palette ─────────────────────────────────────────────────── */
+:root {
+  --m-green:       #2A5740;  /* Deep forest green — primary brand */
+  --m-green-mid:   #3D7A5A;  /* Medium green */
+  --m-green-light: #EFF4ED;  /* Light sage — page background */
+  --m-sage:        #C8D9C3;  /* Medium sage — borders */
+  --m-white:       #FFFFFF;
+  --m-charcoal:    #1A2A1A;  /* Dark green-black — body text */
+  --m-text2:       #3D5A3D;  /* Secondary text */
+  --m-text3:       #6A8A6A;  /* Tertiary text */
+
+  /* Condition colors */
+  --c-healthy:     #2A5740;
+  --c-healthy-bg:  #DFF0E6;
+  --c-stretched:   #7A5A0A;
+  --c-stretched-bg:#F5E8C0;
+  --c-caution:     #8A4A10;
+  --c-caution-bg:  #F5DFC0;
+  --c-stressed:    #8A1A1A;
+  --c-stressed-bg: #F5D0D0;
+
+  /* Signal colors */
+  --bull: #2A5740;
+  --bull-bg: #DFF0E6;
+  --bear: #8A1A1A;
+  --bear-bg: #F5D0D0;
+  --neut: #7A5A0A;
+  --neut-bg: #F5E8C0;
+
+  --bdr: rgba(42,87,64,0.15);
+  --bdr2: rgba(42,87,64,0.30);
+  --rmd: 8px;
+  --rlg: 12px;
+  --font-serif: Georgia, 'Times New Roman', serif;
+  --font-sans: -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: 'SF Mono', 'Fira Code', monospace;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --m-green:       #4A8A64;
+    --m-green-mid:   #5AA070;
+    --m-green-light: #0F1F14;
+    --m-sage:        #2A4A32;
+    --m-white:       #0F1F14;
+    --m-charcoal:    #D8EDD8;
+    --m-text2:       #90B890;
+    --m-text3:       #6A8A6A;
+    --c-healthy:     #5AAA78;
+    --c-healthy-bg:  #0D2A18;
+    --c-stretched:   #C8A040;
+    --c-stretched-bg:#2A2008;
+    --c-caution:     #C87840;
+    --c-caution-bg:  #2A1808;
+    --c-stressed:    #D86060;
+    --c-stressed-bg: #2A0808;
+    --bull: #5AAA78; --bull-bg: #0D2A18;
+    --bear: #D86060; --bear-bg: #2A0808;
+    --neut: #C8A040; --neut-bg: #2A2008;
+    --bdr: rgba(90,170,120,0.20);
+    --bdr2: rgba(90,170,120,0.40);
+  }
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--font-sans); background: var(--m-green-light); color: var(--m-charcoal); min-height: 100vh; -webkit-text-size-adjust: 100%; }
+
+/* ── Header ──────────────────────────────────────────────────────────────── */
+.site-header {
+  background: var(--m-green);
+  padding: 14px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.20);
+}
+.brand { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+.brand-circle {
+  width: 36px; height: 36px; border-radius: 50%;
+  border: 1.5px solid rgba(255,255,255,0.6);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.brand-circle span { font-family: var(--font-serif); font-size: 16px; color: #fff; font-weight: 400; }
+.brand-text { color: #fff; }
+.brand-text .brand-name { font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; opacity: 0.85; line-height: 1.3; }
+.brand-text .brand-product { font-size: 13px; font-weight: 500; letter-spacing: 0.02em; }
+.header-right { display: flex; align-items: center; gap: 8px; }
+.sess-pill {
+  font-size: 10px; font-weight: 500; padding: 3px 10px; border-radius: 20px;
+  letter-spacing: 0.05em; text-transform: uppercase;
+  border: 1px solid rgba(255,255,255,0.3); color: rgba(255,255,255,0.9);
+}
+.sess-open { background: rgba(255,255,255,0.15); }
+.sess-pre, .sess-post { background: rgba(255,200,100,0.25); }
+.sess-closed { background: rgba(255,255,255,0.08); }
+.hdr-btn {
+  font-family: var(--font-sans); font-size: 13px; padding: 7px 16px;
+  border-radius: var(--rmd); border: 1px solid rgba(255,255,255,0.4);
+  background: rgba(255,255,255,0.12); color: #fff; cursor: pointer;
+  font-weight: 500; min-height: 34px;
+  transition: background 0.15s;
+}
+.hdr-btn:hover:not(:disabled) { background: rgba(255,255,255,0.22); }
+.hdr-btn:active { transform: scale(0.97); }
+.hdr-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+.hdr-icon { font-size: 16px; padding: 7px 10px; }
+
+/* ── Page layout ─────────────────────────────────────────────────────────── */
+.page { max-width: 880px; margin: 0 auto; padding: 20px 16px 60px; }
+
+/* ── Condition banner ────────────────────────────────────────────────────── */
+.condition-banner {
+  border-radius: var(--rlg);
+  padding: 16px 20px;
+  margin-bottom: 18px;
+  border-left: 4px solid;
+}
+.cond-healthy { background: var(--c-healthy-bg); border-color: var(--c-healthy); }
+.cond-stretched { background: var(--c-stretched-bg); border-color: var(--c-stretched); }
+.cond-caution { background: var(--c-caution-bg); border-color: var(--c-caution); }
+.cond-stressed { background: var(--c-stressed-bg); border-color: var(--c-stressed); }
+.cond-top { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; flex-wrap: wrap; }
+.cond-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; }
+.cond-healthy .cond-label { color: var(--c-healthy); }
+.cond-stretched .cond-label { color: var(--c-stretched); }
+.cond-caution .cond-label { color: var(--c-caution); }
+.cond-stressed .cond-label { color: var(--c-stressed); }
+.cond-time { font-size: 11px; color: var(--m-text3); }
+.cond-comment { font-size: 13px; color: var(--m-charcoal); line-height: 1.65; }
+
+/* ── Metric cards ────────────────────────────────────────────────────────── */
+.mets { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 9px; margin-bottom: 18px; }
+@media (max-width: 500px) { .mets { grid-template-columns: repeat(2, minmax(0,1fr)); } }
+.met {
+  background: var(--m-white);
+  border-radius: var(--rlg);
+  padding: 12px 14px;
+  border: 0.5px solid var(--bdr);
+  box-shadow: 0 1px 3px rgba(42,87,64,0.07);
+}
+.ml { font-size: 11px; color: var(--m-text3); margin-bottom: 4px; }
+.mv { font-size: 17px; font-weight: 500; font-family: var(--font-mono); color: var(--m-charcoal); }
+.ms { font-size: 11px; margin-top: 3px; }
+.bull { color: var(--bull); } .bear { color: var(--bear); } .neut { color: var(--neut); }
+
+/* ── Tabs ────────────────────────────────────────────────────────────────── */
+.tabs { display: flex; gap: 4px; margin-bottom: 12px; flex-wrap: wrap; }
+.tab {
+  font-size: 12px; padding: 6px 14px; border-radius: var(--rmd);
+  border: 0.5px solid var(--bdr); background: var(--m-white);
+  color: var(--m-text2); white-space: nowrap; cursor: pointer; min-height: 32px;
+  font-family: var(--font-sans);
+  transition: all 0.15s;
+}
+.tab:hover { border-color: var(--m-green); color: var(--m-green); }
+.tab.on {
+  border-color: var(--m-green); color: var(--m-white);
+  background: var(--m-green); font-weight: 500;
+}
+.pnl { display: none; } .pnl.on { display: block; }
+
+/* ── Cards ───────────────────────────────────────────────────────────────── */
+.card {
+  background: var(--m-white);
+  border: 0.5px solid var(--bdr);
+  border-radius: var(--rlg);
+  padding: 16px 18px;
+  box-shadow: 0 1px 3px rgba(42,87,64,0.07);
+}
+.row {
+  display: flex; justify-content: space-between; align-items: baseline;
+  padding: 8px 0; border-bottom: 0.5px solid var(--bdr);
+}
+.row:last-child { border-bottom: none; }
+.rl { font-size: 13px; color: var(--m-text2); }
+.rv { font-size: 13px; font-weight: 500; font-family: var(--font-mono); color: var(--m-charcoal); }
+.slbl {
+  font-size: 11px; font-weight: 600; letter-spacing: 0.07em;
+  text-transform: uppercase; color: var(--m-text3); margin: 14px 0 9px;
+}
+.slbl.fst { margin-top: 0; }
+.div { border: none; border-top: 0.5px solid var(--bdr); margin: 13px 0; }
+
+/* ── Signal scorecard ────────────────────────────────────────────────────── */
+.axis-row {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 0; border-bottom: 0.5px solid var(--bdr);
+}
+.axis-row:last-child { border-bottom: none; }
+.axis-label { font-size: 13px; color: var(--m-text2); flex: 1; }
+.axis-label small { font-size: 10px; color: var(--m-text3); display: block; margin-top: 2px; }
+.axis-badge {
+  font-size: 10px; font-weight: 600; padding: 3px 10px; border-radius: 20px;
+  letter-spacing: 0.04em; text-transform: uppercase;
+}
+.ab-bull { background: var(--bull-bg); color: var(--bull); }
+.ab-bear { background: var(--bear-bg); color: var(--bear); }
+.ab-neut { background: var(--neut-bg); color: var(--neut); }
+.axis-val { font-size: 12px; font-family: var(--font-mono); color: var(--m-text3); margin-left: 10px; min-width: 60px; text-align: right; }
+
+/* ── RSI gauge ───────────────────────────────────────────────────────────── */
+.rsi-track { height: 8px; border-radius: 4px; display: flex; overflow: hidden; margin: 8px 0 4px; position: relative; }
+.rsi-marker { position: absolute; top: 0; width: 3px; height: 100%; background: var(--m-charcoal); border-radius: 2px; transform: translateX(-50%); }
+.rsi-lbls { display: flex; justify-content: space-between; font-size: 10px; color: var(--m-text3); margin-bottom: 12px; }
+
+/* ── Breadth bar ─────────────────────────────────────────────────────────── */
+.breadth-track { height: 10px; border-radius: 5px; background: var(--bdr); margin: 8px 0 4px; position: relative; overflow: hidden; }
+.breadth-fill { height: 100%; border-radius: 5px; transition: width 0.6s ease; }
+.breadth-lbls { display: flex; justify-content: space-between; font-size: 10px; color: var(--m-text3); }
+
+/* ── History table ───────────────────────────────────────────────────────── */
+.htbl-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.htbl { width: 100%; font-size: 12px; border-collapse: collapse; table-layout: fixed; min-width: 380px; }
+.htbl th { text-align: left; font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--m-text3); padding: 0 6px 9px 0; border-bottom: 1px solid var(--m-sage); }
+.htbl td { padding: 8px 6px 8px 0; border-bottom: 0.5px solid var(--bdr); color: var(--m-text2); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; vertical-align: middle; }
+.htbl tr:last-child td { border-bottom: none; }
+.htbl tr.latest td { font-weight: 600; color: var(--m-charcoal); }
+
+/* ── Condition badges (small) ────────────────────────────────────────────── */
+.cb { display: inline-block; font-size: 9px; font-weight: 600; padding: 2px 7px; border-radius: 20px; letter-spacing: 0.04em; text-transform: uppercase; }
+.cb-h { background: var(--c-healthy-bg); color: var(--c-healthy); }
+.cb-s { background: var(--c-stretched-bg); color: var(--c-stretched); }
+.cb-c { background: var(--c-caution-bg); color: var(--c-caution); }
+.cb-x { background: var(--c-stressed-bg); color: var(--c-stressed); }
+
+/* ── Alerts ──────────────────────────────────────────────────────────────── */
+.err-box { font-size: 13px; color: var(--bear); background: var(--bear-bg); border-radius: var(--rmd); padding: 11px 14px; margin-bottom: 14px; line-height: 1.5; }
+.info-box { font-size: 12px; color: var(--m-green); background: var(--c-healthy-bg); border-radius: var(--rmd); padding: 9px 13px; margin-bottom: 12px; }
+
+/* ── Settings ────────────────────────────────────────────────────────────── */
+.set-row { display: flex; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 0.5px solid var(--bdr); flex-wrap: wrap; }
+.set-row:last-child { border-bottom: none; }
+.set-lbl { font-size: 13px; color: var(--m-text2); flex: 1; min-width: 100px; }
+.btn-sm { font-family: var(--font-sans); font-size: 11px; padding: 5px 11px; min-height: 28px; border-radius: var(--rmd); border: 0.5px solid var(--bdr2); background: var(--m-white); color: var(--m-charcoal); cursor: pointer; }
+.btn-danger { color: var(--bear); border-color: var(--bear); }
+
+/* ── Footer ──────────────────────────────────────────────────────────────── */
+.site-footer { margin-top: 28px; padding-top: 16px; border-top: 1px solid var(--m-sage); display: flex; flex-direction: column; gap: 6px; }
+.footer-brand { font-size: 12px; color: var(--m-text2); }
+.footer-brand a { color: var(--m-green); text-decoration: none; font-weight: 500; }
+.footer-brand a:hover { text-decoration: underline; }
+.footer-disc { font-size: 11px; color: var(--m-text3); line-height: 1.6; }
+
+/* ── Loading ─────────────────────────────────────────────────────────────── */
+.sbox { text-align: center; padding: 40px 16px; color: var(--m-text2); }
+.sbox h3 { font-size: 15px; font-weight: 500; color: var(--m-charcoal); margin-bottom: 8px; }
+.sbox p { font-size: 13px; line-height: 1.7; max-width: 300px; margin: 0 auto; }
+.spin { display: inline-block; width: 15px; height: 15px; border: 2px solid var(--bdr2); border-top-color: var(--m-green); border-radius: 50%; animation: sp .8s linear infinite; vertical-align: middle; margin-right: 6px; }
+@keyframes sp { to { transform: rotate(360deg); } }
+</style>
 </head>
 <body>
+
+<header class="site-header">
+  <a class="brand" href="https://www.mandalasustainablesolutions.com" target="_blank">
+    <div class="brand-circle"><span>M</span></div>
+    <div class="brand-text">
+      <div class="brand-name">Mandala Sustainable Solutions</div>
+      <div class="brand-product">SPY Tracker</div>
+    </div>
+  </a>
+  <div class="header-right">
+    <span class="sess-pill" id="sess-bdg">—</span>
+    <button class="hdr-btn hdr-icon" onclick="toggleSettings()" title="Settings">&#9881;</button>
+    <button class="hdr-btn" id="upd-btn" onclick="doRefresh()">&#8635; Refresh</button>
+  </div>
+</header>
+
 <div class="page">
+  <div id="err-bar" class="err-box" style="display:none;"></div>
+  <div id="info-bar" class="info-box" style="display:none;"></div>
 
-<div class="hdr">
-  <div>
-    <h1>SPY Tracker</h1>
-    <p id="sub-ts">Loading...</p>
-  </div>
-  <div class="hdr-r">
-    <span class="bdg" id="sess-bdg">—</span>
-    <button class="btn" onclick="toggleSettings()" style="font-size:16px;padding:6px 12px;">&#9881;</button>
-    <button class="btn btn-prim" id="upd-btn" onclick="doRefresh()">&#8635; Refresh</button>
-  </div>
-</div>
-
-<div id="err-bar" class="err-box" style="display:none;"></div>
-<div id="info-bar" class="info-box" style="display:none;"></div>
-
-<div id="content">
-  <div class="sbox">
-    <h3>Loading market data...</h3>
-    <p><span class="spin"></span>Fetching latest snapshot</p>
-  </div>
-</div>
-
-<div id="settings-panel" style="display:none;margin-top:18px;">
-  <div class="card">
-    <div class="slbl fst">Settings</div>
-    <div class="set-row">
-      <div class="set-lbl">Data updated</div>
-      <div style="font-size:12px;color:var(--txt3);" id="data-updated">—</div>
-    </div>
-    <div class="set-row">
-      <div class="set-lbl">Data source</div>
-      <div style="font-size:12px;color:var(--txt3);" id="data-source">—</div>
-    </div>
-    <div class="set-row">
-      <div class="set-lbl">Snapshots saved locally</div>
-      <div style="font-size:12px;font-family:monospace;color:var(--txt3);" id="snap-count">—</div>
-    </div>
-    <div class="set-row">
-      <div class="set-lbl">Clear local history</div>
-      <button class="btn btn-sm btn-danger" onclick="clearAll()">Clear</button>
-    </div>
-    <div class="set-row">
-      <div class="set-lbl"></div>
-      <button class="btn btn-sm" onclick="toggleSettings()">Done</button>
+  <div id="content">
+    <div class="sbox">
+      <h3>Loading market data...</h3>
+      <p><span class="spin"></span>Fetching latest snapshot</p>
     </div>
   </div>
-</div>
 
-<div style="margin-top:16px;padding-top:13px;border-top:0.5px solid var(--bdr);font-size:12px;color:var(--txt2);">Built by <a href="https://www.mandalasustainablesolutions.com/principal" target="_blank" style="color:var(--txti);text-decoration:none;">Andy Kannurpatti</a> · Mandala Sustainable Solutions</div>
-<div class="footer">Educational market analysis only — not investment advice. Data: Yahoo Finance + FRED (free APIs). Updated automatically twice daily on weekdays via GitHub Actions. Consult a qualified financial advisor before making portfolio decisions.</div>
+  <div id="settings-panel" style="display:none;margin-top:18px;">
+    <div class="card">
+      <div class="slbl fst">Settings</div>
+      <div class="set-row"><div class="set-lbl">Data updated</div><div style="font-size:12px;color:var(--m-text3);" id="data-updated">—</div></div>
+      <div class="set-row"><div class="set-lbl">Source</div><div style="font-size:12px;color:var(--m-text3);" id="data-source">—</div></div>
+      <div class="set-row"><div class="set-lbl">Snapshots saved</div><div style="font-size:12px;font-family:var(--font-mono);color:var(--m-text3);" id="snap-count">—</div></div>
+      <div class="set-row"><div class="set-lbl">Clear local history</div><button class="btn-sm btn-danger" onclick="clearAll()">Clear</button></div>
+      <div class="set-row"><div class="set-lbl"></div><button class="btn-sm" onclick="toggleSettings()">Done</button></div>
+    </div>
+  </div>
 
+  <footer class="site-footer">
+    <div class="footer-brand">Built by <a href="https://www.mandalasustainablesolutions.com/principal" target="_blank">Andy Kannurpatti</a> · Mandala Sustainable Solutions</div>
+    <div class="footer-disc">Educational market analysis only — not investment advice. Data: Yahoo Finance + FRED (free APIs), updated hourly on weekdays via GitHub Actions. Consult a qualified financial advisor before making portfolio decisions.</div>
+  </footer>
 </div>
 
 <script>
-// ── CONFIGURE: set this to your GitHub raw data URL ──────────────────────────
+// ── CONFIGURE ────────────────────────────────────────────────────────────────
 var DATA_URL = 'https://raw.githubusercontent.com/andykannurpatti/spy-tracker/main/data.json';
-// ─────────────────────────────────────────────────────────────────────────────
 
-// Storage with in-memory fallback for iOS
-var MEM = { snap: null, hist: [] };
-var USE_LS = false;
+// ── Storage with iOS in-memory fallback ──────────────────────────────────────
+var MEM = { snap: null, hist: [] }, USE_LS = false;
 try { localStorage.setItem('_t','1'); localStorage.removeItem('_t'); USE_LS = true; } catch(e) {}
-var SK = 'spy_v7_snap', HK = 'spy_v7_hist';
-
-function store(k, v) {
-  var s = JSON.stringify(v);
-  if (USE_LS) { try { localStorage.setItem(k, s); } catch(e) {} }
-  if (k === SK) MEM.snap = v;
-  if (k === HK) MEM.hist = v;
-}
-function retrieve(k) {
-  if (USE_LS) { try { var r = localStorage.getItem(k); if (r) return JSON.parse(r); } catch(e) {} }
-  if (k === SK) return MEM.snap;
-  if (k === HK) return MEM.hist || [];
-  return null;
-}
+var SK = 'spy_v8_snap', HK = 'spy_v8_hist';
+function store(k, v) { var s = JSON.stringify(v); if(USE_LS){try{localStorage.setItem(k,s);}catch(e){}} if(k===SK)MEM.snap=v; if(k===HK)MEM.hist=v; }
+function retrieve(k) { if(USE_LS){try{var r=localStorage.getItem(k);if(r)return JSON.parse(r);}catch(e){}} if(k===SK)return MEM.snap; if(k===HK)return MEM.hist||[]; return null; }
 function loadSnap() { return retrieve(SK); }
 function loadHist() { return retrieve(HK) || []; }
 function saveSnap(d) {
   store(SK, d);
-  var h = loadHist();
-  // Only add to history if it's a different snapshot (different timestamp)
-  var last = h[0];
-  if (!last || last._at !== d._at) {
-    h.unshift(d);
-    if (h.length > 60) h = h.slice(0, 60);
-    store(HK, h);
-  }
+  var h = loadHist(), last = h[0];
+  if (!last || last._at !== d._at) { h.unshift(d); if(h.length>60)h=h.slice(0,60); store(HK,h); }
 }
 
-// Signal color helper
-function sigCls(s) {
-  var bull = ['Bullish','Above','Oversold','Near oversold','Dovish','Tight','Steepening','Low','Normal','Stable'];
-  var bear = ['Bearish','Below','Overbought','Near overbought','Hawkish','Very Wide','Extreme','Rising','Elevated','High','Inverted'];
-  if (bull.indexOf(s) >= 0) return 'bull';
-  if (bear.indexOf(s) >= 0) return 'bear';
-  return 'neut';
+// ── Helpers ──────────────────────────────────────────────────────────────────
+function condCls(c) {
+  if(c==='Healthy')return'cond-healthy'; if(c==='Stretched')return'cond-stretched';
+  if(c==='Stressed')return'cond-stressed'; return'cond-caution';
 }
-function bdgCls(s) { return s === 'Bullish' ? 'b-bull' : s === 'Bearish' ? 'b-bear' : 'b-neut'; }
-
+function cbCls(c) {
+  if(c==='Healthy')return'cb-h'; if(c==='Stretched')return'cb-s';
+  if(c==='Stressed')return'cb-x'; return'cb-c';
+}
 function sessCls(s) {
-  if (s === 'Market open') return 'b-open';
-  if (s === 'Pre-market' || s === 'Post-market') return 'b-pre';
-  return 'b-closed';
+  if(s==='Market open')return'sess-open'; if(s==='Pre-market'||s==='Post-market')return'sess-pre';
+  return'sess-closed';
 }
-
+function sigCls(s) {
+  var bull=['Bullish','Above','Oversold','Near oversold','Tight','Steepening','Low','Normal','Stable','Broad','Healthy','Fearful','At high','Near high'];
+  var bear=['Bearish','Below','Overbought','Near overbought','Very Wide','Extreme','Rising','Inverted','Thin','Complacent','Bear territory','Stressed'];
+  if(bull.indexOf(s)>=0)return'bull'; if(bear.indexOf(s)>=0)return'bear'; return'neut';
+}
+function abCls(s) {
+  var c=sigCls(s); if(c==='bull')return'ab-bull'; if(c==='bear')return'ab-bear'; return'ab-neut';
+}
 function ft(iso) {
-  try { return new Date(iso).toLocaleString('en-US', {month:'short',day:'numeric',year:'numeric',hour:'numeric',minute:'2-digit',hour12:true}); }
-  catch(e) { return iso || '—'; }
+  try{return new Date(iso).toLocaleString('en-US',{month:'short',day:'numeric',year:'numeric',hour:'numeric',minute:'2-digit',hour12:true});}catch(e){return iso||'—';}
 }
 
-// Score dot helper — shows bull/bear/neut indicator
-function dotHtml(signal) {
-  var cls = sigCls(signal);
-  return '<span class="score-dot dot-' + cls + '" title="' + signal + '"></span>';
+// RSI gauge position
+function rsiToPos(v) {
+  var r=Math.min(Math.max(v!=null?v:50,0),100);
+  if(r<=30)return(r/30)*30; if(r<=42)return 30+((r-30)/12)*12;
+  if(r<=58)return 42+((r-42)/16)*36; if(r<=70)return 78+((r-58)/12)*12;
+  return 90+((r-70)/30)*10;
 }
 
-function render(d, h) {
-  var dp = d.display || {};
-  var sig = d.signals || {};
-  var r = d._raw || {};
-  // Map RSI value to track position — accounts for non-uniform segment widths:
-  // 0-30 RSI = 0-30% track, 30-42 = 30-42%, 42-58 = 42-78%, 58-70 = 78-90%, 70-100 = 90-100%
-  function rsiToPos(v) {
-    var r = Math.min(Math.max(v != null ? v : 50, 0), 100);
-    if (r <= 30)  return (r / 30) * 30;
-    if (r <= 42)  return 30 + ((r - 30) / 12) * 12;
-    if (r <= 58)  return 42 + ((r - 42) / 16) * 36;
-    if (r <= 70)  return 78 + ((r - 58) / 12) * 12;
-    return 90 + ((r - 70) / 30) * 10;
-  }
-  var rsiPct = rsiToPos(r.rsi);
-  var chgC = r.changePct < 0 ? 'bear' : 'bull';
-  var vixC = ['High','Extreme'].indexOf(sig.vixSig) >= 0 ? 'bear' : sig.vixSig === 'Elevated' ? 'neut' : 'bull';
-  var sess = d._session || '—';
-
-  document.getElementById('sub-ts').textContent = 'Updated: ' + ft(d._at) + (d._source ? ' · ' + d._source : '');
-  var sb = document.getElementById('sess-bdg');
-  sb.textContent = sess; sb.className = 'bdg ' + sessCls(sess);
-
-  // History table
-  var hRows = h.length > 0
-    ? h.slice(0, 60).map(function(x, i) {
-        var xr = x._raw || {}; var xs = x.signals || {}; var xd = x.display || {};
-        var xchgC = xr.changePct < 0 ? 'bear' : 'bull';
-        var xvixC = ['High','Extreme'].indexOf(xs.vixSig) >= 0 ? 'bear' : xs.vixSig === 'Elevated' ? 'neut' : 'bull';
-        return '<tr class="' + (i === 0 ? 'latest' : '') + '">' +
-          '<td style="color:var(--txt3);font-size:11px;">' + ft(x._at) + '</td>' +
-          '<td><span class="bdg ' + bdgCls(xs.overallSig) + '" style="font-size:9px;padding:2px 6px;">' + (xs.overallSig || '—') + '</span></td>' +
-          '<td>' + (xd.price || '—') + '</td>' +
-          '<td class="' + xchgC + '">' + (xd.changePct || '—') + '</td>' +
-          '<td class="' + xvixC + '">' + (xd.vix || '—') + '</td>' +
-          '<td style="font-size:10px;color:var(--txt3);">' + (x._session || '—') + '</td>' +
-        '</tr>';
-      }).join('')
-    : '<tr><td colspan="6" style="text-align:center;color:var(--txt3);padding:14px 0;font-size:12px;">No history yet</td></tr>';
-
-  // Signal scorecard
-  var scoreItems = [
-    { label: '50-day MA',         signal: sig.ma50s,    value: dp.ma50,    weight: 2 },
-    { label: '200-day MA',        signal: sig.ma200s,   value: dp.ma200,   weight: 2 },
-    { label: 'RSI (14)',          signal: sig.rsiSig,   value: dp.rsi,     weight: 1 },
-    { label: 'VIX',               signal: sig.vixSig,   value: dp.vix,     weight: 1 },
-    { label: 'Credit spreads',    signal: sig.spreadSig,value: dp.hy,      weight: 1 },
-    { label: 'Yield curve',       signal: sig.ycSig,    value: dp.ycSpread,weight: 1 }
-  ];
-  var bull = 0, bear = 0;
-  scoreItems.forEach(function(s) {
-    if (sigCls(s.signal) === 'bull') bull += s.weight;
-    else if (sigCls(s.signal) === 'bear') bear += s.weight;
-  });
-  var scoreRows = scoreItems.map(function(s) {
-    return '<div class="signal-row">' +
-      '<span class="sr-label">' + s.label + (s.weight === 2 ? ' <span style="font-size:10px;color:var(--txt3);">×2</span>' : '') + '</span>' +
-      '<span class="sr-score">' +
-        '<span class="rv ' + sigCls(s.signal) + '" style="font-size:12px;">' + s.signal + '</span>' +
-        '<span style="font-size:12px;color:var(--txt3);font-family:monospace;">' + s.value + '</span>' +
-      '</span>' +
-    '</div>';
-  }).join('');
-
-  document.getElementById('content').innerHTML =
-    '<div class="vbox">' +
-      '<div class="vtop">' +
-        '<span class="bdg ' + bdgCls(sig.overallSig) + '">' + sig.overallSig + '</span>' +
-        '<span style="font-size:12px;color:var(--txt3);">Bull: ' + bull + ' · Bear: ' + bear + '</span>' +
-        '<span style="font-size:12px;color:var(--txt3);">' + sess + '</span>' +
-      '</div>' +
-      '<div class="vsub">' + d.comment + '</div>' +
-    '</div>' +
-    '<div class="mets">' +
-      '<div class="met"><div class="ml">SPY price</div><div class="mv">' + dp.price + '</div><div class="ms ' + chgC + '">' + dp.changePct + '</div></div>' +
-      '<div class="met"><div class="ml">Drawdown from ATH</div><div class="mv bear">' + dp.drawdown + '</div><div class="ms" style="color:var(--txt3);">ATH ' + dp.ath + '</div></div>' +
-      '<div class="met"><div class="ml">VIX</div><div class="mv ' + vixC + '">' + dp.vix + '</div><div class="ms ' + sigCls(sig.vixSig) + '">' + sig.vixSig + '</div></div>' +
-    '</div>' +
-    '<div class="tabs">' +
-      '<button class="tab on" onclick="stab(\'score\',this)">Signals</button>' +
-      '<button class="tab" onclick="stab(\'chart\',this)">Chart</button>' +
-      '<button class="tab" onclick="stab(\'tech\',this)">Technical</button>' +
-      '<button class="tab" onclick="stab(\'mac\',this)">Macro</button>' +
-      '<button class="tab" onclick="stab(\'hst\',this)">History (' + h.length + ')</button>' +
-    '</div>' +
-
-    // Signals scorecard
-    '<div id="pnl-score" class="pnl on card">' +
-      '<div class="slbl fst">Signal scorecard — how the verdict is calculated</div>' +
-      scoreRows +
-      '<div style="margin-top:12px;padding-top:12px;border-top:0.5px solid var(--bdr);display:flex;justify-content:space-between;align-items:center;">' +
-        '<span style="font-size:12px;color:var(--txt2);">Weighted score: <span class="bull">Bull ' + bull + '</span> vs <span class="bear">Bear ' + bear + '</span></span>' +
-        '<span class="bdg ' + bdgCls(sig.overallSig) + '">' + sig.overallSig + '</span>' +
-      '</div>' +
-      '<div style="font-size:11px;color:var(--txt3);margin-top:10px;line-height:1.6;">MA signals weighted ×2 (primary trend). All other signals weighted ×1. Any imbalance = signal direction.</div>' +
-    '</div>' +
-
-    // Chart panel
-    '<div id="pnl-chart" class="pnl card">' +
-      '<div class="slbl fst">SPY — 90-day price vs moving averages</div>' +
-      '<div style="position:relative;height:280px;margin-top:8px;"><canvas id="spy-chart"></canvas></div>' +
-      '<div style="display:flex;gap:16px;margin-top:10px;flex-wrap:wrap;">' +
-        '<span style="display:flex;align-items:center;gap:5px;font-size:12px;color:var(--txt2);"><span style="width:20px;height:3px;background:#185FA5;display:inline-block;border-radius:2px;"></span>SPY</span>' +
-        '<span style="display:flex;align-items:center;gap:5px;font-size:12px;color:var(--txt2);"><span style="width:20px;height:0;border-top:2px dashed #EF9F27;display:inline-block;"></span>50-day MA</span>' +
-        '<span style="display:flex;align-items:center;gap:5px;font-size:12px;color:var(--txt2);"><span style="width:20px;height:0;border-top:2px dashed #E24B4A;display:inline-block;"></span>200-day MA</span>' +
-      '</div>' +
-    '</div>' +
-
-    // Technical tab
-    '<div id="pnl-tech" class="pnl card">' +
-      '<div class="slbl fst">RSI (14) — ' + dp.rsi + ' <span class="' + sigCls(sig.rsiSig) + '" style="font-size:12px;font-weight:400;letter-spacing:0;text-transform:none;margin-left:5px;">' + sig.rsiSig + '</span></div>' +
-      '<div class="rsi-track">' +
-        '<div style="width:30%;background:var(--bgi);"></div>' +
-        '<div style="width:12%;background:var(--bgs);"></div>' +
-        '<div style="width:36%;background:var(--bg3);border:0.5px solid var(--bdr);"></div>' +
-        '<div style="width:12%;background:var(--bgw);"></div>' +
-        '<div style="width:10%;background:var(--bgd);"></div>' +
-        '<div class="rsi-marker" style="left:' + rsiPct + '%;"></div>' +
-      '</div>' +
-      '<div class="rsi-lbls"><span>0</span><span>30</span><span>42</span><span>58</span><span>70</span><span>100</span></div>' +
-      '<div class="slbl">Moving averages</div>' +
-      '<div class="row"><span class="rl">50-day MA (' + dp.ma50 + ')</span><span class="rv ' + sigCls(sig.ma50s) + '">' + sig.ma50s + '</span></div>' +
-      '<div class="row"><span class="rl">200-day MA (' + dp.ma200 + ')</span><span class="rv ' + sigCls(sig.ma200s) + '">' + sig.ma200s + '</span></div>' +
-      '<div class="row"><span class="rl">MACD</span><span class="rv ' + sigCls(sig.macdSig) + '">' + dp.macd + ' — ' + sig.macdSig + '</span></div>' +
-      '<div class="row" style="border-bottom:none;"><span class="rl">ATH / Drawdown</span><span class="rv bear">' + dp.drawdown + ' from ' + dp.ath + '</span></div>' +
-    '</div>' +
-
-    // Macro tab
-    '<div id="pnl-mac" class="pnl card">' +
-      '<div class="slbl fst">Fed and rates</div>' +
-      '<div class="row"><span class="rl">Fed funds rate</span><span class="rv">' + dp.fedRate + '</span></div>' +
-      '<div class="row"><span class="rl">US 10Y yield</span><span class="rv">' + dp.us10y + '</span></div>' +
-      '<div class="row"><span class="rl">US 2Y yield</span><span class="rv">' + dp.us2y + '</span></div>' +
-      '<div class="row"><span class="rl">Yield curve (10Y−2Y)</span><span class="rv ' + sigCls(sig.ycSig) + '">' + dp.ycSpread + ' — ' + sig.ycSig + '</span></div>' +
-      '<div class="slbl">Commodities and risk</div>' +
-      '<div class="row"><span class="rl">WTI crude oil</span><span class="rv ' + sigCls(sig.oilSig) + '">' + dp.oil + ' — ' + sig.oilSig + '</span></div>' +
-      '<div class="row"><span class="rl">VIX</span><span class="rv ' + vixC + '">' + dp.vix + ' — ' + sig.vixSig + '</span></div>' +
-      '<div class="row"><span class="rl">HY credit spread</span><span class="rv">' + dp.hy + '</span></div>' +
-      '<div class="row" style="border-bottom:none;"><span class="rl">Spread environment</span><span class="rv ' + sigCls(sig.spreadSig) + '">' + sig.spreadSig + '</span></div>' +
-    '</div>' +
-
-    // History tab
-    '<div id="pnl-hst" class="pnl card">' +
-      '<div class="htbl-wrap">' +
-        '<table class="htbl"><thead><tr>' +
-          '<th style="width:26%;">Updated</th><th style="width:14%;">Signal</th>' +
-          '<th style="width:13%;">SPY</th><th style="width:11%;">Chg</th>' +
-          '<th style="width:10%;">VIX</th><th style="width:26%;">Session</th>' +
-        '</tr></thead><tbody>' + hRows + '</tbody></table>' +
-      '</div>' +
-      (h.length > 0 ? '<div style="text-align:right;margin-top:11px;"><button class="btn btn-sm btn-danger" onclick="clearAll()">Clear history</button></div>' : '') +
-    '</div>';
-}
-
-var spyChartInstance = null;
-
+// ── Chart ─────────────────────────────────────────────────────────────────────
+var chartInst = null;
 function renderChart(chartData) {
   var canvas = document.getElementById('spy-chart');
-  if (!canvas || !chartData) return;
-  if (spyChartInstance) { spyChartInstance.destroy(); spyChartInstance = null; }
-  var isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-  var gridColor  = isDark ? 'rgba(240,239,236,0.08)' : 'rgba(26,26,26,0.07)';
-  var labelColor = isDark ? '#888780' : '#888780';
-  spyChartInstance = new Chart(canvas, {
-    type: 'line',
-    data: {
-      labels: chartData.labels,
-      datasets: [
-        {
-          label: 'SPY',
-          data: chartData.closes,
-          borderColor: '#185FA5',
-          backgroundColor: isDark ? 'rgba(24,95,165,0.10)' : 'rgba(24,95,165,0.07)',
-          borderWidth: 2,
-          pointRadius: 0,
-          tension: 0.2,
-          fill: true,
-          order: 1
-        },
-        {
-          label: '50-day MA',
-          data: chartData.ma50,
-          borderColor: '#EF9F27',
-          borderWidth: 1.5,
-          borderDash: [5, 3],
-          pointRadius: 0,
-          tension: 0.2,
-          fill: false,
-          order: 2
-        },
-        {
-          label: '200-day MA',
-          data: chartData.ma200,
-          borderColor: '#E24B4A',
-          borderWidth: 1.5,
-          borderDash: [5, 3],
-          pointRadius: 0,
-          tension: 0.2,
-          fill: false,
-          order: 3
-        }
+  if(!canvas||!chartData)return;
+  if(chartInst){chartInst.destroy();chartInst=null;}
+  var dark = window.matchMedia('(prefers-color-scheme:dark)').matches;
+  var grid = dark?'rgba(90,170,120,0.10)':'rgba(42,87,64,0.08)';
+  var tick = dark?'#6A8A6A':'#6A8A6A';
+  chartInst = new Chart(canvas, {
+    type:'line',
+    data:{
+      labels:chartData.labels,
+      datasets:[
+        {label:'SPY',data:chartData.closes,borderColor:'#2A5740',backgroundColor:dark?'rgba(42,87,64,0.12)':'rgba(42,87,64,0.08)',borderWidth:2.5,pointRadius:0,tension:0.2,fill:true,order:1},
+        {label:'50d MA',data:chartData.ma50,borderColor:'#C8A040',borderWidth:1.5,borderDash:[5,3],pointRadius:0,tension:0.2,fill:false,order:2},
+        {label:'200d MA',data:chartData.ma200,borderColor:'#A83030',borderWidth:1.5,borderDash:[5,3],pointRadius:0,tension:0.2,fill:false,order:3}
       ]
     },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      interaction: { mode: 'index', intersect: false },
-      plugins: {
-        legend: { display: false },
-        tooltip: {
-          callbacks: {
-            label: function(ctx) {
-              return ctx.dataset.label + ': $' + (ctx.parsed.y != null ? ctx.parsed.y.toFixed(2) : '—');
-            }
-          }
-        }
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      interaction:{mode:'index',intersect:false},
+      plugins:{
+        legend:{display:false},
+        tooltip:{callbacks:{label:function(ctx){return ctx.dataset.label+': $'+(ctx.parsed.y!=null?ctx.parsed.y.toFixed(2):'—');}}}
       },
-      scales: {
-        x: {
-          grid: { color: gridColor },
-          ticks: {
-            color: labelColor,
-            maxTicksLimit: 8,
-            maxRotation: 0,
-            font: { size: 10 }
-          }
-        },
-        y: {
-          position: 'right',
-          grid: { color: gridColor },
-          ticks: {
-            color: labelColor,
-            font: { size: 10 },
-            callback: function(v) { return '$' + v.toFixed(0); }
-          }
-        }
+      scales:{
+        x:{grid:{color:grid},ticks:{color:tick,maxTicksLimit:8,maxRotation:0,font:{size:10}}},
+        y:{position:'right',grid:{color:grid},ticks:{color:tick,font:{size:10},callback:function(v){return'$'+v.toFixed(0);}}}
       }
     }
   });
 }
 
+// ── Render ────────────────────────────────────────────────────────────────────
+function render(d, h) {
+  var dp = d.display||{}, sig = d.signals||{}, r = d._raw||{};
+  var cond = d.condition || 'Caution';
+  var sess = d._session || '—';
+  var chgC = r.changePct < 0 ? 'bear' : 'bull';
+  var vixC = ['High','Extreme'].indexOf(sig.vixSig)>=0?'bear':sig.vixSig==='Elevated'?'neut':'bull';
+  var rsiPct = rsiToPos(r.rsi);
+  var breadthW = Math.min(Math.max(r.breadthPct||0, 0), 100);
+  var breadthColor = breadthW>=70?'var(--bull)':breadthW>=50?'var(--m-green-mid)':breadthW>=40?'var(--neut)':'var(--bear)';
+
+  // Update header
+  document.getElementById('sub-ts') && (document.getElementById('sub-ts').textContent = '');
+  var sb = document.getElementById('sess-bdg');
+  sb.textContent = sess; sb.className = 'sess-pill ' + sessCls(sess);
+
+  // History rows
+  var hRows = h.length > 0
+    ? h.slice(0,60).map(function(x,i){
+        var xd=x.display||{},xs=x.signals||{},xr=x._raw||{};
+        var xchgC=xr.changePct<0?'bear':'bull';
+        var xvixC=['High','Extreme'].indexOf(xs.vixSig)>=0?'bear':xs.vixSig==='Elevated'?'neut':'bull';
+        return '<tr class="'+(i===0?'latest':'')+'">'+
+          '<td style="color:var(--m-text3);font-size:11px;">'+ft(x._at)+'</td>'+
+          '<td><span class="cb '+cbCls(x.condition)+'">'+( x.condition||'—')+'</span></td>'+
+          '<td>'+( xd.price||'—')+'</td>'+
+          '<td class="'+xchgC+'">'+(xd.changePct||'—')+'</td>'+
+          '<td class="'+xvixC+'">'+(xd.vix||'—')+'</td>'+
+          '<td style="font-size:11px;color:var(--m-text3);">'+(x._session||'—')+'</td>'+
+        '</tr>';
+      }).join('')
+    : '<tr><td colspan="6" style="text-align:center;color:var(--m-text3);padding:14px 0;font-size:12px;">No history yet</td></tr>';
+
+  document.getElementById('content').innerHTML =
+
+    // Condition banner
+    '<div class="condition-banner '+condCls(cond)+'">' +
+      '<div class="cond-top">' +
+        '<span class="cond-label">'+cond+'</span>' +
+        '<span class="cond-time">'+ft(d._at)+(d._source?' · '+d._source:'')+'</span>' +
+      '</div>' +
+      '<div class="cond-comment">'+d.comment+'</div>' +
+    '</div>' +
+
+    // Metric cards
+    '<div class="mets">' +
+      '<div class="met"><div class="ml">SPY price</div><div class="mv">'+dp.price+'</div><div class="ms '+chgC+'">'+dp.changePct+'</div></div>' +
+      '<div class="met"><div class="ml">From ATH</div><div class="mv '+(r.drawdown>=-2?'bull':r.drawdown>=-10?'neut':'bear')+'">'+dp.drawdown+'</div><div class="ms" style="color:var(--m-text3);">ATH '+dp.ath+'</div></div>' +
+      '<div class="met"><div class="ml">VIX</div><div class="mv '+vixC+'">'+dp.vix+'</div><div class="ms '+sigCls(sig.vixSig)+'">'+sig.vixSig+'</div></div>' +
+      '<div class="met"><div class="ml">Breadth</div><div class="mv '+sigCls(sig.breadthSig)+'">'+dp.breadthPct+'</div><div class="ms '+sigCls(sig.breadthSig)+'">'+sig.breadthSig+'</div></div>' +
+    '</div>' +
+
+    // Tabs
+    '<div class="tabs">' +
+      '<button class="tab on" onclick="stab(\'score\',this)">Signals</button>' +
+      '<button class="tab" onclick="stab(\'chart\',this)">Chart</button>' +
+      '<button class="tab" onclick="stab(\'tech\',this)">Technical</button>' +
+      '<button class="tab" onclick="stab(\'mac\',this)">Macro</button>' +
+      '<button class="tab" onclick="stab(\'hst\',this)">History ('+h.length+')</button>' +
+    '</div>' +
+
+    // Signals scorecard
+    '<div id="pnl-score" class="pnl on card">' +
+      '<div class="slbl fst">Trend</div>' +
+      '<div class="axis-row"><div class="axis-label">50-day MA<small>Short-term trend</small></div><span class="axis-badge '+abCls(sig.ma50s)+'">'+sig.ma50s+'</span><span class="axis-val">'+dp.ma50+'</span></div>' +
+      '<div class="axis-row"><div class="axis-label">200-day MA<small>Long-term trend</small></div><span class="axis-badge '+abCls(sig.ma200s)+'">'+sig.ma200s+'</span><span class="axis-val">'+dp.ma200+'</span></div>' +
+      '<div class="axis-row"><div class="axis-label">MACD<small>Momentum direction</small></div><span class="axis-badge '+abCls(sig.macdSig)+'">'+sig.macdSig+'</span><span class="axis-val">'+dp.macd+'</span></div>' +
+      '<div class="axis-row"><div class="axis-label">Distance from 52w high<small>Momentum context</small></div><span class="axis-badge '+abCls(sig.dist52wSig)+'">'+sig.dist52wSig+'</span><span class="axis-val">'+dp.dist52w+'</span></div>' +
+      '<div class="slbl">Breadth</div>' +
+      '<div class="axis-row"><div class="axis-label">% S&P 500 stocks above 200d MA<small>Participation — is rally broad or narrow?</small></div><span class="axis-badge '+abCls(sig.breadthSig)+'">'+sig.breadthSig+'</span><span class="axis-val">'+dp.breadthPct+'</span></div>' +
+      '<div class="axis-row"><div class="axis-label">Put/Call ratio<small>Complacency vs hedging</small></div><span class="axis-badge '+abCls(sig.putCallSig)+'">'+sig.putCallSig+'</span><span class="axis-val">'+dp.putCall+'</span></div>' +
+      '<div class="slbl">Stress</div>' +
+      '<div class="axis-row"><div class="axis-label">VIX<small>Fear / complacency level</small></div><span class="axis-badge '+abCls(sig.vixSig)+'">'+sig.vixSig+'</span><span class="axis-val">'+dp.vix+'</span></div>' +
+      '<div class="axis-row"><div class="axis-label">HY credit spreads<small>Institutional risk appetite</small></div><span class="axis-badge '+abCls(sig.spreadSig)+'">'+sig.spreadSig+'</span><span class="axis-val">'+dp.hy+'</span></div>' +
+      '<div class="axis-row"><div class="axis-label">Yield curve (10Y−2Y)<small>Macro stress indicator</small></div><span class="axis-badge '+abCls(sig.ycSig)+'">'+sig.ycSig+'</span><span class="axis-val">'+dp.ycSpread+'</span></div>' +
+      '<div class="axis-row" style="border-bottom:none;"><div class="axis-label">RSI (14)<small>Momentum — oversold vs overbought</small></div><span class="axis-badge '+abCls(sig.rsiSig)+'">'+sig.rsiSig+'</span><span class="axis-val">'+dp.rsi+'</span></div>' +
+      '<div style="margin-top:13px;padding-top:12px;border-top:0.5px solid var(--bdr);font-size:11px;color:var(--m-text3);line-height:1.6;">Overall condition is derived from three axes: Trend (MA crossovers, MACD, momentum), Breadth (participation, put/call), and Stress (VIX, credit spreads, yield curve). MA signals are weighted double.</div>' +
+    '</div>' +
+
+    // Chart
+    '<div id="pnl-chart" class="pnl card">' +
+      '<div class="slbl fst">SPY — 90-day price vs moving averages</div>' +
+      '<div style="position:relative;height:280px;margin-top:8px;"><canvas id="spy-chart"></canvas></div>' +
+      '<div style="display:flex;gap:16px;margin-top:10px;flex-wrap:wrap;">' +
+        '<span style="display:flex;align-items:center;gap:5px;font-size:12px;color:var(--m-text2);"><span style="width:20px;height:3px;background:#2A5740;display:inline-block;border-radius:2px;"></span>SPY</span>' +
+        '<span style="display:flex;align-items:center;gap:5px;font-size:12px;color:var(--m-text2);"><span style="width:20px;height:0;border-top:2px dashed #C8A040;display:inline-block;"></span>50-day MA</span>' +
+        '<span style="display:flex;align-items:center;gap:5px;font-size:12px;color:var(--m-text2);"><span style="width:20px;height:0;border-top:2px dashed #A83030;display:inline-block;"></span>200-day MA</span>' +
+      '</div>' +
+    '</div>' +
+
+    // Technical
+    '<div id="pnl-tech" class="pnl card">' +
+      '<div class="slbl fst">RSI (14) — '+dp.rsi+' <span class="'+sigCls(sig.rsiSig)+'" style="font-size:12px;font-weight:400;letter-spacing:0;text-transform:none;margin-left:5px;">'+sig.rsiSig+'</span></div>' +
+      '<div class="rsi-track">' +
+        '<div style="width:30%;background:var(--bdi, #BFD4F8);opacity:0.6;"></div>' +
+        '<div style="width:12%;background:var(--bull-bg);"></div>' +
+        '<div style="width:36%;background:var(--bdr);"></div>' +
+        '<div style="width:12%;background:var(--neut-bg);"></div>' +
+        '<div style="width:10%;background:var(--bear-bg);"></div>' +
+        '<div class="rsi-marker" style="left:'+rsiPct+'%;"></div>' +
+      '</div>' +
+      '<div class="rsi-lbls"><span>0</span><span>30</span><span>42</span><span>58</span><span>70</span><span>100</span></div>' +
+      '<div class="slbl">Moving averages</div>' +
+      '<div class="row"><span class="rl">50-day MA ('+dp.ma50+')</span><span class="rv '+sigCls(sig.ma50s)+'">'+sig.ma50s+'</span></div>' +
+      '<div class="row"><span class="rl">200-day MA ('+dp.ma200+')</span><span class="rv '+sigCls(sig.ma200s)+'">'+sig.ma200s+'</span></div>' +
+      '<div class="row"><span class="rl">MACD</span><span class="rv '+sigCls(sig.macdSig)+'">'+dp.macd+' — '+sig.macdSig+'</span></div>' +
+      '<div class="div"></div>' +
+      '<div class="slbl">Breadth</div>' +
+      '<div style="margin-bottom:4px;"><div class="breadth-track"><div class="breadth-fill" style="width:'+breadthW+'%;background:'+breadthColor+';"></div></div><div class="breadth-lbls"><span>0%</span><span>40% thin</span><span>55% healthy</span><span>70% broad</span><span>100%</span></div></div>' +
+      '<div class="row"><span class="rl">% above 200-day MA</span><span class="rv '+sigCls(sig.breadthSig)+'">'+dp.breadthPct+' — '+sig.breadthSig+'</span></div>' +
+      '<div class="row" style="border-bottom:none;"><span class="rl">Put/Call ratio</span><span class="rv '+sigCls(sig.putCallSig)+'">'+dp.putCall+' — '+sig.putCallSig+'</span></div>' +
+    '</div>' +
+
+    // Macro
+    '<div id="pnl-mac" class="pnl card">' +
+      '<div class="slbl fst">Fed and rates</div>' +
+      '<div class="row"><span class="rl">Fed funds rate</span><span class="rv">'+dp.fedRate+'</span></div>' +
+      '<div class="row"><span class="rl">US 10Y yield</span><span class="rv">'+dp.us10y+'</span></div>' +
+      '<div class="row"><span class="rl">US 2Y yield</span><span class="rv">'+dp.us2y+'</span></div>' +
+      '<div class="row"><span class="rl">Yield curve (10Y−2Y)</span><span class="rv '+sigCls(sig.ycSig)+'">'+dp.ycSpread+' — '+sig.ycSig+'</span></div>' +
+      '<div class="slbl">Commodities and risk</div>' +
+      '<div class="row"><span class="rl">WTI crude oil</span><span class="rv '+sigCls(sig.oilSig)+'">'+dp.oil+' — '+sig.oilSig+'</span></div>' +
+      '<div class="row"><span class="rl">VIX</span><span class="rv '+vixC+'">'+dp.vix+' — '+sig.vixSig+'</span></div>' +
+      '<div class="row"><span class="rl">HY credit spread</span><span class="rv">'+dp.hy+'</span></div>' +
+      '<div class="row" style="border-bottom:none;"><span class="rl">IG credit spread</span><span class="rv">'+dp.ig+'</span></div>' +
+    '</div>' +
+
+    // History
+    '<div id="pnl-hst" class="pnl card">' +
+      '<div class="htbl-wrap">' +
+        '<table class="htbl"><thead><tr>' +
+          '<th style="width:24%;">Updated</th><th style="width:16%;">Condition</th>' +
+          '<th style="width:13%;">SPY</th><th style="width:11%;">Chg</th>' +
+          '<th style="width:10%;">VIX</th><th style="width:26%;">Session</th>' +
+        '</tr></thead><tbody>'+hRows+'</tbody></table>' +
+      '</div>' +
+      (h.length>0?'<div style="text-align:right;margin-top:11px;"><button class="btn-sm btn-danger" onclick="clearAll()">Clear history</button></div>':'')+
+    '</div>';
+}
+
 function stab(id, el) {
-  document.querySelectorAll('.tab').forEach(function(t) { t.classList.remove('on'); });
+  document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('on');});
   el.classList.add('on');
-  document.querySelectorAll('.pnl').forEach(function(p) { p.classList.remove('on'); });
-  document.getElementById('pnl-' + id).classList.add('on');
-  if (id === 'chart') {
-    var snap = loadSnap();
-    setTimeout(function() { renderChart(snap && snap.chart); }, 50);
-  }
+  document.querySelectorAll('.pnl').forEach(function(p){p.classList.remove('on');});
+  document.getElementById('pnl-'+id).classList.add('on');
+  if(id==='chart'){var snap=loadSnap();setTimeout(function(){renderChart(snap&&snap.chart);},50);}
 }
 
 function toggleSettings() {
-  var p = document.getElementById('settings-panel');
-  var show = p.style.display === 'none';
-  p.style.display = show ? 'block' : 'none';
-  if (show) {
-    var snap = loadSnap();
-    document.getElementById('data-updated').textContent = snap ? ft(snap._at) : '—';
-    document.getElementById('data-source').textContent = snap ? (snap._source || '—') : '—';
-    document.getElementById('snap-count').textContent = loadHist().length + ' of 60';
+  var p=document.getElementById('settings-panel');
+  var show=p.style.display==='none';
+  p.style.display=show?'block':'none';
+  if(show){
+    var snap=loadSnap();
+    document.getElementById('data-updated').textContent=snap?ft(snap._at):'—';
+    document.getElementById('data-source').textContent=snap?(snap._source||'—'):'—';
+    document.getElementById('snap-count').textContent=loadHist().length+' of 60';
   }
 }
 
-function clearAll() {
-  if (!confirm('Clear all locally saved snapshots?')) return;
-  if (USE_LS) { try { localStorage.removeItem(SK); localStorage.removeItem(HK); } catch(e) {} }
-  MEM.snap = null; MEM.hist = [];
-  document.getElementById('settings-panel').style.display = 'none';
+function clearAll(){
+  if(!confirm('Clear all saved snapshots?'))return;
+  if(USE_LS){try{localStorage.removeItem(SK);localStorage.removeItem(HK);}catch(e){}}
+  MEM.snap=null;MEM.hist=[];
+  document.getElementById('settings-panel').style.display='none';
   boot();
 }
 
-async function doRefresh() {
-  var btn = document.getElementById('upd-btn');
-  var errBar = document.getElementById('err-bar');
-  btn.disabled = true;
-  btn.innerHTML = '<span class="spin"></span>Loading...';
-  errBar.style.display = 'none';
-  document.getElementById('sub-ts').textContent = 'Fetching latest data...';
-
-  try {
-    var resp = await fetch(DATA_URL + '?t=' + Date.now()); // cache-bust
-    if (!resp.ok) throw new Error('HTTP ' + resp.status + ' — check DATA_URL in index.html');
-    var d = await resp.json();
-    saveSnap(d);
-    render(d, loadHist());
-  } catch(e) {
-    errBar.textContent = e.message;
-    errBar.style.display = 'block';
-    var snap = loadSnap();
-    if (snap) render(snap, loadHist());
-    else document.getElementById('sub-ts').textContent = 'Error loading data';
-  } finally {
-    btn.disabled = false;
-    btn.textContent = '\u21BB Refresh';
-  }
+async function doRefresh(){
+  var btn=document.getElementById('upd-btn'),errBar=document.getElementById('err-bar');
+  btn.disabled=true;btn.innerHTML='<span class="spin"></span>Loading...';
+  errBar.style.display='none';
+  try{
+    var resp=await fetch(DATA_URL+'?t='+Date.now());
+    if(!resp.ok)throw new Error('HTTP '+resp.status+' — check DATA_URL');
+    var d=await resp.json();
+    saveSnap(d);render(d,loadHist());
+  }catch(e){
+    errBar.textContent=e.message;errBar.style.display='block';
+    var snap=loadSnap();if(snap)render(snap,loadHist());
+  }finally{btn.disabled=false;btn.textContent='\u21BB Refresh';}
 }
 
-function boot() {
-  // Show cached snapshot immediately while fetching
-  var snap = loadSnap();
-  var hist = loadHist();
-  if (snap) {
-    render(snap, hist);
-  } else {
-    document.getElementById('content').innerHTML =
-      '<div class="sbox"><h3>Loading...</h3><p><span class="spin"></span>Fetching latest market snapshot</p></div>';
-  }
-  if (!USE_LS) {
-    document.getElementById('info-bar').textContent = 'Running in memory-only mode — history will not persist between sessions on this device. Use Safari → Add to Home Screen for persistence.';
-    document.getElementById('info-bar').style.display = 'block';
-  }
+function boot(){
+  var snap=loadSnap(),hist=loadHist();
+  if(snap){render(snap,hist);}
+  else{document.getElementById('content').innerHTML='<div class="sbox"><h3>Loading...</h3><p><span class="spin"></span>Fetching latest market snapshot</p></div>';}
+  if(!USE_LS){document.getElementById('info-bar').textContent='Running in memory-only mode — history will not persist between sessions. Use Safari → Add to Home Screen for persistence.';document.getElementById('info-bar').style.display='block';}
   doRefresh();
 }
 
-window.stab = stab;
-window.toggleSettings = toggleSettings;
-window.clearAll = clearAll;
-window.doRefresh = doRefresh;
-
+window.stab=stab;window.toggleSettings=toggleSettings;window.clearAll=clearAll;window.doRefresh=doRefresh;
 boot();
 </script>
 </body>
