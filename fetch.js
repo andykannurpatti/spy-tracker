@@ -8,7 +8,7 @@ const fs = require('fs');
 
 // ── CONFIGURE HERE ───────────────────────────────────────────────────────────
 // SPY_ATH is now calculated dynamically from historical data — no manual updates needed.
-const FED_RATE = '3.50-3.75%'; // Update when Fed changes rates.
+const // Fed rate fetched dynamically from FRED (DFEDTARL + DFEDTARU)
 // ────────────────────────────────────────────────────────────────────────────
 
 function get(url) {
@@ -217,7 +217,7 @@ async function main() {
   console.log(`  Oil: $${oil.toFixed(2)}`);
 
   // 5. FRED data (optional — 2Y yield + credit spreads)
-  let us2y = null, hy = null, ig = null;
+  let us2y = null, hy = null, ig = null, fedRate = '3.50-3.75%'; // fallback if FRED unavailable
   const fredKey = process.env.FRED_API_KEY;
   if (fredKey) {
     console.log('Fetching FRED data...');
@@ -227,12 +227,18 @@ async function main() {
       const igPct = await fredSeries('BAMLC0A0CM', fredKey);
       hy = hyPct !== null ? hyPct * 100 : null; // FRED returns %, convert to bps
       ig = igPct !== null ? igPct * 100 : null;
-      console.log(`  2Y: ${us2y?.toFixed(2)}%, HY: ${hy?.toFixed(0)} bps, IG: ${ig?.toFixed(0)} bps`);
+      // Fetch Fed target range bounds dynamically
+      const fedLower = await fredSeries('DFEDTARL', fredKey);
+      const fedUpper = await fredSeries('DFEDTARU', fredKey);
+      if (fedLower !== null && fedUpper !== null) {
+        fedRate = fedLower.toFixed(2) + '-' + fedUpper.toFixed(2) + '%';
+      }
+      console.log(`  2Y: ${us2y?.toFixed(2)}%, HY: ${hy?.toFixed(0)} bps, IG: ${ig?.toFixed(0)} bps, Fed: ${fedRate}`);
     } catch(e) {
       console.warn('  FRED fetch failed:', e.message, '— using fallback values');
     }
   } else {
-    console.log('No FRED_API_KEY set — using fallback values for 2Y yield and credit spreads');
+    console.log('No FRED_API_KEY set — using fallback values for 2Y yield, credit spreads, and Fed rate');
   }
 
   // Fallbacks if FRED unavailable
@@ -304,7 +310,7 @@ async function main() {
       oil:      '$' + oil.toFixed(2),
       hy:       Math.round(hy) + ' bps',
       ig:       Math.round(ig) + ' bps',
-      fedRate:  FED_RATE
+      fedRate:  fedRate
     },
     _raw: raw
   };
