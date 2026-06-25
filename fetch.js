@@ -269,11 +269,12 @@ async function main() {
   const oil = oilData.closes[oilData.closes.length - 1];
   console.log(`  Oil: $${oil.toFixed(2)}`);
 
-  // 5. Breadth — % of S&P 500 stocks above 200-day MA
-  // Tries multiple ticker formats; Yahoo Finance coverage of this indicator varies
+  // 5. Breadth — % of S&P 500 sector ETFs above their own 200-day MA
+  // Uses all 11 SPDR sector ETFs as a legitimate sector breadth proxy.
+  // First tries ^SPXA200R direct; falls back to sector ETF calculation.
   console.log('Fetching market breadth...');
   let breadthPct = null;
-  const breadthTickers = ['^SPXA200R', 'SPXA200R', '^SP500.A200R'];
+  const breadthTickers = ['^SPXA200R', 'SPXA200R'];
   for (const ticker of breadthTickers) {
     try {
       const breadthData = await yahooChart(ticker, '5d');
@@ -282,17 +283,30 @@ async function main() {
     } catch(e) { /* try next */ }
   }
   if (breadthPct !== null) {
-    console.log(`  Breadth: ${breadthPct.toFixed(1)}% above 200d MA`);
+    console.log(`  Breadth: ${breadthPct.toFixed(1)}% above 200d MA (direct)`);
   } else {
-    // Estimate from SPY vs MA200: rough proxy — not perfect but better than a fixed fallback
-    const recentCloses = closes.slice(-252);
-    const above200 = recentCloses.filter((c, i) => {
-      const slice = closes.slice(0, closes.length - 252 + i + 1);
-      const ma = calcSMA(slice, 200);
-      return ma && c > ma;
-    }).length;
-    breadthPct = (above200 / recentCloses.length) * 100;
-    console.warn(`  Breadth tickers unavailable — estimated from SPY proxy: ${breadthPct.toFixed(1)}%`);
+    // Sector ETF breadth proxy — fetch all 11 SPDR sectors, check each vs its own 200d MA
+    const sectors = ['XLC','XLY','XLP','XLE','XLF','XLV','XLI','XLB','XLRE','XLK','XLU'];
+    let aboveCount = 0, totalFetched = 0;
+    await Promise.all(sectors.map(async (ticker) => {
+      try {
+        const sd = await yahooChart(ticker, '1y');
+        const sc = sd.closes;
+        const sma = calcSMA(sc, 200);
+        const sPrice = sc[sc.length - 1];
+        if (sma && sPrice) {
+          totalFetched++;
+          if (sPrice > sma) aboveCount++;
+        }
+      } catch(e) { /* skip failed sector */ }
+    }));
+    if (totalFetched > 0) {
+      breadthPct = (aboveCount / totalFetched) * 100;
+      console.warn(`  Breadth: ${aboveCount}/${totalFetched} sectors above 200d MA = ${breadthPct.toFixed(0)}% (sector proxy)`);
+    } else {
+      breadthPct = 55; // neutral fallback if all fetches fail
+      console.warn(`  Breadth: all fetches failed — using neutral fallback 55%`);
+    }
   }
 
   // 6. Put/Call ratio — CBOE total put/call ratio
