@@ -7,7 +7,7 @@ const https = require('https');
 const fs = require('fs');
 
 // ── CONFIGURE HERE ───────────────────────────────────────────────────────────
-const SPY_ATH = 697.84; // Intraday all-time high. Update manually when new ATH is set.
+// SPY_ATH is now calculated dynamically from historical data — no manual updates needed.
 const FED_RATE = '3.50-3.75%'; // Update when Fed changes rates.
 // ────────────────────────────────────────────────────────────────────────────
 
@@ -119,14 +119,17 @@ function overallSignal(rsiS, ma50s, ma200s, vixS, spreadS, ycS) {
 function generateComment(signals, raw) {
   const parts = [];
 
-  // Sentence 1: Trend status based on MA crossovers
+  // Sentence 1: Trend status based on MA crossovers and ATH proximity
   const p = raw.price.toFixed(0), m50 = raw.ma50.toFixed(0), m200 = raw.ma200.toFixed(0);
-  if (signals.ma200s === 'Below' && signals.ma50s === 'Below') {
-    parts.push(`SPY ($${p}) is below both the 50-day MA ($${m50}) and 200-day MA ($${m200}), confirming a downtrend.`);
+  const ddPct = raw.drawdown; // negative or zero
+  if (ddPct >= -1.0) {
+    parts.push(`SPY ($${p}) is at or near its all-time high — the trend is strongly intact and there is no meaningful drawdown to analyze.`);
   } else if (signals.ma200s === 'Above' && signals.ma50s === 'Above') {
-    parts.push(`SPY ($${p}) is above both the 50-day MA ($${m50}) and 200-day MA ($${m200}), confirming an uptrend.`);
+    parts.push(`SPY ($${p}) is above both the 50-day MA ($${m50}) and 200-day MA ($${m200}), confirming an uptrend with a ${Math.abs(ddPct).toFixed(1)}% pullback from the ATH.`);
+  } else if (signals.ma200s === 'Below' && signals.ma50s === 'Below') {
+    parts.push(`SPY ($${p}) is below both the 50-day MA ($${m50}) and 200-day MA ($${m200}), confirming a downtrend with a ${Math.abs(ddPct).toFixed(1)}% decline from the ATH.`);
   } else if (signals.ma200s === 'Below' && signals.ma50s === 'Above') {
-    parts.push(`SPY ($${p}) has reclaimed its 50-day MA ($${m50}) but remains below the 200-day MA ($${m200}) — recovery is tentative.`);
+    parts.push(`SPY ($${p}) has reclaimed its 50-day MA ($${m50}) but remains below the 200-day MA ($${m200}) — recovery from the ${Math.abs(ddPct).toFixed(1)}% ATH drawdown is tentative.`);
   } else {
     parts.push(`SPY ($${p}) has slipped below the 50-day MA ($${m50}) but holds above the 200-day MA ($${m200}) — short-term weakness in a longer-term uptrend.`);
   }
@@ -177,12 +180,13 @@ async function main() {
 
   // 1. SPY historical prices (1 year for MA200)
   console.log('Fetching SPY history...');
-  const spy = await yahooChart('SPY', '1y');
+  const spy = await yahooChart('SPY', '5y');
   const closes = spy.closes;
   if (closes.length < 200) throw new Error(`Not enough SPY data: ${closes.length} days`);
 
   const price   = closes[closes.length - 1];
   const prev    = closes[closes.length - 2];
+  const SPY_ATH = Math.max(...closes); // Dynamic ATH from full history — auto-updates as new highs are set
   const changePct = ((price - prev) / prev) * 100;
   const rsi     = calcRSI(closes);
   const ma50    = calcSMA(closes, 50);
@@ -254,7 +258,7 @@ async function main() {
   const comment = generateComment(signals, raw);
 
   // Build 60-day chart data: closes + rolling MA50 + MA200 per day
-  const chartDays = 60;
+  const chartDays = 90; // Show 90 days for more recovery context
   const chartCloses = closes.slice(-chartDays);
   const chartLabels = spy.timestamps.slice(-chartDays).map(function(ts) {
     var d = new Date(ts * 1000);
