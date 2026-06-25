@@ -8,7 +8,7 @@ const fs = require('fs');
 
 // ── CONFIGURE HERE ───────────────────────────────────────────────────────────
 // SPY_ATH is now calculated dynamically from historical data — no manual updates needed.
-const // Fed rate fetched dynamically from FRED (DFEDTARL + DFEDTARU)
+// Fed rate fetched dynamically from FRED (DFEDTARL + DFEDTARU)
 // ────────────────────────────────────────────────────────────────────────────
 
 function get(url) {
