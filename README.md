@@ -60,7 +60,7 @@ The overall condition is derived from three axes:
 - **Chart** — 90-day SPY price vs 50-day and 200-day moving averages
 - **Technical** — RSI gauge, moving averages, MACD, breadth bar, put/call
 - **Macro** — Fed rate, yields, yield curve, oil, VIX, credit spreads
-- **Glossary** — Plain-English explanation of every indicator and condition
+- **Glossary** — Plain-English explanation of every indicator and condition, including data source and series ID for each
 - **History** — Timestamped log of all snapshots (saved locally per device)
 
 ---
@@ -77,6 +77,7 @@ The overall condition is derived from three axes:
 | US 2Y yield | FRED: DGS2 |
 | HY credit spread | FRED: BAMLH0A0HYM2 |
 | IG credit spread | FRED: BAMLC0A0CM |
+| Put/Call ratio | CBOE totalpc.csv (cdn.cboe.com) · Updated previous trading day |
 | Fed funds rate | FRED: DFEDTARL + DFEDTARU |
 
 ---
