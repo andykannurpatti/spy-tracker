@@ -309,23 +309,42 @@ async function main() {
     }
   }
 
-  // 6. Put/Call ratio — CBOE total put/call ratio
-  console.log('Fetching Put/Call ratio...');
+  // 6. Put/Call ratio — fetched directly from CBOE public CSV
+  // Yahoo Finance no longer carries ^CPC/^CPCE tickers; CBOE publishes free CSVs
+  console.log('Fetching Put/Call ratio (CBOE CSV)...');
   let putCall = null;
-  const pcTickers = ['^CPC', '^CPCE', '^CPCI', 'CPC'];
-  for (const ticker of pcTickers) {
-    try {
-      const pcData = await yahooChart(ticker, '5d');
-      const val = pcData.closes[pcData.closes.length - 1];
-      if (val > 0 && val < 5) { putCall = val; break; }
-    } catch(e) { /* try next */ }
-  }
-  if (putCall !== null) {
-    console.log(`  Put/Call: ${putCall.toFixed(2)}`);
-  } else {
-    // Derive VIX-based proxy: high VIX = more puts being bought
+  try {
+    const pcUrl = 'https://cdn.cboe.com/resources/options/volume_and_call_put_ratios/totalpc.csv';
+    const pcResp = await new Promise((resolve, reject) => {
+      const req = https.get(pcUrl, { headers: { 'User-Agent': 'Mozilla/5.0' } }, (res) => {
+        let data = '';
+        res.on('data', c => data += c);
+        res.on('end', () => resolve(data));
+      });
+      req.on('error', reject);
+      req.setTimeout(10000, () => { req.destroy(); reject(new Error('CBOE CSV timeout')); });
+    });
+    // CSV format: DATE,CALLS,PUTS,TOTAL,P/C Ratio
+    // Skip header rows (first 4 lines contain metadata), find last valid data row
+    const lines = pcResp.split('\n').filter(l => l.trim());
+    let lastRatio = null;
+    for (const line of lines) {
+      const parts = line.split(',');
+      if (parts.length >= 5) {
+        const ratio = parseFloat(parts[4]);
+        if (!isNaN(ratio) && ratio > 0 && ratio < 5) lastRatio = ratio;
+      }
+    }
+    if (lastRatio !== null) {
+      putCall = lastRatio;
+      console.log(`  Put/Call: ${putCall.toFixed(2)} (CBOE total, last trading day)`);
+    } else {
+      throw new Error('No valid ratio found in CSV');
+    }
+  } catch(e) {
+    // VIX-based fallback if CBOE CSV unavailable
     putCall = vix > 30 ? 1.2 : vix > 25 ? 1.05 : vix > 20 ? 0.95 : vix > 15 ? 0.85 : 0.75;
-    console.warn(`  Put/Call tickers unavailable — VIX-based proxy: ${putCall.toFixed(2)}`);
+    console.warn(`  CBOE CSV failed (${e.message}) — VIX-based proxy: ${putCall.toFixed(2)}`);
   }
 
   // 7. FRED data — 2Y yield, credit spreads, Fed rate
