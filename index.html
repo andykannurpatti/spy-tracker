@@ -520,10 +520,12 @@ var HELP = {
 };
 
 function tip(key) {
-  return '<i class="tip-icon" onclick="showTip(\'' + key + '\',this)" tabindex="0" role="button" aria-label="More info">i</i>';
+  // Use data-tip attribute to avoid quote conflicts inside JS strings
+  return '<i class="tip-icon" data-tip="' + key + '" tabindex="0" role="button" aria-label="More info">i</i>';
 }
 
 function showTip(key, el) {
+  if (!key && el && el.dataset) key = el.dataset.tip;
   var text = TIPS[key];
   if (!text) return;
   var box = document.getElementById('tip-box');
@@ -639,8 +641,7 @@ function render(d, h) {
       '<button class="tab" onclick="stab(\'chart\',this)">Chart</button>' +
       '<button class="tab" onclick="stab(\'tech\',this)">Technical</button>' +
       '<button class="tab" onclick="stab(\'mac\',this)">Macro</button>' +
-      '<button class="tab" onclick="stab(\'help\',this)">Help</button>' +
-      '<button class="tab" onclick="stab(\'help\',this)">Help</button>' +
+      '<button class="tab" onclick="stab(\'help\',this)">Glossary</button>' +
       '<button class="tab" onclick="stab(\'hst\',this)">History ('+h.length+')</button>' +
     '</div>' +
 
@@ -686,14 +687,14 @@ function render(d, h) {
       '</div>' +
       '<div class="rsi-lbls"><span>0</span><span>30</span><span>42</span><span>58</span><span>70</span><span>100</span></div>' +
       '<div class="slbl">Moving averages</div>' +
-      '<div class="row"><span class="rl">50-day MA<i class="tip-icon" onclick="showTip('ma50',this)" tabindex="0" role="button" aria-label="More info">i</i> ('+dp.ma50+')</span><span class="rv '+sigCls(sig.ma50s)+'">'+sig.ma50s+'</span></div>' +
-      '<div class="row"><span class="rl">200-day MA<i class="tip-icon" onclick="showTip('ma200',this)" tabindex="0" role="button" aria-label="More info">i</i> ('+dp.ma200+')</span><span class="rv '+sigCls(sig.ma200s)+'">'+sig.ma200s+'</span></div>' +
-      '<div class="row"><span class="rl">MACD<i class="tip-icon" onclick="showTip('macd',this)" tabindex="0" role="button" aria-label="More info">i</i></span><span class="rv '+sigCls(sig.macdSig)+'">'+dp.macd+' — '+sig.macdSig+'</span></div>' +
+      '<div class="row"><span class="rl">50-day MA<i class="tip-icon" data-tip="ma50" tabindex="0" role="button" aria-label="More info">i</i> ('+dp.ma50+')</span><span class="rv '+sigCls(sig.ma50s)+'">'+sig.ma50s+'</span></div>' +
+      '<div class="row"><span class="rl">200-day MA<i class="tip-icon" data-tip="ma200" tabindex="0" role="button" aria-label="More info">i</i> ('+dp.ma200+')</span><span class="rv '+sigCls(sig.ma200s)+'">'+sig.ma200s+'</span></div>' +
+      '<div class="row"><span class="rl">MACD<i class="tip-icon" data-tip="macd" tabindex="0" role="button" aria-label="More info">i</i></span><span class="rv '+sigCls(sig.macdSig)+'">'+dp.macd+' — '+sig.macdSig+'</span></div>' +
       '<div class="div"></div>' +
       '<div class="slbl">Breadth</div>' +
       '<div style="margin-bottom:4px;"><div class="breadth-track"><div class="breadth-fill" style="width:'+breadthW+'%;background:'+breadthColor+';"></div></div><div class="breadth-lbls"><span>0%</span><span>40% thin</span><span>55% healthy</span><span>70% broad</span><span>100%</span></div></div>' +
-      '<div class="row"><span class="rl">% above 200-day MA<i class="tip-icon" onclick="showTip('breadth',this)" tabindex="0" role="button" aria-label="More info">i</i></span><span class="rv '+sigCls(sig.breadthSig)+'">'+dp.breadthPct+' — '+sig.breadthSig+'</span></div>' +
-      '<div class="row" style="border-bottom:none;"><span class="rl">Put/Call ratio<i class="tip-icon" onclick="showTip('putcall',this)" tabindex="0" role="button" aria-label="More info">i</i></span><span class="rv '+sigCls(sig.putCallSig)+'">'+dp.putCall+' — '+sig.putCallSig+'</span></div>' +
+      '<div class="row"><span class="rl">% above 200-day MA<i class="tip-icon" data-tip="breadth" tabindex="0" role="button" aria-label="More info">i</i></span><span class="rv '+sigCls(sig.breadthSig)+'">'+dp.breadthPct+' — '+sig.breadthSig+'</span></div>' +
+      '<div class="row" style="border-bottom:none;"><span class="rl">Put/Call ratio<i class="tip-icon" data-tip="putcall" tabindex="0" role="button" aria-label="More info">i</i></span><span class="rv '+sigCls(sig.putCallSig)+'">'+dp.putCall+' — '+sig.putCallSig+'</span></div>' +
     '</div>' +
 
     // Macro
@@ -711,51 +712,9 @@ function render(d, h) {
     '</div>' +
 
     // Help tab
-    '<div id="pnl-help" class="pnl card">' +
-      '<div class="help-section">' +
-        '<div class="help-section-title">Market condition framework</div>' +
-        '<div style="font-size:13px;color:var(--m-text2);line-height:1.7;margin-bottom:14px;">This tracker assesses market conditions across three axes — Trend, Breadth, and Stress — and produces one of four condition readings. The framework is designed to be useful in any market environment, whether SPY is rising, falling, or consolidating.</div>' +
-        '<div class="help-condition-grid">' +
-          '<div class="help-cond-card cond-healthy"><div style="font-size:12px;font-weight:600;color:var(--c-healthy);margin-bottom:5px;">Healthy</div><div style="font-size:12px;color:var(--m-text2);line-height:1.55;">Trend intact, breadth broad, no stress signals. Both MAs above price, most sectors participating, VIX calm, credit spreads tight.</div></div>' +
-          '<div class="help-cond-card cond-stretched"><div style="font-size:12px;font-weight:600;color:var(--c-stretched);margin-bottom:5px;">Stretched</div><div style="font-size:12px;color:var(--m-text2);line-height:1.55;">Rally extended. Trend still intact but RSI overbought, put/call showing complacency, or breadth narrowing at highs. Watch for pullback.</div></div>' +
-          '<div class="help-cond-card cond-caution"><div style="font-size:12px;font-weight:600;color:var(--c-caution);margin-bottom:5px;">Caution</div><div style="font-size:12px;color:var(--m-text2);line-height:1.55;">Mixed signals. One MA below price, breadth narrowing, VIX elevated, or yield curve stress. Not yet broken but warranting attention.</div></div>' +
-          '<div class="help-cond-card cond-stressed"><div style="font-size:12px;font-weight:600;color:var(--c-stressed);margin-bottom:5px;">Stressed</div><div style="font-size:12px;color:var(--m-text2);line-height:1.55;">Multiple warning signals. Both MAs below, VIX high, credit spreads wide, or breadth thin. Risk management is the priority.</div></div>' +
-        '</div>' +
-        '<div style="font-size:11px;color:var(--m-text3);margin-top:10px;line-height:1.6;">Scoring: MA50 and MA200 each carry double weight (×2) as the primary trend indicators. All other signals carry single weight. Any imbalance between positive and negative scores determines the condition direction.</div>' +
-      '</div>' +
-      '<div class="help-section">' +
-        '<div class="help-section-title">Trend signals</div>' +
-        Object.entries({ma50:HELP.ma50, ma200:HELP.ma200, macd:HELP.macd, dist52w:HELP.dist52w}).map(function(e){
-          var h=e[1];
-          return '<div class="help-item"><div class="help-item-name">'+h.name+(h.badges.length?h.badges.map(function(b){return '<span class="axis-badge ab-neut">'+b+'</span>';}).join(''):'')+'</div><div class="help-item-body">'+h.body+'</div></div>';
-        }).join('') +
-      '</div>' +
-      '<div class="help-section">' +
-        '<div class="help-section-title">Breadth signals</div>' +
-        Object.entries({breadth:HELP.breadth, putcall:HELP.putcall}).map(function(e){
-          var h=e[1];
-          return '<div class="help-item"><div class="help-item-name">'+h.name+'</div><div class="help-item-body">'+h.body+'</div></div>';
-        }).join('') +
-      '</div>' +
-      '<div class="help-section">' +
-        '<div class="help-section-title">Stress signals</div>' +
-        Object.entries({rsi:HELP.rsi, vix:HELP.vix, hyspreads:HELP.hyspreads, yieldcurve:HELP.yieldcurve}).map(function(e){
-          var h=e[1];
-          return '<div class="help-item"><div class="help-item-name">'+h.name+'</div><div class="help-item-body">'+h.body+'</div></div>';
-        }).join('') +
-      '</div>' +
-      '<div class="help-section">' +
-        '<div class="help-section-title">Macro indicators</div>' +
-        Object.entries({fedrate:HELP.fedrate, us10y:HELP.us10y, us2y:HELP.us2y, igspreads:HELP.igspreads, oil:HELP.oil}).map(function(e){
-          var h=e[1];
-          return '<div class="help-item"><div class="help-item-name">'+h.name+'</div><div class="help-item-body">'+h.body+'</div></div>';
-        }).join('') +
-      '</div>' +
-    '</div>' +
+    '<div id="pnl-help" class="pnl card"></div>' +
 
     // History
-    '<div id="pnl-help" class="pnl card">'+buildHelp()+'</div>' +
-
     '<div id="pnl-hst" class="pnl card">' +
       '<div class="htbl-wrap">' +
         '<table class="htbl"><thead><tr>' +
@@ -764,7 +723,7 @@ function render(d, h) {
           '<th style="width:10%;">VIX</th><th style="width:26%;">Session</th>' +
         '</tr></thead><tbody>'+hRows+'</tbody></table>' +
       '</div>' +
-      (h.length>0?'<div style="text-align:right;margin-top:11px;"><button class="btn-sm btn-danger" onclick="clearAll()">Clear history</button></div>':'')+
+      (h.length>0?'<div style="text-align:right;margin-top:11px;"><button class="btn-sm btn-danger" onclick="clearAll()">Clear history</button></div>':'') +
     '</div>';
 }
 
@@ -774,8 +733,13 @@ function stab(id, el) {
   document.querySelectorAll('.pnl').forEach(function(p){p.classList.remove('on');});
   document.getElementById('pnl-'+id).classList.add('on');
   if(id==='chart'){var snap=loadSnap();setTimeout(function(){renderChart(snap&&snap.chart);},50);}
-  if(id==='help'){var hp=document.getElementById('pnl-help');if(hp&&!hp.dataset.built){hp.innerHTML=buildHelp();hp.dataset.built='1';}}
-  if(id==='help'){var snap=loadSnap();if(snap)renderHelp();}
+  if(id==='help'){
+    var hp=document.getElementById('pnl-help');
+    if(hp && !hp.dataset.built){
+      try{ hp.innerHTML=buildHelp(); hp.dataset.built='1'; }
+      catch(e){ hp.innerHTML='<p style="color:var(--m-text3);font-size:13px;padding:8px;">Help content unavailable.</p>'; }
+    }
+  }
 }
 
 function toggleSettings() {
@@ -806,43 +770,36 @@ async function doRefresh(){
   btn.innerHTML='<span class="spin"></span>Loading...';
   if(errBar)errBar.style.display='none';
   try{
-    // 15 second timeout so the spinner never hangs forever
-    var controller=new AbortController();
-    var timer=setTimeout(function(){controller.abort();},15000);
-    var resp=await fetch(DATA_URL+'?t='+Date.now(),{signal:controller.signal});
-    clearTimeout(timer);
+    var fetchPromise=fetch(DATA_URL+'?t='+Date.now());
+    var timeoutPromise=new Promise(function(_,reject){setTimeout(function(){reject(new Error('Request timed out — check your connection'));},15000);});
+    var resp=await Promise.race([fetchPromise,timeoutPromise]);
     if(!resp.ok)throw new Error('HTTP '+resp.status+' fetching data.json');
     var d=await resp.json();
-    // Validate schema before rendering
     if(!d||(!d.signals&&!d.condition&&!d.display)){
       throw new Error('data.json has unexpected format — run the GitHub workflow to regenerate it');
     }
     saveSnap(d);
     render(d,loadHist());
   }catch(e){
-    var msg=e.name==='AbortError'?'Request timed out — check your connection':e.message;
+    var msg=e.message||'Unknown error — try again';
+    console.error('doRefresh error:', e);
     if(errBar){errBar.textContent=msg;errBar.style.display='block';}
-    // Try to render cached data as fallback
+    var c=document.getElementById('content');
+    if(c&&c.innerHTML.includes('spin')){c.innerHTML='<div class="sbox"><h3>Could not load data</h3><p>'+msg+'</p></div>';}
     var snap=loadSnap();
     if(snap){try{render(snap,loadHist());}catch(re){console.warn('Fallback render failed:',re.message);}}
-    else{
-      var c=document.getElementById('content');
-      if(c)c.innerHTML='<div class="sbox"><h3>Could not load data</h3><p>'+msg+'</p></div>';
-    }
   }finally{
-    if(btn){btn.disabled=false;btn.textContent='\u21BB Refresh';}
+    if(btn){btn.disabled=false;btn.textContent='↻ Refresh';}
   }
 }
 
 function boot(){
   var snap=loadSnap(),hist=loadHist();
-  // Always show loading state first — prevents stale snap blocking the fetch
   document.getElementById('content').innerHTML='<div class="sbox"><h3>Loading...</h3><p><span class="spin"></span>Fetching latest snapshot</p></div>';
   if(snap){
     try{render(snap,hist);}
     catch(e){
-      console.warn('Cached snapshot render failed (likely old schema):',e.message);
-      // Clear stale data and show fresh loading state
+      console.warn('Cached snapshot render failed:',e.message);
       if(USE_LS){try{localStorage.removeItem(SK);localStorage.removeItem(HK);}catch(x){}}
       MEM.snap=null;MEM.hist=[];
       document.getElementById('content').innerHTML='<div class="sbox"><h3>Loading...</h3><p><span class="spin"></span>Fetching latest snapshot</p></div>';
@@ -855,15 +812,18 @@ function boot(){
   doRefresh();
 }
 
-function renderHelp(){
-  // Help tab renders from HELP object already defined — nothing extra needed
-  // The panel HTML is generated at render time using HELP, so it's always fresh
-}
+// Event delegation for tip icons
+document.addEventListener('click', function(e) {
+  var el = e.target;
+  if (el.classList && el.classList.contains('tip-icon')) {
+    e.stopPropagation();
+    showTip(el.dataset.tip, el);
+  }
+});
+
 window.stab=stab;window.toggleSettings=toggleSettings;window.clearAll=clearAll;window.doRefresh=doRefresh;
 boot();
 </script>
-
-
 
 <div class="tooltip-box" id="tip-box"></div>
 </body>
