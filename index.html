@@ -317,6 +317,7 @@ body { font-family: var(--font-sans); background: var(--m-green-light); color: v
 .help-item { margin-bottom: 12px; }
 .help-item-title { font-size: 13px; font-weight: 500; color: var(--m-charcoal); margin-bottom: 3px; display: flex; align-items: center; gap: 6px; }
 .help-item-body { font-size: 12px; color: var(--m-text2); line-height: 1.65; }
+.help-item-source { font-size: 11px; color: var(--m-text3); margin-top: 5px; line-height: 1.5; font-family: var(--font-mono); }
 .help-cond { display: inline-block; font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 20px; margin-right: 6px; text-transform: uppercase; letter-spacing: 0.04em; }
 
 </style>
@@ -477,44 +478,44 @@ var HELP = {
   condition: {
     title: "Understanding the four conditions",
     items: [
-      { name: "Healthy", body: "The trend is intact, the rally is broad, and stress indicators are quiet. Both moving averages are above price, most sectors are participating, credit spreads are normal, and VIX is calm. This is the environment where staying invested is historically rewarded." },
-      { name: "Stretched", body: "The trend is still up but the rally shows signs of extension — RSI is overbought, the put/call ratio reflects complacency, or breadth is narrowing while the index holds highs. Not broken, but a pullback to test moving average support is increasingly likely." },
-      { name: "Caution", body: "Mixed signals — at least one key indicator is flashing amber. A moving average may have broken, VIX is elevated, or breadth is thinning. Appropriate to wait for clarification rather than adding new exposure." },
-      { name: "Stressed", body: "Multiple warning signals are firing simultaneously — VIX is high, credit spreads are widening, key moving averages have broken, or breadth is thin. Capital preservation is the priority." }
+      { name: "Healthy", body: "The trend is intact, the rally is broad, and stress indicators are quiet. Both moving averages are above price, most sectors are participating, credit spreads are normal, and VIX is calm. This is the environment where staying invested is historically rewarded.", source: "Derived from Trend, Breadth, and Stress axes — all computed in JavaScript from free public data." },
+      { name: "Stretched", body: "The trend is still up but the rally shows signs of extension — RSI is overbought, the put/call ratio reflects complacency, or breadth is narrowing while the index holds highs. Not broken, but a pullback to test moving average support is increasingly likely.", source: "Triggered when Trend score is strong but RSI is overbought or put/call is complacent." },
+      { name: "Caution", body: "Mixed signals — at least one key indicator is flashing amber. A moving average may have broken, VIX is elevated, or breadth is thinning. Appropriate to wait for clarification rather than adding new exposure.", source: "Triggered when one or more stress or trend signals are negative but not yet severe." },
+      { name: "Stressed", body: "Multiple warning signals are firing simultaneously — VIX is high, credit spreads are widening, key moving averages have broken, or breadth is thin. Capital preservation is the priority.", source: "Triggered when stress score reaches threshold or both moving averages are below price." }
     ]
   },
   trend: {
     title: "Trend signals — is the prevailing direction intact?",
     items: [
-      { name: "50-day moving average", body: "The average of the last 50 closing prices. Widely watched as the short-term trend indicator. When SPY is above it, short-term momentum is positive. A break below the 50-day often triggers institutional selling." },
-      { name: "200-day moving average", body: "The average of the last 200 closing prices — the most important technical level watched by institutions. Price above = bull market. Price below = bear market. Crosses between the 50 and 200-day are major trend signals." },
-      { name: "MACD", body: "Moving Average Convergence Divergence. Calculated as the 12-day EMA minus the 26-day EMA. A positive value means short-term momentum is stronger than long-term — bullish. The magnitude reflects strength of the trend." },
-      { name: "Distance from 52-week high", body: "Shows how far the current price is below its highest price in the past year. Within 2% = at the high. 5-10% = normal correction within an uptrend. More than 20% = bear market territory. Contextualises whether current levels represent strength or decline." }
+      { name: "50-day moving average", body: "The average of the last 50 closing prices. Widely watched as the short-term trend indicator. When SPY is above it, short-term momentum is positive. A break below the 50-day often triggers institutional selling.", source: "Calculated from SPY daily closes · Yahoo Finance (5-year history)" },
+      { name: "200-day moving average", body: "The average of the last 200 closing prices — the most important technical level watched by institutions. Price above = bull market. Price below = bear market. Crosses between the 50 and 200-day are major trend signals.", source: "Calculated from SPY daily closes · Yahoo Finance (5-year history)" },
+      { name: "MACD", body: "Moving Average Convergence Divergence. Calculated as the 12-day EMA minus the 26-day EMA. A positive value means short-term momentum is stronger than long-term — bullish. The magnitude reflects strength of the trend.", source: "Calculated from SPY daily closes · Yahoo Finance (5-year history)" },
+      { name: "Distance from 52-week high", body: "Shows how far the current price is below its highest price in the past year. Within 2% = at the high. 5-10% = normal correction within an uptrend. More than 20% = bear market territory.", source: "Calculated from SPY daily closes · Yahoo Finance (5-year history)" }
     ]
   },
   breadth: {
     title: "Breadth signals — is the rally broad or narrow?",
     items: [
-      { name: "% of sectors above 200-day MA", body: "Measures whether the rally is driven by most sectors (healthy) or just a few large ones (fragile). When only a handful of mega-caps carry the index while most sectors are below their 200-day MAs, the rally lacks conviction and is vulnerable to reversal." },
-      { name: "Put/Call ratio", body: "Put options divided by call options. A ratio below 0.7 means traders are heavily bullish and not hedging — classic complacency at market highs. A ratio above 1.2 means traders are fearful — historically a contrarian buy signal near market lows. Most useful at extremes." }
+      { name: "% of sectors above 200-day MA", body: "Measures whether the rally is driven by most sectors (healthy) or just a few large ones (fragile). When only a handful of mega-caps carry the index while most sectors are below their 200-day MAs, the rally lacks conviction and is vulnerable to reversal.", source: "11 SPDR sector ETFs (XLC, XLY, XLP, XLE, XLF, XLV, XLI, XLB, XLRE, XLK, XLU) vs their own 200-day MAs · Yahoo Finance" },
+      { name: "Put/Call ratio", body: "Put options divided by call options. A ratio below 0.7 means traders are heavily bullish and not hedging — classic complacency at market highs. A ratio above 1.2 means traders are fearful — historically a contrarian buy signal near market lows. Most useful at extremes.", source: "CBOE total put/call ratio · cdn.cboe.com/resources/options/volume_and_call_put_ratios/totalpc.csv · Updated previous trading day" }
     ]
   },
   stress: {
     title: "Stress signals — are risk indicators elevated?",
     items: [
-      { name: "VIX (volatility index)", body: "The CBOE VIX measures expected S&P 500 volatility over 30 days, often called the fear gauge. Below 15 = calm. 15-20 = normal. 20-30 = elevated concern. Above 30 = genuine fear. Spikes above 40 have historically coincided with major market bottoms including 2020, 2008, and 2002." },
-      { name: "High-yield credit spreads", body: "The extra yield high-yield bonds pay over Treasuries in basis points. When tight, investors are confident in credit quality. When wide, it signals rising default risk — often an early warning that precedes equity market stress by several weeks." },
-      { name: "Yield curve (10Y minus 2Y)", body: "The spread between 10-year and 2-year Treasury yields. When positive, the curve is normal — a sign of economic confidence. When negative, it is a historically reliable recession warning. Every US recession in the past 50 years was preceded by an inverted yield curve." },
-      { name: "RSI (Relative Strength Index)", body: "Measures momentum on a 0-100 scale using average gains versus average losses over 14 days. Below 30 indicates selling may be approaching exhaustion. Above 70 indicates buying that may be unsustainable. Between 30 and 70 is neutral territory where RSI adds less signal." }
+      { name: "VIX (volatility index)", body: "The CBOE VIX measures expected S&P 500 volatility over 30 days, often called the fear gauge. Below 15 = calm. 15-20 = normal. 20-30 = elevated concern. Above 30 = genuine fear. Spikes above 40 have historically coincided with major market bottoms including 2020, 2008, and 2002.", source: "Yahoo Finance (^VIX) · Updated in real time during market hours" },
+      { name: "High-yield credit spreads", body: "The extra yield high-yield bonds pay over Treasuries in basis points. When tight, investors are confident in credit quality. When wide, it signals rising default risk — often an early warning that precedes equity market stress by several weeks.", source: "FRED series BAMLH0A0HYM2 (ICE BofA US High Yield Index Option-Adjusted Spread) · Updated daily" },
+      { name: "Yield curve (10Y minus 2Y)", body: "The spread between 10-year and 2-year Treasury yields. When positive, the curve is normal — a sign of economic confidence. When negative, it is a historically reliable recession warning. Every US recession in the past 50 years was preceded by an inverted yield curve.", source: "FRED series DGS10 minus DGS2 (US Treasury constant maturity yields) · Updated daily" },
+      { name: "RSI (Relative Strength Index)", body: "Measures momentum on a 0-100 scale using average gains versus average losses over 14 days. Below 30 indicates selling may be approaching exhaustion. Above 70 indicates buying that may be unsustainable. Between 30 and 70 is neutral territory where RSI adds less signal.", source: "Calculated from SPY daily closes using Wilder smoothing · Yahoo Finance (5-year history)" }
     ]
   },
   macro: {
     title: "Macro indicators — the broader economic backdrop",
     items: [
-      { name: "Federal funds rate", body: "The overnight rate set by the Federal Reserve. Higher rates increase borrowing costs for consumers and corporations, slow economic activity, and make bonds more attractive versus equities — compressing price-to-earnings multiples especially for growth stocks." },
-      { name: "US 10-year Treasury yield", body: "The yield on 10-year US government bonds — the most important interest rate in global finance. Rising 10-year yields increase the discount rate for equities, reducing the present value of future earnings and particularly impacting high-multiple technology stocks." },
-      { name: "US 2-year Treasury yield", body: "The 2-year Treasury yield closely tracks market expectations for Federal Reserve policy over the next two years. A high 2-year yield relative to the 10-year signals the market expects rates to remain elevated for longer." },
-      { name: "WTI crude oil", body: "West Texas Intermediate crude oil price. Elevated oil raises inflation, constrains the ability to cut rates, squeezes consumer spending, and compresses corporate margins outside the energy sector. Oil is a key macro input that affects the Fed, consumers, and businesses simultaneously." }
+      { name: "Federal funds rate", body: "The overnight rate set by the Federal Reserve. Higher rates increase borrowing costs for consumers and corporations, slow economic activity, and make bonds more attractive versus equities — compressing price-to-earnings multiples especially for growth stocks.", source: "FRED series DFEDTARL (lower bound) and DFEDTARU (upper bound) · Updated after each FOMC meeting" },
+      { name: "US 10-year Treasury yield", body: "The yield on 10-year US government bonds — the most important interest rate in global finance. Rising 10-year yields increase the discount rate for equities, reducing the present value of future earnings and particularly impacting high-multiple technology stocks.", source: "Yahoo Finance (^TNX) · Updated in real time during market hours" },
+      { name: "US 2-year Treasury yield", body: "The 2-year Treasury yield closely tracks market expectations for Federal Reserve policy over the next two years. A high 2-year yield relative to the 10-year signals the market expects rates to remain elevated for longer.", source: "FRED series DGS2 (US 2-year Treasury constant maturity) · Updated daily" },
+      { name: "WTI crude oil", body: "West Texas Intermediate crude oil price. Elevated oil raises inflation, constrains the ability to cut rates, squeezes consumer spending, and compresses corporate margins outside the energy sector.", source: "Yahoo Finance (CL=F, front-month WTI futures) · Updated in real time during market hours" }
     ]
   }
 };
@@ -574,6 +575,9 @@ function buildHelp() {
       }
       html += '</div>';
       html += '<div class="help-item-body">' + item.body + '</div>';
+      if (item.source) {
+        html += '<div class="help-item-source">Source: ' + item.source + '</div>';
+      }
       html += '</div>';
     });
     html += '</div>';
