@@ -393,7 +393,7 @@ var DATA_URL = 'https://raw.githubusercontent.com/andykannurpatti/spy-tracker/ma
 // ── Storage with iOS in-memory fallback ──────────────────────────────────────
 var MEM = { snap: null, hist: [] }, USE_LS = false;
 try { localStorage.setItem('_t','1'); localStorage.removeItem('_t'); USE_LS = true; } catch(e) {}
-var SK = 'spy_v8_snap', HK = 'spy_v8_hist';
+var SK = 'spy_v9_snap', HK = 'spy_v9_hist';
 function store(k, v) { var s = JSON.stringify(v); if(USE_LS){try{localStorage.setItem(k,s);}catch(e){}} if(k===SK)MEM.snap=v; if(k===HK)MEM.hist=v; }
 function retrieve(k) { if(USE_LS){try{var r=localStorage.getItem(k);if(r)return JSON.parse(r);}catch(e){}} if(k===SK)return MEM.snap; if(k===HK)return MEM.hist||[]; return null; }
 function loadSnap() { return retrieve(SK); }
@@ -473,39 +473,70 @@ function renderChart(chartData) {
 
 // ── Indicator definitions ────────────────────────────────────────────────────
 var TIPS = {
-  rsi:       'Momentum indicator — below 30 = oversold, above 70 = overbought.',
-  ma50:      'Average closing price over 50 days — short-term trend benchmark.',
-  ma200:     'Average closing price over 200 days — primary long-term trend benchmark.',
-  macd:      'Gap between 12 and 26-day moving averages — positive = bullish momentum.',
-  dist52w:   'How far current price sits from the 52-week high — measures trend strength.',
-  breadth:   'Percentage of S&P 500 sectors above their 200-day MA — broad rally vs. narrow.',
-  putcall:   'Ratio of put to call options — below 0.7 = complacency, above 1.2 = fear.',
-  vix:       'CBOE volatility index — the "fear gauge." Below 20 = calm, above 30 = stress.',
-  hyspreads: 'High-yield bond spread over Treasuries — wide = institutional credit stress.',
-  yieldcurve:'10Y minus 2Y Treasury yield — inverted historically precedes recessions.',
-  oil:       'WTI crude oil price — elevated oil raises input costs and inflation.',
-  fedrate:   'Federal Reserve target rate — drives all borrowing costs and valuations.',
-  us10y:     '10-year Treasury yield — the benchmark risk-free rate for all asset pricing.',
-  us2y:      '2-year Treasury yield — closely tracks near-term Fed policy expectations.',
-  igspreads: 'Investment-grade bond spread — tight = healthy corporate credit environment.'
+  ma50:      "Average closing price over 50 days — short-term trend benchmark.",
+  ma200:     "Average closing price over 200 days — primary long-term trend benchmark.",
+  macd:      "Gap between 12 and 26-day moving averages — positive = bullish momentum.",
+  dist52w:   "How far current price sits from the 52-week high — measures trend strength.",
+  breadth:   "Percentage of S&P 500 sectors above their 200-day MA — broad = healthy rally.",
+  putcall:   "Ratio of put to call options. Below 0.7 = complacency. Above 1.2 = fear.",
+  vix:       "Expected market volatility. Under 15 = calm. 15-20 = normal. 20-30 = concern. Over 30 = fear.",
+  hyspreads: "Extra yield junk bonds pay over Treasuries. Tight = confidence. Wide = stress.",
+  igspreads: "Investment-grade bond spread — tight = healthy corporate credit environment.",
+  yieldcurve:"10Y minus 2Y Treasury yield. Inverted = recession warning. Positive = healthy.",
+  rsi:       "Momentum on 0-100 scale. Below 30 = oversold. Above 70 = overbought. 30-70 = neutral.",
+  oil:       "WTI crude price. Elevated oil raises inflation and restricts Fed rate cuts.",
+  fedrate:   "The Fed benchmark rate. Higher rates raise borrowing costs and compress valuations.",
+  us10y:     "10-year Treasury yield — the global risk-free rate benchmark for all asset pricing.",
+  us2y:      "2-year Treasury yield — closely tracks near-term Fed policy expectations.",
+  ycspread:  "10Y minus 2Y yield spread. Positive = normal. Negative = inverted — recession signal.",
+  drawdown:  "How far SPY sits below its all-time high — contextualises the current correction.",
+  condition: "Overall market condition from three axes: Trend, Breadth, and Stress signals."
 };
 
 var HELP = {
-  rsi: { name:'RSI (14)', badges:[], body:'The Relative Strength Index measures the speed and magnitude of recent price moves on a 0–100 scale. An RSI below 30 signals that selling has been excessive — the market may be oversold and due for a bounce. Above 70 indicates overbought conditions where buying momentum has stretched too far. In a strong uptrend, RSI often oscillates between 40 and 70 without reaching extremes. The 14-day period is the standard institutional setting.' },
-  ma50: { name:'50-day Moving Average', badges:['×2 weight'], body:'The simple average of the last 50 closing prices. When price is above the 50-day MA, short-term trend is intact — institutions use this as a first reference for trend health. A break below the 50-day MA is an early warning of momentum deterioration. It is more sensitive than the 200-day and will signal changes faster, but also generates more false signals. Weighted double in the condition score because it is the primary trend indicator.' },
-  ma200: { name:'200-day Moving Average', badges:['×2 weight'], body:'The single most-watched technical level by institutional investors worldwide. A stock or index above its 200-day MA is in a structural uptrend; below it is in a structural downtrend. The "death cross" (50-day crossing below the 200-day) and "golden cross" (50-day crossing above) are among the most cited signals in technical analysis. Weighted double in the condition score.' },
-  macd: { name:'MACD', badges:[], body:'Moving Average Convergence Divergence measures the gap between the 12-day and 26-day exponential moving averages. A positive MACD means short-term momentum is above longer-term momentum — bullish. A negative value means the opposite. The direction and magnitude of change matter as much as the sign. MACD is best used alongside price-level indicators like moving averages rather than in isolation.' },
-  dist52w: { name:'Distance from 52-week High', badges:[], body:'How far the current price is below the most recent 52-week high, expressed as a percentage. Within 2% of the 52-week high means the trend is strongly intact and the market is in price discovery. A pullback of 5–10% is common in healthy bull markets. Beyond 20% typically signals a bear market. This indicator adds momentum and positioning context that moving averages alone cannot capture.' },
-  breadth: { name:'Market Breadth — % Sectors above 200d MA', badges:[], body:'Measures what percentage of S&P 500 sectors are currently above their own 200-day moving averages. A healthy rally should have broad participation — most sectors rising together. When only a few sectors (typically mega-cap tech) are above their 200-day MAs while the rest lag, the index level overstates true market health. Thin breadth is one of the most reliable early warning signals before a correction.' },
-  putcall: { name:'Put/Call Ratio', badges:[], body:'The ratio of put options traded to call options traded on US equities. A low ratio (below 0.7) means traders are buying relatively few puts — they are complacent and not hedging. At market highs, this is a warning sign because it means there is little protection in place if the market turns. A high ratio (above 1.2) means excessive fear and heavy hedging — historically a contrarian buy signal near bottoms. Normal range is 0.7–1.0.' },
-  vix: { name:'VIX — Volatility Index', badges:[], body:'The CBOE Volatility Index measures the expected 30-day volatility of the S&P 500, derived from options pricing. It is often called the "fear gauge." Below 15 is very calm — markets are confident. 15–20 is normal. 20–30 is elevated — uncertainty is growing. Above 30 signals significant fear, and spikes above 40 historically mark capitulation events that often coincide with market bottoms. VIX tends to spike sharply when markets fall and decline gradually when they rise.' },
-  hyspreads: { name:'High-Yield Credit Spreads', badges:[], body:'The additional yield investors demand to hold high-yield (junk) corporate bonds versus US Treasuries, measured in basis points (bps). When spreads are tight (below 300 bps), institutions are confident in corporate credit quality — a healthy signal for equities. Widening spreads (above 400 bps) signal rising default fears and risk aversion. Spreads above 600 bps indicate serious stress. Credit markets often lead equity markets — spreads widening while stocks are still near highs is an important early warning.' },
-  yieldcurve: { name:'Yield Curve (10Y−2Y)', badges:[], body:'The difference between the 10-year and 2-year US Treasury yields. In a normal environment, longer-term yields are higher (positive spread) because investors demand more compensation for tying up money longer. An inverted curve (negative spread, 2-year yielding more than 10-year) means the Fed's short-term rates are higher than what markets expect long-term — historically one of the most reliable 12–18 month leading indicators of recession. The curve steepening after inversion has often marked the beginning of economic stress materializing.' },
-  oil: { name:'WTI Crude Oil', badges:[], body:'West Texas Intermediate crude oil price in USD per barrel. Oil is both an input cost (it raises costs for transportation, manufacturing, and energy) and an inflation signal. When oil is elevated, it squeezes corporate margins, reduces consumer purchasing power, and complicates Fed policy — the central bank cannot easily cut rates when energy-driven inflation is high. The Iran war drove oil above $110 in early 2026; the subsequent normalization toward $70 has been a significant tailwind for both the market recovery and Fed flexibility.' },
-  fedrate: { name:'Federal Funds Rate', badges:[], body:'The Federal Reserve's target overnight lending rate between banks. It is the most powerful lever the Fed has over the economy. Higher rates make borrowing expensive, slow investment and consumption, and increase competition for equities from risk-free bonds. Rate cuts are historically the single biggest catalyst for sustained equity recoveries. The current rate of 3.50–3.75% reflects three cuts made in late 2025; the June 2026 FOMC meeting signaled a possible hike due to persistent inflation from the Iran oil shock.' },
-  us10y: { name:'US 10-Year Treasury Yield', badges:[], body:'The yield on the 10-year US Treasury bond — the global benchmark for the risk-free rate. It influences mortgage rates, corporate borrowing costs, and equity valuations. When the 10-year rises, it raises the "hurdle rate" that equities must clear to be attractive — compressing P/E multiples, especially for high-growth stocks whose value depends on distant earnings. A falling 10-year is generally constructive for equities; a rising one adds pressure.' },
-  us2y: { name:'US 2-Year Treasury Yield', badges:[], body:'The yield on the 2-year US Treasury note, which closely tracks near-term Federal Reserve policy expectations. When markets expect the Fed to raise rates, the 2-year yield rises. When cuts are expected, it falls. The 2-year is therefore a real-time market forecast of Fed policy — more sensitive and forward-looking than the actual fed funds rate. The gap between the 10-year and 2-year yields (the yield curve) is one of the most watched indicators in macro finance.' },
-  igspreads: { name:'Investment-Grade Credit Spreads', badges:[], body:'The additional yield investors require to hold investment-grade corporate bonds versus equivalent US Treasuries. IG spreads below 100 bps reflect high institutional confidence in the creditworthiness of large, well-rated companies. Widening IG spreads — even while HY spreads are tight — can be an early signal of tightening financial conditions. IG spreads are more sensitive to interest rate moves than HY spreads, which are more sensitive to default risk.' }
+  condition: {
+    title: "Understanding the four conditions",
+    items: [
+      { name: "Healthy", body: "The trend is intact, the rally is broad, and stress indicators are quiet. Both moving averages are above price, most sectors are participating, credit spreads are normal, and VIX is calm. This is the environment where staying invested is historically rewarded." },
+      { name: "Stretched", body: "The trend is still up but the rally shows signs of extension — RSI is overbought, the put/call ratio reflects complacency, or breadth is narrowing while the index holds highs. Not broken, but a pullback to test moving average support is increasingly likely." },
+      { name: "Caution", body: "Mixed signals — at least one key indicator is flashing amber. A moving average may have broken, VIX is elevated, or breadth is thinning. Appropriate to wait for clarification rather than adding new exposure." },
+      { name: "Stressed", body: "Multiple warning signals are firing simultaneously — VIX is high, credit spreads are widening, key moving averages have broken, or breadth is thin. Capital preservation is the priority." }
+    ]
+  },
+  trend: {
+    title: "Trend signals — is the prevailing direction intact?",
+    items: [
+      { name: "50-day moving average", body: "The average of the last 50 closing prices. Widely watched as the short-term trend indicator. When SPY is above it, short-term momentum is positive. A break below the 50-day often triggers institutional selling." },
+      { name: "200-day moving average", body: "The average of the last 200 closing prices — the most important technical level watched by institutions. Price above = bull market. Price below = bear market. Crosses between the 50 and 200-day are major trend signals." },
+      { name: "MACD", body: "Moving Average Convergence Divergence. Calculated as the 12-day EMA minus the 26-day EMA. A positive value means short-term momentum is stronger than long-term — bullish. The magnitude reflects strength of the trend." },
+      { name: "Distance from 52-week high", body: "Shows how far the current price is below its highest price in the past year. Within 2% = at the high. 5-10% = normal correction within an uptrend. More than 20% = bear market territory. Contextualises whether current levels represent strength or decline." }
+    ]
+  },
+  breadth: {
+    title: "Breadth signals — is the rally broad or narrow?",
+    items: [
+      { name: "% of sectors above 200-day MA", body: "Measures whether the rally is driven by most sectors (healthy) or just a few large ones (fragile). When only a handful of mega-caps carry the index while most sectors are below their 200-day MAs, the rally lacks conviction and is vulnerable to reversal." },
+      { name: "Put/Call ratio", body: "Put options divided by call options. A ratio below 0.7 means traders are heavily bullish and not hedging — classic complacency at market highs. A ratio above 1.2 means traders are fearful — historically a contrarian buy signal near market lows. Most useful at extremes." }
+    ]
+  },
+  stress: {
+    title: "Stress signals — are risk indicators elevated?",
+    items: [
+      { name: "VIX (volatility index)", body: "The CBOE VIX measures expected S&P 500 volatility over 30 days, often called the fear gauge. Below 15 = calm. 15-20 = normal. 20-30 = elevated concern. Above 30 = genuine fear. Spikes above 40 have historically coincided with major market bottoms including 2020, 2008, and 2002." },
+      { name: "High-yield credit spreads", body: "The extra yield high-yield bonds pay over Treasuries in basis points. When tight, investors are confident in credit quality. When wide, it signals rising default risk — often an early warning that precedes equity market stress by several weeks." },
+      { name: "Yield curve (10Y minus 2Y)", body: "The spread between 10-year and 2-year Treasury yields. When positive, the curve is normal — a sign of economic confidence. When negative, it is a historically reliable recession warning. Every US recession in the past 50 years was preceded by an inverted yield curve." },
+      { name: "RSI (Relative Strength Index)", body: "Measures momentum on a 0-100 scale using average gains versus average losses over 14 days. Below 30 indicates selling may be approaching exhaustion. Above 70 indicates buying that may be unsustainable. Between 30 and 70 is neutral territory where RSI adds less signal." }
+    ]
+  },
+  macro: {
+    title: "Macro indicators — the broader economic backdrop",
+    items: [
+      { name: "Federal funds rate", body: "The overnight rate set by the Federal Reserve. Higher rates increase borrowing costs for consumers and corporations, slow economic activity, and make bonds more attractive versus equities — compressing price-to-earnings multiples especially for growth stocks." },
+      { name: "US 10-year Treasury yield", body: "The yield on 10-year US government bonds — the most important interest rate in global finance. Rising 10-year yields increase the discount rate for equities, reducing the present value of future earnings and particularly impacting high-multiple technology stocks." },
+      { name: "US 2-year Treasury yield", body: "The 2-year Treasury yield closely tracks market expectations for Federal Reserve policy over the next two years. A high 2-year yield relative to the 10-year signals the market expects rates to remain elevated for longer." },
+      { name: "WTI crude oil", body: "West Texas Intermediate crude oil price. Elevated oil raises inflation, constrains the ability to cut rates, squeezes consumer spending, and compresses corporate margins outside the energy sector. Oil is a key macro input that affects the Fed, consumers, and businesses simultaneously." }
+    ]
+  }
 };
 
 function tip(id) {
@@ -750,25 +781,59 @@ function clearAll(){
 }
 
 async function doRefresh(){
-  var btn=document.getElementById('upd-btn'),errBar=document.getElementById('err-bar');
-  btn.disabled=true;btn.innerHTML='<span class="spin"></span>Loading...';
-  errBar.style.display='none';
+  var btn=document.getElementById('upd-btn');
+  var errBar=document.getElementById('err-bar');
+  if(!btn)return;
+  btn.disabled=true;
+  btn.innerHTML='<span class="spin"></span>Loading...';
+  if(errBar)errBar.style.display='none';
   try{
-    var resp=await fetch(DATA_URL+'?t='+Date.now());
-    if(!resp.ok)throw new Error('HTTP '+resp.status+' — check DATA_URL');
+    // 15 second timeout so the spinner never hangs forever
+    var controller=new AbortController();
+    var timer=setTimeout(function(){controller.abort();},15000);
+    var resp=await fetch(DATA_URL+'?t='+Date.now(),{signal:controller.signal});
+    clearTimeout(timer);
+    if(!resp.ok)throw new Error('HTTP '+resp.status+' fetching data.json');
     var d=await resp.json();
-    saveSnap(d);render(d,loadHist());
+    // Validate schema before rendering
+    if(!d||(!d.signals&&!d.condition&&!d.display)){
+      throw new Error('data.json has unexpected format — run the GitHub workflow to regenerate it');
+    }
+    saveSnap(d);
+    render(d,loadHist());
   }catch(e){
-    errBar.textContent=e.message;errBar.style.display='block';
-    var snap=loadSnap();if(snap)render(snap,loadHist());
-  }finally{btn.disabled=false;btn.textContent='\u21BB Refresh';}
+    var msg=e.name==='AbortError'?'Request timed out — check your connection':e.message;
+    if(errBar){errBar.textContent=msg;errBar.style.display='block';}
+    // Try to render cached data as fallback
+    var snap=loadSnap();
+    if(snap){try{render(snap,loadHist());}catch(re){console.warn('Fallback render failed:',re.message);}}
+    else{
+      var c=document.getElementById('content');
+      if(c)c.innerHTML='<div class="sbox"><h3>Could not load data</h3><p>'+msg+'</p></div>';
+    }
+  }finally{
+    if(btn){btn.disabled=false;btn.textContent='\u21BB Refresh';}
+  }
 }
 
 function boot(){
   var snap=loadSnap(),hist=loadHist();
-  if(snap){render(snap,hist);}
-  else{document.getElementById('content').innerHTML='<div class="sbox"><h3>Loading...</h3><p><span class="spin"></span>Fetching latest market snapshot</p></div>';}
-  if(!USE_LS){document.getElementById('info-bar').textContent='Running in memory-only mode — history will not persist between sessions. Use Safari → Add to Home Screen for persistence.';document.getElementById('info-bar').style.display='block';}
+  // Always show loading state first — prevents stale snap blocking the fetch
+  document.getElementById('content').innerHTML='<div class="sbox"><h3>Loading...</h3><p><span class="spin"></span>Fetching latest snapshot</p></div>';
+  if(snap){
+    try{render(snap,hist);}
+    catch(e){
+      console.warn('Cached snapshot render failed (likely old schema):',e.message);
+      // Clear stale data and show fresh loading state
+      if(USE_LS){try{localStorage.removeItem(SK);localStorage.removeItem(HK);}catch(x){}}
+      MEM.snap=null;MEM.hist=[];
+      document.getElementById('content').innerHTML='<div class="sbox"><h3>Loading...</h3><p><span class="spin"></span>Fetching latest snapshot</p></div>';
+    }
+  }
+  if(!USE_LS){
+    var ib=document.getElementById('info-bar');
+    if(ib){ib.textContent='Running in memory-only mode — history will not persist between sessions. Use Safari → Add to Home Screen for persistence.';ib.style.display='block';}
+  }
   doRefresh();
 }
 
