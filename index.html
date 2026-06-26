@@ -259,26 +259,6 @@ body { font-family: var(--font-sans); background: var(--m-green-light); color: v
 .footer-disc { font-size: 11px; color: var(--m-text3); line-height: 1.6; }
 
 /* ── Info tooltip ────────────────────────────────────────────────────────── */
-.info-btn {
-  display: inline-flex; align-items: center; justify-content: center;
-  width: 15px; height: 15px; border-radius: 50%;
-  border: 1px solid var(--m-sage); background: none;
-  font-size: 9px; font-weight: 600; color: var(--m-text3);
-  cursor: pointer; margin-left: 5px; vertical-align: middle;
-  font-family: var(--font-sans); line-height: 1;
-  flex-shrink: 0; transition: all 0.15s;
-}
-.info-btn:hover, .info-btn.active {
-  background: var(--m-green); border-color: var(--m-green); color: #fff;
-}
-.info-popover {
-  display: none; font-size: 12px; color: var(--m-text2);
-  background: var(--m-white); border: 0.5px solid var(--bdr);
-  border-left: 3px solid var(--m-green);
-  border-radius: var(--rmd); padding: 8px 11px;
-  margin-top: 5px; line-height: 1.6;
-  box-shadow: 0 2px 8px rgba(42,87,64,0.10);
-}
 .info-popover.open { display: block; }
 
 /* ── Help tab ────────────────────────────────────────────────────────────── */
@@ -539,29 +519,67 @@ var HELP = {
   }
 };
 
-function tip(id) {
-  return '<button class="info-btn" onclick="toggleTip(this)" data-tip="' + (TIPS[id]||'') + '" title="Learn more">i</button>' +
-         '<div class="info-popover">' + (TIPS[id]||'') + '</div>';
+function tip(key) {
+  return '<i class="tip-icon" onclick="showTip(\'' + key + '\',this)" tabindex="0" role="button" aria-label="More info">i</i>';
 }
 
-function toggleTip(btn) {
-  // Close all other open popovers first
-  document.querySelectorAll('.info-btn.active').forEach(function(b) {
-    if (b !== btn) { b.classList.remove('active'); b.nextElementSibling.classList.remove('open'); }
-  });
-  var box = btn.nextElementSibling;
-  btn.classList.toggle('active');
-  box.classList.toggle('open');
+function showTip(key, el) {
+  var text = TIPS[key];
+  if (!text) return;
+  var box = document.getElementById('tip-box');
+  if (!box) return;
+  box.textContent = text;
+  var rect = el.getBoundingClientRect();
+  var left = rect.right + 8;
+  var top = rect.top - 10;
+  if (left + 270 > window.innerWidth - 8) left = rect.left - 270 - 8;
+  if (left < 8) left = 8;
+  if (top + 80 > window.innerHeight - 8) top = window.innerHeight - 88;
+  if (top < 8) top = 8;
+  box.style.left = left + 'px';
+  box.style.top = top + 'px';
+  box.classList.add('visible');
+  setTimeout(function() {
+    document.addEventListener('click', hideTip, { once: true, capture: true });
+  }, 10);
 }
 
-// Close popovers when tapping elsewhere
-document.addEventListener('click', function(e) {
-  if (!e.target.classList.contains('info-btn')) {
-    document.querySelectorAll('.info-btn.active').forEach(function(b) {
-      b.classList.remove('active'); b.nextElementSibling.classList.remove('open');
+function hideTip() {
+  var box = document.getElementById('tip-box');
+  if (box) box.classList.remove('visible');
+}
+
+function buildHelp() {
+  var html = '';
+  Object.keys(HELP).forEach(function(sectionKey) {
+    var section = HELP[sectionKey];
+    html += '<div class="help-section">';
+    html += '<div class="help-h">' + section.title + '</div>';
+    section.items.forEach(function(item) {
+      var condStyles = {
+        "Healthy":  "background:var(--c-healthy-bg);color:var(--c-healthy);",
+        "Stretched":"background:var(--c-stretched-bg);color:var(--c-stretched);",
+        "Caution":  "background:var(--c-caution-bg);color:var(--c-caution);",
+        "Stressed": "background:var(--c-stressed-bg);color:var(--c-stressed);"
+      };
+      var style = condStyles[item.name] || '';
+      html += '<div class="help-item">';
+      html += '<div class="help-item-title">';
+      if (style) {
+        html += '<span class="help-cond" style="' + style + '">' + item.name + '</span>';
+      } else {
+        html += item.name;
+      }
+      html += '</div>';
+      html += '<div class="help-item-body">' + item.body + '</div>';
+      html += '</div>';
     });
-  }
-});
+    html += '</div>';
+  });
+  return html;
+}
+
+// Close popovers when tapping elsewhere;
 
 // ── Render ────────────────────────────────────────────────────────────────────
 function render(d, h) {
@@ -841,139 +859,12 @@ function renderHelp(){
   // Help tab renders from HELP object already defined — nothing extra needed
   // The panel HTML is generated at render time using HELP, so it's always fresh
 }
-window.stab=stab;window.toggleSettings=toggleSettings;window.clearAll=clearAll;window.doRefresh=doRefresh;window.toggleTip=toggleTip;
+window.stab=stab;window.toggleSettings=toggleSettings;window.clearAll=clearAll;window.doRefresh=doRefresh;
 boot();
 </script>
 
-<!-- Tooltip overlay -->
+
+
 <div class="tooltip-box" id="tip-box"></div>
-
-<script>
-// ── Tooltip data ──────────────────────────────────────────────────────────────
-var TIPS = {
-  'ma50':     'Average SPY price over the last 50 days. Price above = short-term uptrend. Price below = short-term weakness.',
-  'ma200':    'Average SPY price over the last 200 days — the most-watched institutional trend line. Above = bull market. Below = bear market.',
-  'macd':     'Compares 12-day and 26-day moving averages. Positive = bullish momentum building. Negative = bearish momentum.',
-  'dist52w':  'How far SPY sits below its 52-week high. Near the high = strong momentum. Large gap = meaningful correction underway.',
-  'breadth':  'What % of S&P 500 sectors are above their own 200-day MA. High = broad, healthy rally. Low = narrow, fragile rally.',
-  'putcall':  'Ratio of put options (bearish bets) to call options (bullish bets). Below 0.7 = complacency. Above 1.2 = fear — a contrarian buy signal.',
-  'vix':      'Expected market volatility over 30 days. Under 15 = calm. 15–20 = normal. 20–30 = concern. Over 30 = fear.',
-  'hy':       'Extra yield high-yield bonds pay over Treasuries. Tight = confidence. Wide = institutional stress — often precedes equity selloffs.',
-  'yc':       '10-year minus 2-year Treasury yield. Inverted = recession warning. Steepening = healthy economic outlook.',
-  'rsi':      'Momentum on a 0–100 scale. Below 30 = oversold (potential bounce). Above 70 = overbought (potential pullback). 30–70 = neutral.',
-  'oil':      'WTI crude oil price. Elevated oil raises inflation, restricts Fed cuts, and squeezes consumer spending — a headwind for equities.',
-  'fed':      'The Federal Reserve's benchmark overnight rate. Higher rates raise borrowing costs and compress equity valuations, especially growth stocks.',
-  'us10y':    '10-year Treasury yield — the global risk-free rate benchmark. Rising yields increase competition for equities and raise corporate borrowing costs.',
-  'us2y':     '2-year Treasury yield — closely tracks Fed policy expectations. Rising = market expects rates to stay high longer.',
-  'ycspread': 'The gap between 10-year and 2-year Treasury yields. Positive = normal (steepening). Negative = inverted — a historically reliable recession signal.',
-  'drawdown': 'How far SPY sits below its all-time high. Contextualises the size of any current correction relative to the peak.',
-  'condition':'Overall market condition derived from three axes: Trend (are MAs intact?), Breadth (is the rally broad?), and Stress (are risk signals elevated?).',
-  // Aliases for keys generated by earlier build passes
-  'hyspreads': 'Extra yield high-yield bonds pay over Treasuries. Tight = confidence. Wide = institutional stress — often precedes equity selloffs.',
-  'yieldcurve':'10-year minus 2-year Treasury yield. Inverted = recession warning. Steepening = healthy economic outlook.',
-  'fedrate':   'The Federal Reserve\'s benchmark overnight rate. Higher rates raise borrowing costs and compress equity valuations, especially growth stocks.',
-  'ycspread':  '10-year minus 2-year Treasury yield spread. Positive = normal. Negative = inverted — a historically reliable recession indicator.',
-  'drawdown':  'How far SPY sits below its all-time high. Contextualises the size of any current correction relative to the peak.'
-};
-
-var HELP = {
-  condition: {
-    title: 'Understanding the four conditions',
-    items: [
-      { name: 'Healthy', body: 'The trend is intact, the rally is broad, and stress indicators are quiet. Both moving averages are above price, most sectors are participating, credit spreads are normal, and VIX is calm. This is the environment where staying invested or adding exposure is historically rewarded.' },
-      { name: 'Stretched', body: 'The trend is still up but the rally shows signs of extension — RSI is overbought, the put/call ratio reflects complacency, or breadth is narrowing even as the index holds highs. The market is not broken but a pullback to test moving average support is increasingly likely. Risk management over new additions.' },
-      { name: 'Caution', body: 'Mixed signals — at least one key indicator is flashing amber. A moving average may have broken, VIX is elevated, or breadth is thinning. The trend direction is unclear or contested. Appropriate to reduce risk or wait for clarification rather than adding new exposure.' },
-      { name: 'Stressed', body: 'Multiple warning signals are firing simultaneously — VIX is high, credit spreads are widening, key moving averages have broken, or breadth is thin. This environment has historically preceded or accompanied significant drawdowns. Capital preservation is the priority.' }
-    ]
-  },
-  trend: {
-    title: 'Trend signals — is the prevailing direction intact?',
-    items: [
-      { name: '50-day moving average', body: 'The average of the last 50 closing prices. Widely watched by traders as the short-term trend indicator. When SPY is above it, short-term momentum is positive. When below, sellers are in control of the near-term direction. A break below the 50-day often triggers institutional selling.' },
-      { name: '200-day moving average', body: 'The average of the last 200 closing prices — the single most important technical level watched by institutional investors. Price consistently above = structural bull market. Price below = structural bear market. Crosses between the 50-day and 200-day (golden cross / death cross) are major trend signals.' },
-      { name: 'MACD', body: 'Moving Average Convergence Divergence. Calculated as the 12-day EMA minus the 26-day EMA. A positive MACD means the short-term average is above the long-term average — bullish momentum. Negative = bearish. The size of the number reflects the strength of the trend.' },
-      { name: 'Distance from 52-week high', body: 'Shows how far the current price is below the highest price in the past year. Within 2% = at the high, strong momentum. 5–10% = a normal correction within an uptrend. More than 20% = bear market territory. This indicator contextualizes whether the current level represents strength or a meaningful decline from recent peaks.' }
-    ]
-  },
-  breadth: {
-    title: 'Breadth signals — is the rally broad or narrow?',
-    items: [
-      { name: '% of sectors above 200-day MA', body: 'Measures whether the S&P 500 rally is being driven by most sectors (healthy, broad) or just a few large ones (narrow, fragile). When only technology or a handful of mega-caps are carrying the index higher while most other sectors are below their 200-day MAs, the rally lacks conviction. Historically, narrow breadth has preceded corrections more often than broad breadth has.' },
-      { name: 'Put/Call ratio', body: 'The number of put options (bets the market will fall) divided by call options (bets it will rise). A ratio below 0.7 means traders are heavily bullish and not hedging — a classic complacency signal at market highs. A ratio above 1.2 means traders are fearful and buying protection heavily — historically a contrarian buy signal near market lows. The ratio is most useful at extremes.' }
-    ]
-  },
-  stress: {
-    title: 'Stress signals — are risk indicators elevated?',
-    items: [
-      { name: 'VIX (volatility index)', body: 'The CBOE VIX measures expected S&P 500 volatility over the next 30 days, derived from options pricing. It is often called the "fear gauge." Below 15 = calm and possibly complacent. 15–20 = normal market uncertainty. 20–30 = elevated concern. Above 30 = genuine fear. Spikes above 40 have historically coincided with major market bottoms (2020, 2008, 2002).' },
-      { name: 'High-yield credit spreads', body: 'The difference in yield between high-yield (junk) bonds and equivalent-maturity U.S. Treasuries, measured in basis points. When spreads are tight, institutional investors are confident in corporate credit quality. When spreads widen, it signals rising default risk and risk aversion — often an early warning that precedes equity market stress by several weeks.' },
-      { name: 'Yield curve (10Y − 2Y)', body: 'The spread between the 10-year and 2-year U.S. Treasury yields. When the 10-year yields more than the 2-year (positive spread), the curve is normal — lenders are being compensated for time, a sign of economic confidence. When the 2-year yields more (negative spread / inverted), the curve is sending a recession warning. Every U.S. recession in the past 50 years has been preceded by an inverted yield curve.' },
-      { name: 'RSI (Relative Strength Index)', body: 'Measures momentum on a 0–100 scale using the ratio of average gains to average losses over the last 14 days. Readings below 30 indicate the market has sold off sharply and may be approaching exhaustion — historically associated with short-term bounces. Readings above 70 indicate strong recent buying that may be unsustainable. Between 30 and 70, RSI is neutral and adds less signal.' }
-    ]
-  },
-  macro: {
-    title: 'Macro indicators — the broader economic backdrop',
-    items: [
-      { name: 'Federal funds rate', body: 'The overnight interest rate set by the Federal Reserve. Higher rates increase the cost of borrowing for consumers and corporations, slow economic activity, and make bonds more attractive relative to equities — compressing P/E multiples, especially for growth stocks. Rate cuts do the opposite. The direction and expected path of rates is often more important than the current level.' },
-      { name: 'US 10-year Treasury yield', body: 'The yield on 10-year U.S. government bonds — the most important single interest rate in the global financial system. It represents the risk-free rate against which all other assets are priced. Rising 10-year yields increase the discount rate for equities, reducing the present value of future earnings — particularly impactful for high-multiple technology stocks.' },
-      { name: 'US 2-year Treasury yield', body: 'The 2-year Treasury yield closely tracks the market's expectations for Federal Reserve policy over the next two years. A high 2-year yield relative to the 10-year signals the market expects rates to stay elevated. Watching the 2-year is effectively watching market expectations for the Fed's next move.' },
-      { name: 'WTI crude oil', body: 'West Texas Intermediate crude oil price. Oil is a key input cost across transportation, manufacturing, and energy. Elevated oil prices raise inflation, constrain the Fed's ability to cut rates, squeeze consumer discretionary spending, and compress corporate margins outside the energy sector. The Iran war premium drove oil from $57 to $113 in early 2026; normalization since has been a tailwind for equities.' }
-    ]
-  }
-};
-
-// Generate tip icon HTML — called from within JS template strings in render()
-function tip(key) {
-  return '<i class="tip-icon" onclick="showTip(\'' + key + '\',this)" tabindex="0" role="button" aria-label="More info">i</i>';
-}
-
-function showTip(key, el) {
-  var text = TIPS[key];
-  if (!text) return;
-  var box = document.getElementById('tip-box');
-  box.textContent = text;
-  var rect = el.getBoundingClientRect();
-  var bw = 260, bh = 80;
-  var left = rect.right + 8;
-  var top = rect.top - 10;
-  if (left + bw > window.innerWidth - 8) left = rect.left - bw - 8;
-  if (left < 8) left = 8;
-  if (top + bh > window.innerHeight - 8) top = window.innerHeight - bh - 8;
-  if (top < 8) top = 8;
-  box.style.left = left + 'px';
-  box.style.top = top + 'px';
-  box.classList.add('visible');
-  setTimeout(function(){ document.addEventListener('click', hideTip, {once:true, capture:true}); }, 10);
-}
-
-function hideTip() { document.getElementById('tip-box').classList.remove('visible'); }
-
-function buildHelp() {
-  var html = '';
-  Object.values(HELP).forEach(function(section) {
-    html += '<div class="help-section">';
-    html += '<div class="help-h">'+section.title+'</div>';
-    section.items.forEach(function(item) {
-      var condColors = {
-        'Healthy': 'background:var(--c-healthy-bg);color:var(--c-healthy);',
-        'Stretched': 'background:var(--c-stretched-bg);color:var(--c-stretched);',
-        'Caution': 'background:var(--c-caution-bg);color:var(--c-caution);',
-        'Stressed': 'background:var(--c-stressed-bg);color:var(--c-stressed);'
-      };
-      var style = condColors[item.name] || '';
-      html += '<div class="help-item">';
-      html += '<div class="help-item-title">';
-      if (style) html += '<span class="help-cond" style="'+style+'">'+item.name+'</span>';
-      else html += item.name;
-      html += '</div>';
-      html += '<div class="help-item-body">'+item.body+'</div>';
-      html += '</div>';
-    });
-    html += '</div>';
-  });
-  return html;
-}
-</script>
-
 </body>
 </html>
