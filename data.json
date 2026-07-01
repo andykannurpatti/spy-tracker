@@ -1,6 +1,6 @@
 {
-  "_at": "2026-07-01T19:18:42.433Z",
-  "_session": "Market open",
+  "_at": "2026-07-01T20:25:43.450Z",
+  "_session": "Post-market",
   "_source": "Yahoo Finance + FRED",
   "condition": "Healthy",
   "signals": {
@@ -16,7 +16,7 @@
     "putCallSig": "Hedging",
     "dist52wSig": "At high"
   },
-  "comment": "SPY ($747) is above both key moving averages with 91% of S&P 500 stocks above their 200-day MA — the rally is broad and technically sound. Credit spreads at 275 bps are normal — no systemic stress visible in institutional credit markets.",
+  "comment": "SPY ($746) is above both key moving averages with 91% of S&P 500 stocks above their 200-day MA — the rally is broad and technically sound. Credit spreads at 275 bps are normal — no systemic stress visible in institutional credit markets.",
   "chart": {
     "labels": [
       "2/23",
@@ -200,7 +200,7 @@
       728.99,
       741,
       746.77,
-      747.34
+      745.72
     ],
     "ma50": [
       687.45,
@@ -292,7 +292,7 @@
       734.35,
       735.14,
       735.87,
-      736.64
+      736.61
     ],
     "ma200": [
       651.77,
@@ -388,21 +388,21 @@
     ]
   },
   "display": {
-    "price": "$747.34",
-    "changePct": "+0.08%",
+    "price": "$745.72",
+    "changePct": "-0.14%",
     "ath": "$759.57",
-    "drawdown": "-1.6%",
+    "drawdown": "-1.8%",
     "high52w": "$759.57",
-    "dist52w": "-1.6%",
-    "rsi": "55.3",
-    "ma50": "$736.64",
+    "dist52w": "-1.8%",
+    "rsi": "54.2",
+    "ma50": "$736.61",
     "ma200": "$691.87",
-    "macd": "+1.20",
-    "vix": "16.4",
+    "macd": "+1.07",
+    "vix": "16.6",
     "us10y": "4.47%",
-    "us2y": "4.10%",
-    "ycSpread": "+0.37%",
-    "oil": "$68.25",
+    "us2y": "4.14%",
+    "ycSpread": "+0.33%",
+    "oil": "$68.00",
     "hy": "275 bps",
     "ig": "76 bps",
     "fedRate": "3.50-3.75%",
@@ -410,22 +410,22 @@
     "putCall": "1.05"
   },
   "_raw": {
-    "price": 747.3400268554688,
-    "changePct": 0.07632970115438559,
-    "rsi": 55.286067754558005,
-    "ma50": 736.6432019042969,
-    "ma200": 691.8749996948242,
-    "macd": 1.203374867073876,
-    "vix": 16.350000381469727,
+    "price": 745.719970703125,
+    "changePct": -0.14061207609594706,
+    "rsi": 54.202133850696335,
+    "ma50": 736.61080078125,
+    "ma200": 691.8668994140625,
+    "macd": 1.0741396184538416,
+    "vix": 16.600000381469727,
     "us10y": 4.474999904632568,
-    "us2y": 4.1,
-    "oil": 68.25,
+    "us2y": 4.14,
+    "oil": 68,
     "hy": 275,
     "ig": 76,
-    "ycSpread": 0.3749999046325687,
-    "drawdown": -1.6101189292390916,
+    "ycSpread": 0.3349999046325687,
+    "drawdown": -1.8234048853355962,
     "breadthPct": 90.9090909090909,
     "putCall": 1.05,
-    "dist52w": -1.6101189292390916
+    "dist52w": -1.8234048853355962
   }
 }
