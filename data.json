@@ -1,5 +1,5 @@
 {
-  "_at": "2026-07-10T20:47:44.247Z",
+  "_at": "2026-07-10T21:28:35.501Z",
   "_session": "Post-market",
   "_source": "Yahoo Finance + FRED",
   "condition": "Healthy",
@@ -16,7 +16,7 @@
     "putCallSig": "Hedging",
     "dist52wSig": "At high"
   },
-  "comment": "SPY ($755) is above both key moving averages with 82% of S&P 500 stocks above their 200-day MA — the rally is broad and technically sound. Credit spreads at 270 bps are normal — no systemic stress visible in institutional credit markets.",
+  "comment": "SPY ($755) is above both key moving averages with 75% of S&P 500 stocks above their 200-day MA — the rally is broad and technically sound. Credit spreads at 270 bps are normal — no systemic stress visible in institutional credit markets.",
   "chart": {
     "labels": [
       "3/3",
@@ -402,11 +402,11 @@
     "us10y": "4.57%",
     "us2y": "4.16%",
     "ycSpread": "+0.41%",
-    "oil": "$71.56",
+    "oil": "$71.51",
     "hy": "270 bps",
     "ig": "76 bps",
     "fedRate": "3.50-3.75%",
-    "breadthPct": "81.8%",
+    "breadthPct": "75.0%",
     "putCall": "1.05"
   },
   "_raw": {
@@ -419,12 +419,12 @@
     "vix": 15.029999732971191,
     "us10y": 4.568999767303467,
     "us2y": 4.16,
-    "oil": 71.55999755859375,
+    "oil": 71.51000213623047,
     "hy": 270,
     "ig": 76,
     "ycSpread": 0.40899976730346665,
     "drawdown": -0.6082382232893351,
-    "breadthPct": 81.81818181818183,
+    "breadthPct": 75,
     "putCall": 1.05,
     "dist52w": -0.6082382232893351
   }
