@@ -1,10 +1,10 @@
 {
-  "_at": "2026-07-28T18:54:05.860Z",
-  "_session": "Market open",
+  "_at": "2026-07-28T20:02:45.987Z",
+  "_session": "Post-market",
   "_source": "Yahoo Finance + FRED",
   "condition": "Caution",
   "signals": {
-    "ma50s": "At",
+    "ma50s": "Below",
     "ma200s": "Above",
     "rsiSig": "Neutral",
     "vixSig": "Normal",
@@ -16,7 +16,7 @@
     "putCallSig": "Hedging",
     "dist52wSig": "Near high"
   },
-  "comment": "SPY ($741) is showing mixed signals — trend and breadth indicators are not confirming each other. Monitor for clarification before adding risk. Credit spreads at 281 bps are normal — no systemic stress visible in institutional credit markets.",
+  "comment": "SPY ($741) has slipped below its 50-day MA ($745) but holds above the 200-day MA ($699) — short-term momentum is weakening within a longer-term uptrend. Credit spreads at 281 bps are normal — no systemic stress visible in institutional credit markets.",
   "chart": {
     "labels": [
       "3/19",
@@ -200,7 +200,7 @@
       738.18,
       738.93,
       739.09,
-      741.23
+      740.76
     ],
     "ma50": [
       684.71,
@@ -388,21 +388,21 @@
     ]
   },
   "display": {
-    "price": "$741.23",
-    "changePct": "+0.29%",
+    "price": "$740.76",
+    "changePct": "+0.23%",
     "ath": "$759.57",
-    "drawdown": "-2.4%",
+    "drawdown": "-2.5%",
     "high52w": "$759.57",
-    "dist52w": "-2.4%",
-    "rsi": "47.5",
+    "dist52w": "-2.5%",
+    "rsi": "47.0",
     "ma50": "$744.86",
     "ma200": "$699.23",
-    "macd": "-0.38",
+    "macd": "-0.42",
     "vix": "18.3",
     "us10y": "4.60%",
     "us2y": "4.33%",
     "ycSpread": "+0.27%",
-    "oil": "$79.28",
+    "oil": "$79.01",
     "hy": "281 bps",
     "ig": "81 bps",
     "fedRate": "3.50-3.75%",
@@ -410,22 +410,22 @@
     "putCall": "1.05"
   },
   "_raw": {
-    "price": 741.2349853515625,
-    "changePct": 0.29021613310352556,
-    "rsi": 47.45702597901452,
-    "ma50": 744.86490234375,
-    "ma200": 699.233175354004,
-    "macd": -0.3828004875596207,
-    "vix": 18.309999465942383,
-    "us10y": 4.6020002365112305,
+    "price": 740.760009765625,
+    "changePct": 0.2259512169662682,
+    "rsi": 47.010356866271515,
+    "ma50": 744.8554028320312,
+    "ma200": 699.2308004760743,
+    "macd": -0.4206902778909125,
+    "vix": 18.260000228881836,
+    "us10y": 4.604000091552734,
     "us2y": 4.33,
-    "oil": 79.27999877929688,
+    "oil": 79.01000213623047,
     "hy": 281,
     "ig": 81,
-    "ycSpread": 0.2720002365112304,
-    "drawdown": -2.4138686093262285,
+    "ycSpread": 0.2740000915527343,
+    "drawdown": -2.476400776388844,
     "breadthPct": 81.81818181818183,
     "putCall": 1.05,
-    "dist52w": -2.4138686093262285
+    "dist52w": -2.476400776388844
   }
 }
