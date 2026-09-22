@@ -1,5 +1,5 @@
 {
-  "_at": "2026-09-22T22:20:59.065Z",
+  "_at": "2026-09-22T22:58:30.672Z",
   "_session": "Post-market",
   "_source": "Yahoo Finance + FRED",
   "condition": "Caution",
@@ -16,7 +16,7 @@
     "putCallSig": "Hedging",
     "dist52wSig": "At high"
   },
-  "comment": "SPY ($773) price is holding but only 45% of S&P 500 stocks are above their 200-day MA — a narrow, potentially fragile rally. Credit spreads at 268 bps are normal — no systemic stress visible in institutional credit markets.",
+  "comment": "SPY ($773) price is holding but only 45% of S&P 500 stocks are above their 200-day MA — a narrow, potentially fragile rally. Credit spreads at 266 bps are normal — no systemic stress visible in institutional credit markets.",
   "chart": {
     "labels": [
       "5/14",
@@ -402,8 +402,8 @@
     "us10y": "4.97%",
     "us2y": "4.76%",
     "ycSpread": "+0.21%",
-    "oil": "$89.77",
-    "hy": "268 bps",
+    "oil": "$89.66",
+    "hy": "266 bps",
     "ig": "77 bps",
     "fedRate": "3.75-4.00%",
     "breadthPct": "45.5%",
@@ -419,8 +419,8 @@
     "vix": 14.210000038146973,
     "us10y": 4.9679999351501465,
     "us2y": 4.76,
-    "oil": 89.7699966430664,
-    "hy": 268,
+    "oil": 89.66000366210938,
+    "hy": 266,
     "ig": 77,
     "ycSpread": 0.2079999351501467,
     "drawdown": -0.5784953941164646,
