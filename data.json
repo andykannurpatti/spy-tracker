@@ -1,10 +1,10 @@
 {
-  "_at": "2026-09-30T18:30:25.554Z",
+  "_at": "2026-09-30T19:32:34.930Z",
   "_session": "Market open",
   "_source": "Yahoo Finance + FRED",
   "condition": "Caution",
   "signals": {
-    "ma50s": "Above",
+    "ma50s": "At",
     "ma200s": "Above",
     "rsiSig": "Neutral",
     "vixSig": "Normal",
@@ -16,7 +16,7 @@
     "putCallSig": "Hedging",
     "dist52wSig": "At high"
   },
-  "comment": "SPY ($767) price is holding but only 27% of S&P 500 stocks are above their 200-day MA — a narrow, potentially fragile rally. Only 27% of S&P 500 stocks are above their 200-day MA — thin breadth historically precedes more significant corrections.",
+  "comment": "SPY ($766) price is holding but only 27% of S&P 500 stocks are above their 200-day MA — a narrow, potentially fragile rally. Only 27% of S&P 500 stocks are above their 200-day MA — thin breadth historically precedes more significant corrections.",
   "chart": {
     "labels": [
       "5/22",
@@ -200,7 +200,7 @@
       771.35,
       765.61,
       764.2,
-      766.78
+      766.29
     ],
     "ma50": [
       696.68,
@@ -292,7 +292,7 @@
       761.57,
       762.01,
       762.45,
-      762.82
+      762.81
     ],
     "ma200": [
       678.85,
@@ -384,25 +384,25 @@
       718.45,
       718.86,
       719.25,
-      719.64
+      719.63
     ]
   },
   "display": {
-    "price": "$766.78",
-    "changePct": "+0.34%",
+    "price": "$766.29",
+    "changePct": "+0.27%",
     "ath": "$777.88",
-    "drawdown": "-1.4%",
+    "drawdown": "-1.5%",
     "high52w": "$777.88",
-    "dist52w": "-1.4%",
-    "rsi": "51.6",
-    "ma50": "$762.82",
-    "ma200": "$719.64",
-    "macd": "+1.05",
-    "vix": "15.8",
-    "us10y": "5.30%",
+    "dist52w": "-1.5%",
+    "rsi": "51.2",
+    "ma50": "$762.81",
+    "ma200": "$719.63",
+    "macd": "+1.01",
+    "vix": "15.9",
+    "us10y": "5.29%",
     "us2y": "4.92%",
-    "ycSpread": "+0.38%",
-    "oil": "$90.65",
+    "ycSpread": "+0.37%",
+    "oil": "$90.51",
     "hy": "308 bps",
     "ig": "84 bps",
     "fedRate": "3.75-4.00%",
@@ -410,22 +410,22 @@
     "putCall": "1.05"
   },
   "_raw": {
-    "price": 766.780029296875,
-    "changePct": 0.33761018694472245,
-    "rsi": 51.61541486391259,
-    "ma50": 762.8243981933593,
-    "ma200": 719.6360498046874,
-    "macd": 1.0529827127473936,
-    "vix": 15.8100004196167,
-    "us10y": 5.302000045776367,
+    "price": 766.2899780273438,
+    "changePct": 0.27348413856689424,
+    "rsi": 51.18207048260463,
+    "ma50": 762.8145971679687,
+    "ma200": 719.6335995483398,
+    "macd": 1.0138903037819773,
+    "vix": 15.920000076293945,
+    "us10y": 5.293000221252441,
     "us2y": 4.92,
-    "oil": 90.6500015258789,
+    "oil": 90.51000213623047,
     "hy": 308,
     "ig": 84,
-    "ycSpread": 0.38200004577636726,
-    "drawdown": -1.4269521669488998,
+    "ycSpread": 0.3730002212524415,
+    "drawdown": -1.4899504785721784,
     "breadthPct": 27.27272727272727,
     "putCall": 1.05,
-    "dist52w": -1.4269521669488998
+    "dist52w": -1.4899504785721784
   }
 }
