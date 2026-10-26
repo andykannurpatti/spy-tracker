@@ -1,5 +1,5 @@
 {
-  "_at": "2026-10-26T20:02:15.316Z",
+  "_at": "2026-10-26T20:40:22.121Z",
   "_session": "Post-market",
   "_source": "Yahoo Finance + FRED",
   "condition": "Caution",
@@ -16,7 +16,7 @@
     "putCallSig": "Hedging",
     "dist52wSig": "At high"
   },
-  "comment": "SPY ($765) price is holding but only 55% of S&P 500 stocks are above their 200-day MA — a narrow, potentially fragile rally. Oil at $102 remains elevated — energy costs are a headwind to consumer spending and corporate margins.",
+  "comment": "SPY ($765) price is holding but only 55% of S&P 500 stocks are above their 200-day MA — a narrow, potentially fragile rally. Oil at $101 remains elevated — energy costs are a headwind to consumer spending and corporate margins.",
   "chart": {
     "labels": [
       "6/18",
@@ -200,7 +200,7 @@
       773.09,
       763.96,
       759.97,
-      765.29
+      765.37
     ],
     "ma50": [
       729.66,
@@ -388,8 +388,8 @@
     ]
   },
   "display": {
-    "price": "$765.29",
-    "changePct": "+0.70%",
+    "price": "$765.37",
+    "changePct": "+0.71%",
     "ath": "$779.09",
     "drawdown": "-1.8%",
     "high52w": "$779.09",
@@ -398,11 +398,11 @@
     "ma50": "$767.59",
     "ma200": "$727.39",
     "macd": "-0.56",
-    "vix": "18.3",
+    "vix": "18.4",
     "us10y": "4.99%",
-    "us2y": "4.65%",
-    "ycSpread": "+0.34%",
-    "oil": "$101.63",
+    "us2y": "4.69%",
+    "ycSpread": "+0.30%",
+    "oil": "$101.36",
     "hy": "338 bps",
     "ig": "91 bps",
     "fedRate": "3.75-4.00%",
@@ -410,22 +410,22 @@
     "putCall": "1.05"
   },
   "_raw": {
-    "price": 765.2899780273438,
-    "changePct": 0.7000286234068793,
-    "rsi": 47.25424263647012,
-    "ma50": 767.5873950195313,
-    "ma200": 727.3852493286133,
-    "macd": -0.5617025361142396,
-    "vix": 18.31999969482422,
+    "price": 765.3699951171875,
+    "changePct": 0.7105576038835313,
+    "rsi": 47.32485006929889,
+    "ma50": 767.5889953613281,
+    "ma200": 727.3856494140625,
+    "macd": -0.5553194064400486,
+    "vix": 18.389999389648438,
     "us10y": 4.986000061035156,
-    "us2y": 4.65,
-    "oil": 101.62999725341797,
+    "us2y": 4.69,
+    "oil": 101.36000061035156,
     "hy": 338,
     "ig": 91,
-    "ycSpread": 0.3360000610351559,
-    "drawdown": -1.7713034889978236,
+    "ycSpread": 0.29600006103515586,
+    "drawdown": -1.76103290574229,
     "breadthPct": 54.54545454545454,
     "putCall": 1.05,
-    "dist52w": -1.7713034889978236
+    "dist52w": -1.76103290574229
   }
 }
