@@ -1,5 +1,5 @@
 {
-  "_at": "2026-10-27T23:01:21.872Z",
+  "_at": "2026-10-27T23:47:08.738Z",
   "_session": "Post-market",
   "_source": "Yahoo Finance + FRED",
   "condition": "Caution",
@@ -11,12 +11,12 @@
     "spreadSig": "Normal",
     "ycSig": "Steepening",
     "macdSig": "Bearish",
-    "oilSig": "Rising",
+    "oilSig": "Elevated",
     "breadthSig": "Narrowing",
     "putCallSig": "Hedging",
     "dist52wSig": "At high"
   },
-  "comment": "SPY ($770) price is holding but only 55% of S&P 500 stocks are above their 200-day MA — a narrow, potentially fragile rally. Credit spreads at 330 bps are normal — no systemic stress visible in institutional credit markets.",
+  "comment": "SPY ($770) price is holding but only 55% of S&P 500 stocks are above their 200-day MA — a narrow, potentially fragile rally. Oil at $100 remains elevated — energy costs are a headwind to consumer spending and corporate margins.",
   "chart": {
     "labels": [
       "6/22",
@@ -402,7 +402,7 @@
     "us10y": "4.99%",
     "us2y": "4.68%",
     "ycSpread": "+0.31%",
-    "oil": "$99.89",
+    "oil": "$100.07",
     "hy": "330 bps",
     "ig": "90 bps",
     "fedRate": "3.75-4.00%",
@@ -419,7 +419,7 @@
     "vix": 17.520000457763672,
     "us10y": 4.993000030517578,
     "us2y": 4.68,
-    "oil": 99.88999938964844,
+    "oil": 100.06999969482422,
     "hy": 330,
     "ig": 90,
     "ycSpread": 0.3130000305175784,
