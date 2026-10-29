@@ -1,8 +1,8 @@
 {
-  "_at": "2026-10-29T19:44:52.711Z",
-  "_session": "Market open",
+  "_at": "2026-10-29T20:27:49.555Z",
+  "_session": "Post-market",
   "_source": "Yahoo Finance + FRED",
-  "condition": "Caution",
+  "condition": "Healthy",
   "signals": {
     "ma50s": "At",
     "ma200s": "Above",
@@ -10,13 +10,13 @@
     "vixSig": "Normal",
     "spreadSig": "Normal",
     "ycSig": "Steepening",
-    "macdSig": "Bearish",
+    "macdSig": "Bullish",
     "oilSig": "Elevated",
     "breadthSig": "Healthy",
     "putCallSig": "Hedging",
     "dist52wSig": "At high"
   },
-  "comment": "SPY ($768) is showing mixed signals — trend and breadth indicators are not confirming each other. Monitor for clarification before adding risk. Oil at $102 remains elevated — energy costs are a headwind to consumer spending and corporate margins.",
+  "comment": "SPY ($769) is above both the 50-day MA ($768) and 200-day MA ($729), confirming an intact uptrend with broad participation. Oil at $103 remains elevated — energy costs are a headwind to consumer spending and corporate margins.",
   "chart": {
     "labels": [
       "6/24",
@@ -200,7 +200,7 @@
       765.37,
       769.66,
       772.31,
-      768.11
+      769.36
     ],
     "ma50": [
       732.97,
@@ -292,7 +292,7 @@
       767.59,
       767.53,
       767.63,
-      767.61
+      767.63
     ],
     "ma200": [
       689.72,
@@ -384,25 +384,25 @@
       727.39,
       727.76,
       728.15,
-      728.52
+      728.53
     ]
   },
   "display": {
-    "price": "$768.11",
-    "changePct": "-0.54%",
+    "price": "$769.36",
+    "changePct": "-0.38%",
     "ath": "$779.09",
-    "drawdown": "-1.4%",
+    "drawdown": "-1.2%",
     "high52w": "$779.09",
-    "dist52w": "-1.4%",
-    "rsi": "49.5",
-    "ma50": "$767.61",
-    "ma200": "$728.52",
-    "macd": "-0.06",
-    "vix": "16.7",
+    "dist52w": "-1.2%",
+    "rsi": "50.6",
+    "ma50": "$767.63",
+    "ma200": "$728.53",
+    "macd": "+0.04",
+    "vix": "17.2",
     "us10y": "4.99%",
-    "us2y": "4.70%",
-    "ycSpread": "+0.29%",
-    "oil": "$102.24",
+    "us2y": "4.67%",
+    "ycSpread": "+0.32%",
+    "oil": "$102.85",
     "hy": "314 bps",
     "ig": "86 bps",
     "fedRate": "3.75-4.00%",
@@ -410,22 +410,22 @@
     "putCall": "1.05"
   },
   "_raw": {
-    "price": 768.1099853515625,
-    "changePct": -0.543824658531965,
-    "rsi": 49.48395154353699,
-    "ma50": 767.6069946289062,
-    "ma200": 728.5210491943359,
-    "macd": -0.05757399983724554,
-    "vix": 16.65999984741211,
+    "price": 769.3599853515625,
+    "changePct": -0.38197255200071883,
+    "rsi": 50.56971637463056,
+    "ma50": 767.6319946289062,
+    "ma200": 728.5272991943359,
+    "macd": 0.04214109987788106,
+    "vix": 17.200000762939453,
     "us10y": 4.988999843597412,
-    "us2y": 4.7,
-    "oil": 102.23999786376953,
+    "us2y": 4.67,
+    "oil": 102.8499984741211,
     "hy": 314,
     "ig": 86,
-    "ycSpread": 0.28899984359741193,
-    "drawdown": -1.4093418122965127,
+    "ycSpread": 0.3189998435974122,
+    "drawdown": -1.2488982233771166,
     "breadthPct": 63.63636363636363,
     "putCall": 1.05,
-    "dist52w": -1.4093418122965127
+    "dist52w": -1.2488982233771166
   }
 }
