@@ -1,13 +1,13 @@
 {
-  "_at": "2026-10-30T20:00:29.153Z",
+  "_at": "2026-10-30T20:57:29.960Z",
   "_session": "Post-market",
   "_source": "Yahoo Finance + FRED",
-  "condition": "Stressed",
+  "condition": "Caution",
   "signals": {
     "ma50s": "Below",
     "ma200s": "Above",
     "rsiSig": "Near oversold",
-    "vixSig": "Elevated",
+    "vixSig": "Normal",
     "spreadSig": "Normal",
     "ycSig": "Steepening",
     "macdSig": "Bearish",
@@ -16,7 +16,7 @@
     "putCallSig": "Hedging",
     "dist52wSig": "Near high"
   },
-  "comment": "SPY ($756) is below key moving averages with deteriorating internals — the technical structure is broken and defensive positioning is warranted. VIX at 20.5 is above normal — the options market is pricing in more risk than the price action currently suggests.",
+  "comment": "SPY ($756) has slipped below its 50-day MA ($767) but holds above the 200-day MA ($729) — short-term momentum is weakening within a longer-term uptrend. Oil at $103 remains elevated — energy costs are a headwind to consumer spending and corporate margins.",
   "chart": {
     "labels": [
       "6/25",
@@ -200,7 +200,7 @@
       769.66,
       772.31,
       769.36,
-      755.78
+      755.72
     ],
     "ma50": [
       733.77,
@@ -292,7 +292,7 @@
       767.53,
       767.63,
       767.63,
-      767.5
+      767.49
     ],
     "ma200": [
       690.14,
@@ -388,21 +388,21 @@
     ]
   },
   "display": {
-    "price": "$755.78",
+    "price": "$755.72",
     "changePct": "-1.77%",
     "ath": "$779.09",
     "drawdown": "-3.0%",
     "high52w": "$779.09",
     "dist52w": "-3.0%",
     "rsi": "40.2",
-    "ma50": "$767.50",
+    "ma50": "$767.49",
     "ma200": "$728.85",
-    "macd": "-1.00",
-    "vix": "20.5",
+    "macd": "-1.01",
+    "vix": "19.4",
     "us10y": "4.93%",
-    "us2y": "4.67%",
-    "ycSpread": "+0.26%",
-    "oil": "$103.04",
+    "us2y": "4.61%",
+    "ycSpread": "+0.32%",
+    "oil": "$102.90",
     "hy": "326 bps",
     "ig": "89 bps",
     "fedRate": "3.75-4.00%",
@@ -410,22 +410,22 @@
     "putCall": "1.05"
   },
   "_raw": {
-    "price": 755.780029296875,
-    "changePct": -1.7650977842943154,
-    "rsi": 40.23973488931725,
-    "ma50": 767.495595703125,
-    "ma200": 728.8543994140625,
-    "macd": -1.0037036603530396,
-    "vix": 20.530000686645508,
+    "price": 755.719970703125,
+    "changePct": -1.7729040901710835,
+    "rsi": 40.203414645024246,
+    "ma50": 767.49439453125,
+    "ma200": 728.8540991210938,
+    "macd": -1.008494659284679,
+    "vix": 19.420000076293945,
     "us10y": 4.928999900817871,
-    "us2y": 4.67,
-    "oil": 103.04000091552734,
+    "us2y": 4.61,
+    "oil": 102.9000015258789,
     "hy": 326,
     "ig": 89,
-    "ycSpread": 0.25899990081787116,
-    "drawdown": -2.991951732802512,
+    "ycSpread": 0.3189999008178708,
+    "drawdown": -2.999660545863873,
     "breadthPct": 54.54545454545454,
     "putCall": 1.05,
-    "dist52w": -2.991951732802512
+    "dist52w": -2.999660545863873
   }
 }
