@@ -1,5 +1,5 @@
 {
-  "_at": "2026-11-17T21:19:09.559Z",
+  "_at": "2026-11-17T21:50:48.210Z",
   "_session": "Post-market",
   "_source": "Yahoo Finance + FRED",
   "condition": "Stressed",
@@ -16,7 +16,7 @@
     "putCallSig": "Hedging",
     "dist52wSig": "Pulling back"
   },
-  "comment": "SPY ($732) is below key moving averages with deteriorating internals — the technical structure is broken and defensive positioning is warranted. VIX at 25.3 is above normal — the options market is pricing in more risk than the price action currently suggests.",
+  "comment": "SPY ($732) is below key moving averages with deteriorating internals — the technical structure is broken and defensive positioning is warranted. VIX at 25.5 is above normal — the options market is pricing in more risk than the price action currently suggests.",
   "chart": {
     "labels": [
       "7/14",
@@ -398,11 +398,11 @@
     "ma50": "$763.15",
     "ma200": "$732.34",
     "macd": "-6.28",
-    "vix": "25.3",
+    "vix": "25.5",
     "us10y": "5.10%",
     "us2y": "4.83%",
     "ycSpread": "+0.27%",
-    "oil": "$85.69",
+    "oil": "$85.62",
     "hy": "334 bps",
     "ig": "90 bps",
     "fedRate": "3.75-4.00%",
@@ -416,10 +416,10 @@
     "ma50": 763.1525952148437,
     "ma200": 732.3425994873047,
     "macd": -6.28396918376734,
-    "vix": 25.270000457763672,
+    "vix": 25.459999084472656,
     "us10y": 5.102999687194824,
     "us2y": 4.83,
-    "oil": 85.69000244140625,
+    "oil": 85.62000274658203,
     "hy": 334,
     "ig": 90,
     "ycSpread": 0.27299968719482415,
