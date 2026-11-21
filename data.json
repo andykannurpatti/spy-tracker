@@ -1,6 +1,6 @@
 {
-  "_at": "2026-11-20T23:17:09.451Z",
-  "_session": "Post-market",
+  "_at": "2026-11-21T00:06:58.152Z",
+  "_session": "Market closed",
   "_source": "Yahoo Finance + FRED",
   "condition": "Stressed",
   "signals": {
