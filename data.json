@@ -1,6 +1,6 @@
 {
-  "_at": "2026-11-26T23:57:22.780Z",
-  "_session": "Post-market",
+  "_at": "2026-11-27T00:42:24.165Z",
+  "_session": "Market closed",
   "_source": "Yahoo Finance + FRED",
   "condition": "Stressed",
   "signals": {
@@ -11,7 +11,7 @@
     "spreadSig": "Normal",
     "ycSig": "Steepening",
     "macdSig": "Bearish",
-    "oilSig": "Stable",
+    "oilSig": "Rising",
     "breadthSig": "Healthy",
     "putCallSig": "Hedging",
     "dist52wSig": "Pulling back"
@@ -402,7 +402,7 @@
     "us10y": "4.85%",
     "us2y": "4.63%",
     "ycSpread": "+0.22%",
-    "oil": "$84.96",
+    "oil": "$85.16",
     "hy": "372 bps",
     "ig": "98 bps",
     "fedRate": "3.75-4.00%",
@@ -419,7 +419,7 @@
     "vix": 26.799999237060547,
     "us10y": 4.8480000495910645,
     "us2y": 4.63,
-    "oil": 84.95999908447266,
+    "oil": 85.16000366210938,
     "hy": 372,
     "ig": 98,
     "ycSpread": 0.21800004959106456,
